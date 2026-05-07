@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>企业级增强配置化树形组件（可视化配置版）</title>
+    <!-- Lucide Icons CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.487.0/dist/umd/lucide.min.js"></script>
+    <style>
+        /* 基础重置 & 主题变量 完全对齐模板 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            /* Light Theme */
+            --frosted-text-primary: #1e293b;
+            --frosted-text-secondary: #475569;
+            --frosted-text-tertiary: #94a3b8;
+            --frosted-bg-default: rgb(228, 234, 241);
+            --frosted-bg-subtle: rgb(235, 240, 246);
+            --frosted-bg-transparent: rgba(255, 255, 255, 0.5);
+            --frosted-border-default: rgba(226, 232, 240, 0.8);
+            --frosted-border-subtle: rgba(226, 232, 240, 0.5);
+            --frosted-border-emphasis: rgba(203, 213, 225, 1);
+            --frosted-cyan-bg: rgba(6, 182, 212, 0.1);
+            --frosted-cyan-text: #06b6d4;
+            --frosted-purple-text: #9333ea;
+            --frosted-green-text: #10b981;
+            --frosted-orange-text: #f97316;
+            --frosted-red-text: #ef4444;
+
+            /* 模糊半径 */
+            --frosted-blur-sm: 4px;
+            --frosted-blur-md: 8px;
+            --frosted-blur-lg: 12px;
+            --frosted-blur-xl: 16px;
+
+            /* 圆角 */
+            --frosted-radius-sm: 6px;
+            --frosted-radius-md: 10px;
+            --frosted-radius-lg: 16px;
+            --frosted-radius-xl: 20px;
+            --frosted-radius-full: 999px;
+
+            /* 背景 */
+            --frosted-bg-emphasis: rgba(255, 255, 255, 0.85);
+
+            /* 边框 */
+            --frosted-border-default: rgba(255, 255, 255, 0.5);
+            --frosted-border-subtle: rgba(255, 255, 255, 0.3);
+            --frosted-border-emphasis: rgba(6, 182, 212, 0.4);
+
+            /* 高光 */
+            --frosted-highlight-default: rgba(255, 255, 255, 0.6);
+            --frosted-highlight-subtle: rgba(255, 255, 255, 0.4);
+
+            /* 阴影 */
+            --frosted-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
+            --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+            --frosted-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --frosted-shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--frosted-bg-default);
+            transition: background-color 0.3s ease;
+        }
+
+        h3 {
+            margin: 20px 0 10px;
+            color: var(--frosted-text-primary);
+            border-left: 4px solid var(--frosted-cyan-text);
+            padding-left: 10px;
+        }
+
+        h4 {
+            margin: 15px 0 8px;
+            color: var(--frosted-text-secondary);
+        }
+
+        /* 毛玻璃卡片 对齐模板 */
+        .frosted-card {
+            position: relative;
+            padding: 20px;
+            border-radius: var(--frosted-radius-lg);
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.08) 0%,
+                    var(--frosted-bg-subtle) 15%,
+                    var(--frosted-bg-subtle) 85%,
+                    rgba(0, 0, 0, 0.02) 100%);
+            backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
+            -webkit-backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
+            border: 1px solid var(--frosted-border-default);
+            box-shadow:
+                0 1px 0 0 var(--frosted-highlight-default) inset,
+                0 -2px 6px rgba(0, 0, 0, 0.04) inset,
+                1px 0 0 rgba(255, 255, 255, 0.2) inset,
+                -1px 0 0 rgba(0, 0, 0, 0.02) inset,
+                var(--frosted-shadow-md);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .frosted-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.12) 0%,
+                    transparent 100%);
+            pointer-events: none;
+        }
+
+        .config-panel {
+            border: 1px solid var(--frosted-border-default);
+            border-radius: var(--frosted-radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+            background: var(--frosted-bg-subtle);
+            backdrop-filter: blur(var(--frosted-blur-md));
+            box-shadow: var(--frosted-shadow-lg);
+        }
+
+        .config-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .config-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            padding: 4px 8px;
+            border-radius: var(--frosted-radius-sm);
+            background: var(--frosted-bg-transparent);
+            border: 1px solid var(--frosted-border-subtle);
+        }
+
+        .config-item label {
+            font-size: 14px;
+            color: var(--frosted-text-secondary);
+            cursor: pointer;
+        }
+
+        /* ======================
+           模板同款动态底部线条输入框
+        ====================== */
+        .speed-input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .speed-input {
+            width: 100%;
+            height: 40px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: var(--frosted-text-primary);
+            padding: 0 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .speed-line-input {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--frosted-border-subtle);
+            transition: all 0.2s ease;
+        }
+
+        .speed-line-input::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 100%;
+            background: var(--frosted-cyan-text);
+            transition: width 0.2s ease;
+        }
+
+        .speed-input:focus+.speed-line-input::after {
+            width: 100%;
+        }
+
+        .speed-input.has-value+.speed-line-input::after {
+            width: 100%;
+        }
+
+        /* 文本域也应用同款动态线条 */
+        .data-editor {
+            width: 100%;
+            height: 220px;
+            padding: 12px;
+            border: none;
+            border-bottom: 2px solid var(--frosted-border-subtle);
+            border-radius: 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            resize: vertical;
+            background: transparent;
+            color: var(--frosted-text-primary);
+            position: relative;
+            transition: border-color 0.2s ease;
+        }
+
+        .data-editor:focus {
+            outline: none;
+            border-color: var(--frosted-cyan-text);
+        }
+
+        /* 毛玻璃按钮 对齐模板 */
+        .frosted-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 16px;
+            height: 36px;
+            border-radius: var(--frosted-radius-sm);
+            border: 1px solid var(--frosted-border-default);
+            background: var(--frosted-bg-subtle);
+            color: var(--frosted-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .frosted-button:hover {
+            background: var(--frosted-bg-transparent);
+            border-color: var(--frosted-border-emphasis);
+        }
+
+         
+
+        /* 树形组件容器 */
+        .tree-dropdown {
+            position: relative;
+            width: 350px;
+            margin-bottom: 20px;
+        }
+
+        .tree-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 14px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: transparent;
+            font-size: 14px;
+            color: var(--frosted-text-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .tree-search-input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .tree-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 500px;
+            background: var(--frosted-bg-subtle);
+            border: 1px solid var(--frosted-border-default);
+            border-radius: var(--frosted-radius-md);
+            margin-top: 6px;
+            overflow-y: auto;
+            display: none;
+            z-index: 999;
+            backdrop-filter: blur(var(--frosted-blur-lg));
+            box-shadow: var(--frosted-shadow-xl);
+        }
+
+        .tree-panel.show {
+            display: block;
+        }
+
+        .tree-search {
+            z-index: 9;
+            padding: 10px;
+            border-bottom: 1px solid var(--frosted-border-subtle);
+            position: sticky;
+            top: 0;
+            background: var(--frosted-bg-subtle);
+        }
+
+        .tree-search input {
+            width: 100%;
+            height: 36px;
+            padding: 0 10px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--frosted-text-primary);
+            font-size: 14px;
+        }
+
+        .tree-list {
+            padding: 10px;
+            position: relative;
+            min-height: 20px;
+        }
+
+        .tree-node {
+            padding: 8px 6px;
+            cursor: pointer;
+            border-radius: var(--frosted-radius-sm);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.15s ease;
+            color: var(--frosted-text-secondary);
+        }
+
+        .tree-node:hover {
+            background-color: var(--frosted-bg-transparent);
+        }
+
+        .tree-node.active {
+            background-color: var(--frosted-cyan-bg);
+            color: var(--frosted-cyan-text);
+        }
+
+        .tree-node .checkbox {
+            margin-right: 6px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--frosted-cyan-text);
+        }
+
+        .tree-node .toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            color: var(--frosted-text-tertiary);
+            font-size: 12px;
+            margin-right: 2px;
+            border-radius: var(--frosted-radius-sm);
+            transition: all 0.2s;
+        }
+
+        .tree-node .toggle:hover {
+            background: var(--frosted-bg-transparent);
+            color: var(--frosted-text-secondary);
+        }
+
+        .tree-node .label {
+            margin-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .tree-node .icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            font-size: 14px;
+        }
+
+        .tree-node.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: transparent;
+        }
+
+        .tree-node.disabled * {
+            pointer-events: none;
+        }
+
+        .tree-children {
+            padding-left: 20px;
+            display: none;
+        }
+
+        .tree-children.open {
+            display: block;
+        }
+
+        .tree-node.dragging {
+            opacity: 0.5;
+            background: var(--frosted-cyan-bg);
+        }
+
+        .drop-placeholder {
+            height: 4px;
+            background: var(--frosted-cyan-text);
+            margin: 4px 0;
+            border-radius: 2px;
+        }
+
+        .drop-to-root {
+            height: 36px;
+            margin: 8px 0;
+            border: 2px dashed var(--frosted-cyan-text);
+            border-radius: var(--frosted-radius-sm);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: var(--frosted-cyan-text);
+            font-size: 12px;
+            background: var(--frosted-cyan-bg);
+        }
+
+        .drop-to-root.show {
+            display: flex;
+        }
+
+        .drop-to-root.active {
+            background: rgba(6, 182, 212, 0.2);
+        }
+
+        .tree-static {
+            width: 350px;
+            border: 1px solid var(--frosted-border-default);
+            border-radius: var(--frosted-radius-md);
+            background: var(--frosted-bg-subtle);
+            backdrop-filter: blur(var(--frosted-blur-md));
+        }
+
+        .tree-static .tree-panel {
+            position: static !important;
+            display: block !important;
+            max-height: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+
+        .demo-box {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="./frosted-glass.css">
+
+</head>
+
+<body>
+
+    <h3>📋 可视化配置面板（客户直接操作）</h3>
+    <div class="config-panel">
+        <h4>⚙️ 功能开关 —— 点击立即生效</h4>
+        <div class="config-row">
+            <div class="config-item"><label><input type="checkbox" id="isDropdown"> 下拉模式</label></div>
+            <div class="config-item"><label><input type="checkbox" id="showCheckbox" checked> 显示复选框</label></div>
+            <div class="config-item"><label><input type="checkbox" id="checkChildren" checked> 勾选父节点自动勾选子节点</label>
+            </div>
+            <div class="config-item"><label><input type="checkbox" id="draggable"> 允许节点拖拽</label></div>
+            <div class="config-item"><label><input type="checkbox" id="searchable" checked> 显示搜索框</label></div>
+            <div class="config-item"><label><input type="checkbox" id="expandable" checked> 允许展开折叠</label></div>
+            <div class="config-item"><label><input type="checkbox" id="singleSelect"> 单选模式</label></div>
+            <div class="config-item"><label><input type="checkbox" id="onlyLeafValue" checked>
+                    【核心】只提交叶子节点值</label></div>
+        </div>
+
+        <h4>📝 树数据编辑（直接修改 JSON）</h4>
+        <textarea id="treeDataEditor" class="data-editor"></textarea>
+        <div style="margin-top:10px; display: flex; gap: 12px;">
+            <button class="frosted-button frosted-button-cyan text-sm" id="refreshBtn">🔄 刷新树组件</button>
+            <button class="frosted-button frosted-button-cyan text-sm" id="getValueBtn">📄 获取选中值（仅叶子节点）</button>
+        </div>
+    </div>
+
+    <div class="demo-box">
+        <div>
+            <h3>模式1：下拉树形</h3>
+            <div id="dropdownTree" class="tree-dropdown"></div>
+        </div>
+        <div>
+            <h3>模式2：直展树形</h3>
+            <div id="staticTree" class="tree-static"></div>
+        </div>
+    </div>
+
+    <script>
+        const defaultTreeData = [
+            {
+                id: 1, label: '前端技术', disabled: false, icon: '📦', children: [
+                    { id: 11, label: 'HTML/CSS', disabled: false, icon: '📄' },
+                    {
+                        id: 12, label: 'JavaScript', disabled: false, icon: '🚀', children: [
+                            { id: 121, label: 'ES6+', icon: '🔥' },
+                            { id: 122, label: 'TypeScript', icon: '🔷' }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2, label: '后端技术', disabled: false, icon: '⚙️', children: [
+                    { id: 21, label: 'Java', icon: '☕' },
+                    { id: 22, label: 'Node.js', icon: '🟢' }
+                ]
+            }
+        ];
+
+        class TreeComponent {
+            constructor(selector, data, options = {}) {
+                this.container = typeof selector === 'string' ? document.querySelector(selector) : selector;
+                this.originData = this.deepClone(data);
+                this.displayData = this.deepClone(data);
+                this.checkedMap = {};
+                this.expandedIds = new Set();
+                this.selectedId = null;
+                this.draggingId = null;
+                this.preSearchExpandedIds = null;
+                this.searchKeyword = '';
+
+                this.options = {
+                    isDropdown: false,
+                    showCheckbox: false,
+                    checkChildren: true,
+                    draggable: false,
+                    searchable: false,
+                    expandable: true,
+                    customEvent: false,
+                    singleSelect: false,
+                    onlyLeafValue: true,
+                    onNodeClick: null,
+                    onCheckChange: null,
+                    onDrop: null,
+                    ...options
+                };
+
+                this.render();
+            }
+
+            deepClone(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            }
+
+            render() {
+                const opt = this.options;
+                const oldPanel = this.container.querySelector('.tree-panel');
+                const wasShow = opt.isDropdown && oldPanel ? oldPanel.classList.contains('show') : false;
+
+                this.container.innerHTML = '';
+
+                if (opt.isDropdown) {
+                    const inputGroup = document.createElement('div');
+                    inputGroup.className = 'speed-input-group';
+
+                    const input = document.createElement('input');
+                    input.className = 'tree-input speed-input';
+                    input.placeholder = '请选择';
+                    input.readOnly = true;
+
+                    const line = document.createElement('div');
+                    line.className = 'speed-line-input';
+
+                    inputGroup.appendChild(input);
+                    inputGroup.appendChild(line);
+                    this.container.appendChild(inputGroup);
+                }
+
+                const panel = document.createElement('div');
+                panel.className = 'tree-panel';
+                if (wasShow) panel.classList.add('show');
+                if (!opt.isDropdown) panel.classList.add('show');
+
+                if (opt.searchable) {
+                    const searchDiv = document.createElement('div');
+                    searchDiv.className = 'tree-search';
+
+                    const searchGroup = document.createElement('div');
+                    searchGroup.className = 'speed-input-group';
+
+                    const searchInput = document.createElement('input');
+                    searchInput.type = 'text';
+                    searchInput.placeholder = '搜索节点';
+                    searchInput.className = 'speed-input';
+                    if (this.searchKeyword) searchInput.value = this.searchKeyword;
+
+                    const line = document.createElement('div');
+                    line.className = 'speed-line-input';
+
+                    searchGroup.appendChild(searchInput);
+                    searchGroup.appendChild(line);
+                    searchDiv.appendChild(searchGroup);
+                    panel.appendChild(searchDiv);
+                }
+
+                const list = document.createElement('div');
+                list.className = 'tree-list';
+                this.buildNodes(this.displayData, list);
+
+                if (opt.draggable) {
+                    const dropRoot = document.createElement('div');
+                    dropRoot.className = 'drop-to-root';
+                    dropRoot.textContent = '释放到最外层';
+                    list.appendChild(dropRoot);
+                }
+
+                panel.appendChild(list);
+                this.container.appendChild(panel);
+
+                this.bindEvents();
+                this.updateInputValue();
+            }
+
+            buildNodes(nodes, container) {
+                const opt = this.options;
+
+                for (const node of nodes) {
+                    const hasChild = node.children && node.children.length > 0;
+                    const isExpanded = this.expandedIds.has(node.id);
+                    const isDisabled = node.disabled === true;
+                    const isActive = this.selectedId === node.id;
+
+                    const nodeEl = document.createElement('div');
+                    nodeEl.className = 'tree-node';
+                    if (isDisabled) nodeEl.classList.add('disabled');
+                    if (isActive) nodeEl.classList.add('active');
+                    nodeEl.dataset.id = node.id;
+                    if (opt.draggable && !isDisabled) {
+                        nodeEl.draggable = true;
+                    }
+
+                    if (opt.showCheckbox && !opt.singleSelect) {
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.className = 'checkbox';
+                        checkbox.dataset.id = node.id;
+                        if (isDisabled) checkbox.disabled = true;
+                        this.syncCheckboxState(checkbox, node);
+                        nodeEl.appendChild(checkbox);
+                    }
+
+                    const toggle = document.createElement('span');
+                    toggle.className = 'toggle';
+                    if (hasChild) {
+                        toggle.textContent = isExpanded ? '−' : '+';
+                    }
+                    nodeEl.appendChild(toggle);
+
+                    const label = document.createElement('span');
+                    label.className = 'label';
+                    if (node.icon) {
+                        const iconSpan = document.createElement('span');
+                        iconSpan.className = 'icon';
+                        iconSpan.textContent = node.icon;
+                        label.appendChild(iconSpan);
+                    }
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = node.label;
+                    label.appendChild(textSpan);
+                    nodeEl.appendChild(label);
+
+                    container.appendChild(nodeEl);
+
+                    const childrenWrap = document.createElement('div');
+                    childrenWrap.className = 'tree-children';
+                    if (isExpanded) childrenWrap.classList.add('open');
+                    if (hasChild) {
+                        this.buildNodes(node.children, childrenWrap);
+                    }
+                    container.appendChild(childrenWrap);
+                }
+            }
+
+            syncCheckboxState(checkbox, node) {
+                if (node.disabled) {
+                    checkbox.checked = false;
+                    checkbox.indeterminate = false;
+                    return;
+                }
+                if (!node.children || node.children.length === 0) {
+                    checkbox.checked = !!this.checkedMap[node.id];
+                    checkbox.indeterminate = false;
+                } else {
+                    const status = this.getChildCheckStatus(node.children);
+                    if (status.allChecked) {
+                        checkbox.checked = true;
+                        checkbox.indeterminate = false;
+                    } else if (status.noneChecked) {
+                        checkbox.checked = false;
+                        checkbox.indeterminate = false;
+                    } else {
+                        checkbox.checked = false;
+                        checkbox.indeterminate = true;
+                    }
+                }
+            }
+
+            updateAllCheckboxVisual() {
+                const checkboxes = this.container.querySelectorAll('.checkbox');
+                checkboxes.forEach(cb => {
+                    const id = Number(cb.dataset.id);
+                    const node = this.findNodeById(this.originData, id);
+                    if (node) this.syncCheckboxState(cb, node);
+                });
+            }
+
+            bindEvents() {
+                const panel = this.container.querySelector('.tree-panel');
+                const list = this.container.querySelector('.tree-list');
+                const searchInput = this.container.querySelector('.tree-search .speed-input');
+                const opt = this.options;
+
+                if (opt.isDropdown) {
+                    const input = this.container.querySelector('.tree-input');
+                    input.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        document.querySelectorAll('.tree-dropdown .tree-panel.show').forEach(p => {
+                            if (p !== panel) p.classList.remove('show');
+                        });
+                        panel.classList.toggle('show');
+                    });
+                }
+
+                // 🔥 修复：点击展开/折叠图标时阻止事件冒泡，避免关闭下拉面板
+                list.addEventListener('click', (e) => {
+                    const isToggle = e.target.classList.contains('toggle');
+                    if (isToggle) {
+                        e.stopPropagation(); // 关键修复：阻止事件冒泡到外层
+                    }
+
+                    if (e.target.classList.contains('checkbox')) return;
+
+                    const nodeEl = e.target.closest('.tree-node');
+                    if (!nodeEl) return;
+
+                    const id = Number(nodeEl.dataset.id);
+                    const node = this.findNodeById(this.originData, id);
+                    if (!node || node.disabled) return;
+
+                    const hasChild = node.children && node.children.length > 0;
+
+                    if (opt.expandable && isToggle && hasChild) {
+                        if (this.expandedIds.has(id)) {
+                            this.expandedIds.delete(id);
+                        } else {
+                            this.expandedIds.add(id);
+                        }
+                        this.render();
+                        const childrenWrap = nodeEl.nextElementSibling;
+                        if (childrenWrap && childrenWrap.classList.contains('tree-children')) {
+                            childrenWrap.classList.toggle('open');
+                            const toggleEl = nodeEl.querySelector('.toggle');
+                            if (toggleEl) {
+                                toggleEl.textContent = childrenWrap.classList.contains('open') ? '−' : '+';
+                            }
+                        }
+                        return;
+                    }
+
+                    if (opt.singleSelect) {
+                        if (opt.onlyLeafValue && hasChild) return;
+                        this.selectedId = id;
+                        this.updateInputValue();
+                        list.querySelectorAll('.tree-node').forEach(el => el.classList.remove('active'));
+                        nodeEl.classList.add('active');
+                        if (opt.customEvent && opt.onNodeClick) opt.onNodeClick(node);
+                        if (opt.isDropdown) panel.classList.remove('show');
+                        return;
+                    }
+
+                    if (!opt.singleSelect && opt.showCheckbox) {
+                        const checkbox = nodeEl.querySelector('.checkbox');
+                        if (checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                            this.handleCheckboxChange(id, checkbox.checked);
+                        }
+                    }
+                });
+
+                if (opt.showCheckbox && !opt.singleSelect) {
+                    list.addEventListener('change', (e) => {
+                        if (!e.target.classList.contains('checkbox')) return;
+                        const id = Number(e.target.dataset.id);
+                        const checked = e.target.checked;
+                        const node = this.findNodeById(this.originData, id);
+                        if (node?.disabled) {
+                            e.target.checked = !checked;
+                            return;
+                        }
+                        this.handleCheckboxChange(id, checked);
+                    });
+                }
+
+                if (opt.searchable && searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        const key = e.target.value.trim().toLowerCase();
+                        this.filterTree(key);
+                    });
+                }
+
+                if (opt.draggable) this.bindDrag(list);
+            }
+
+            handleCheckboxChange(id, checked) {
+                this.checkedMap[id] = checked;
+
+                if (this.options.checkChildren) {
+                    this.setChildCheckedRecursive(id, checked);
+                }
+
+                this.refreshAllParentStatus(id);
+                this.updateAllCheckboxVisual();
+                this.updateInputValue();
+
+                if (this.options.customEvent && this.options.onCheckChange) {
+                    this.options.onCheckChange(this.getCheckedNodes());
+                }
+            }
+
+            setChildCheckedRecursive(pid, checked) {
+                const node = this.findNodeById(this.originData, pid);
+                if (!node?.children) return;
+                const loop = (nodes) => {
+                    for (const c of nodes) {
+                        if (c.disabled) continue;
+                        this.checkedMap[c.id] = checked;
+                        if (c.children) loop(c.children);
+                    }
+                };
+                loop(node.children);
+            }
+
+            refreshAllParentStatus(nodeId) {
+                const parent = this.findParentById(this.originData, nodeId);
+                if (!parent) return;
+                this.updateNodeCheckStatus(parent.id);
+                this.refreshAllParentStatus(parent.id);
+            }
+
+            updateNodeCheckStatus(nodeId) {
+                const node = this.findNodeById(this.originData, nodeId);
+                if (!node || !node.children?.length) return;
+                const status = this.getChildCheckStatus(node.children);
+                this.checkedMap[nodeId] = status.allChecked;
+            }
+
+            getChildCheckStatus(children) {
+                let total = 0, checked = 0;
+                const loop = (nodes) => {
+                    for (const n of nodes) {
+                        if (n.disabled) continue;
+                        total++;
+                        if (this.checkedMap[n.id]) checked++;
+                        if (n.children) loop(n.children);
+                    }
+                };
+                loop(children);
+                return {
+                    allChecked: total > 0 && total === checked,
+                    noneChecked: checked === 0
+                };
+            }
+
+            filterTree(keyword) {
+                this.searchKeyword = keyword;
+
+                if (!keyword) {
+                    this.displayData = this.deepClone(this.originData);
+                    if (this.preSearchExpandedIds !== null) {
+                        this.expandedIds = new Set(this.preSearchExpandedIds);
+                        this.preSearchExpandedIds = null;
+                    }
+                } else {
+                    if (this.preSearchExpandedIds === null) {
+                        this.preSearchExpandedIds = new Set(this.expandedIds);
+                    }
+
+                    const expandIds = new Set();
+                    const filter = (nodes) => {
+                        const res = [];
+                        for (const n of nodes) {
+                            const childRes = n.children ? filter(n.children) : [];
+                            const match = n.label.toLowerCase().includes(keyword);
+                            if (match || childRes.length > 0) {
+                                res.push({ ...n, children: childRes });
+                                if (childRes.length > 0) {
+                                    expandIds.add(n.id);
+                                }
+                            }
+                        }
+                        return res;
+                    };
+
+                    this.displayData = filter(this.originData);
+                    this.expandedIds = expandIds;
+                }
+
+                this.render();
+            }
+
+            updateInputValue() {
+                const opt = this.options;
+                const input = this.container.querySelector('.tree-input');
+                if (!input) return;
+
+                if (opt.singleSelect) {
+                    const node = this.findNodeById(this.originData, this.selectedId);
+                    input.value = node ? node.label : '';
+                } else {
+                    const checkedNodes = this.getCheckedNodes();
+                    input.value = checkedNodes.map(n => n.label).join('，');
+                }
+            }
+
+            getLeafNodes(nodes) {
+                let leaves = [];
+                const traverse = (items) => {
+                    for (const item of items) {
+                        if (!item.children || item.children.length === 0) {
+                            leaves.push(item);
+                        } else {
+                            traverse(item.children);
+                        }
+                    }
+                };
+                traverse(nodes);
+                return leaves;
+            }
+
+            getCheckedNodes() {
+                if (this.options.onlyLeafValue) {
+                    const allLeafNodes = this.getLeafNodes(this.originData);
+                    return allLeafNodes.filter(node => this.checkedMap[node.id] && !node.disabled);
+                }
+
+                const arr = [];
+                const find = (nodes) => {
+                    for (const n of nodes) {
+                        if (this.checkedMap[n.id] && !n.disabled) arr.push(n);
+                        if (n.children) find(n.children);
+                    }
+                };
+                find(this.originData);
+                return arr;
+            }
+
+            getCheckedIds() {
+                return this.getCheckedNodes().map(n => n.id);
+            }
+
+            findNodeById(nodes, id) {
+                for (const n of nodes) {
+                    if (n.id === id) return n;
+                    if (n.children) {
+                        const r = this.findNodeById(n.children, id);
+                        if (r) return r;
+                    }
+                }
+                return null;
+            }
+
+            findParentById(nodes, childId, parent = null) {
+                for (const node of nodes) {
+                    if (node.id === childId) return parent;
+                    if (node.children) {
+                        const found = this.findParentById(node.children, childId, node);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            }
+
+            findNodeWithParent(nodes, id, parent = null) {
+                for (const item of nodes) {
+                    if (item.id === id) return { node: item, parent };
+                    if (item.children) {
+                        const r = this.findNodeWithParent(item.children, id, item);
+                        if (r.node) return r;
+                    }
+                }
+                return { node: null, parent: null };
+            }
+
+            isDescendant(targetId, nodeId) {
+                if (targetId === nodeId) return true;
+                const node = this.findNodeById(this.originData, nodeId);
+                if (!node || !node.children) return false;
+                for (const child of node.children) {
+                    if (this.isDescendant(targetId, child.id)) return true;
+                }
+                return false;
+            }
+
+            moveToRoot(dragId) {
+                const { node, parent } = this.findNodeWithParent(this.originData, dragId);
+                if (!node) return;
+                if (parent) parent.children = parent.children.filter(i => i.id !== dragId);
+                else this.originData = this.originData.filter(i => i.id !== dragId);
+                this.originData.push(node);
+            }
+
+            moveNodeTo(dragId, parentId) {
+                const { node, parent } = this.findNodeWithParent(this.originData, dragId);
+                if (!node) return;
+                if (parent) parent.children = parent.children.filter(i => i.id !== dragId);
+                else this.originData = this.originData.filter(i => i.id !== dragId);
+                const newParent = this.findNodeById(this.originData, parentId);
+                if (newParent) {
+                    if (!newParent.children) newParent.children = [];
+                    newParent.children.unshift(node);
+                }
+            }
+
+            bindDrag(list) {
+                let draggingNode = null;
+                const placeholder = document.createElement('div');
+                placeholder.className = 'drop-placeholder';
+                const dropToRoot = list.querySelector('.drop-to-root');
+
+                list.addEventListener('dragstart', (e) => {
+                    const el = e.target.closest('.tree-node');
+                    if (!el || el.classList.contains('disabled')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    draggingNode = el;
+                    this.draggingId = Number(el.dataset.id);
+                    el.classList.add('dragging');
+                    if (dropToRoot) dropToRoot.classList.add('show');
+                });
+
+                list.addEventListener('dragend', () => {
+                    if (draggingNode) draggingNode.classList.remove('dragging');
+                    placeholder.remove();
+                    if (dropToRoot) dropToRoot.classList.remove('show', 'active');
+                    draggingNode = null;
+                    this.draggingId = null;
+                });
+
+                list.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+
+                    if (dropToRoot && e.target.closest('.drop-to-root')) {
+                        dropToRoot.classList.add('active');
+                        return;
+                    }
+                    if (dropToRoot) dropToRoot.classList.remove('active');
+
+                    const targetEl = e.target.closest('.tree-node');
+                    if (!targetEl || targetEl === draggingNode) return;
+                    if (targetEl.classList.contains('disabled')) return;
+
+                    const dragId = Number(draggingNode.dataset.id);
+                    const targetId = Number(targetEl.dataset.id);
+                    if (this.isDescendant(targetId, dragId)) return;
+
+                    const childrenWrap = targetEl.nextElementSibling;
+                    if (childrenWrap) {
+                        childrenWrap.classList.add('open');
+                        childrenWrap.prepend(placeholder);
+                    }
+                });
+
+                list.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (!draggingNode) return;
+
+                    const dragId = Number(draggingNode.dataset.id);
+
+                    if (dropToRoot && e.target.closest('.drop-to-root')) {
+                        this.moveToRoot(dragId);
+                        this.displayData = this.deepClone(this.originData);
+                        this.render();
+                        if (this.options.customEvent && this.options.onDrop) {
+                            this.options.onDrop(this.originData);
+                        }
+                        return;
+                    }
+
+                    const targetEl = placeholder.closest('.tree-children')?.previousElementSibling;
+                    if (!targetEl) return;
+
+                    const parentId = Number(targetEl.dataset.id);
+                    if (this.isDescendant(parentId, dragId)) return;
+
+                    this.expandedIds.add(parentId);
+                    this.moveNodeTo(dragId, parentId);
+                    this.displayData = this.deepClone(this.originData);
+                    this.render();
+
+                    if (this.options.customEvent && this.options.onDrop) {
+                        this.options.onDrop(this.originData);
+                    }
+                });
+            }
+        }
+
+        let tree1, tree2;
+        const editor = document.getElementById('treeDataEditor');
+        editor.value = JSON.stringify(defaultTreeData, null, 2);
+
+        function getConfig() {
+            return {
+                isDropdown: document.getElementById('isDropdown').checked,
+                showCheckbox: document.getElementById('showCheckbox').checked,
+                checkChildren: document.getElementById('checkChildren').checked,
+                draggable: document.getElementById('draggable').checked,
+                searchable: document.getElementById('searchable').checked,
+                expandable: document.getElementById('expandable').checked,
+                singleSelect: document.getElementById('singleSelect').checked,
+                onlyLeafValue: document.getElementById('onlyLeafValue').checked,
+                customEvent: true
+            };
+        }
+
+        function refreshTree() {
+            let data;
+            try {
+                data = JSON.parse(editor.value);
+            } catch (err) {
+                alert('JSON 格式错误！');
+                return;
+            }
+            const config = getConfig();
+            document.getElementById('dropdownTree').innerHTML = '';
+            document.getElementById('staticTree').innerHTML = '';
+            tree1 = new TreeComponent('#dropdownTree', data, { ...config, isDropdown: true });
+            tree2 = new TreeComponent('#staticTree', data, { ...config, isDropdown: false });
+        }
+
+        function getCheckedValue() {
+            const nodes = tree2.getCheckedNodes();
+            alert('选中的叶子节点：\n' + JSON.stringify(nodes.map(n => n.label), null, 2));
+        }
+
+        document.querySelectorAll('.config-item input').forEach(item => {
+            item.addEventListener('change', refreshTree);
+        });
+
+        document.getElementById('refreshBtn').onclick = refreshTree;
+        document.getElementById('getValueBtn').onclick = getCheckedValue;
+
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.tree-dropdown').forEach(dropdown => {
+                if (!dropdown.contains(e.target)) {
+                    const panel = dropdown.querySelector('.tree-panel');
+                    if (panel) panel.classList.remove('show');
+                }
+            });
+        });
+
+        // 初始化图标
+        lucide.createIcons();
+
+        refreshTree();
+    </script>
+</body>
+
+</html>

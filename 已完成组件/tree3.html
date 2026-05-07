@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>企业级增强配置化树形组件（可视化配置版）</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { padding: 30px; max-width: 1200px; margin: 0 auto; }
+    h3 { margin: 20px 0 10px; color: #333; border-left: 4px solid #409eff; padding-left: 10px; }
+    h4 { margin: 15px 0 8px; color: #555; }
+
+    .config-panel {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #f9f9f9;
+    }
+    .config-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    .config-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .config-item label {
+      font-size: 14px;
+      color: #333;
+    }
+    .data-editor {
+      width: 100%;
+      height: 220px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 13px;
+      resize: vertical;
+    }
+    .btn {
+      padding: 6px 14px;
+      background: #409eff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover { background: #338eef; }
+
+    .tree-dropdown { position: relative; width: 350px; margin-bottom: 20px; }
+    .tree-input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; outline: none; cursor: pointer; }
+    .tree-input:focus { border-color: #409eff; }
+    .tree-panel { position: absolute; top: 100%; left: 0; width: 100%; max-height: 300px; background: #fff; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px; overflow-y: auto; display: none; z-index: 999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .tree-panel.show { display: block; }
+    .tree-search {z-index:9; padding: 8px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; }
+    .tree-search input { width: 100%; padding: 6px 8px; border: 1px solid #eee; border-radius: 3px; outline: none; }
+    .tree-search input:focus { border-color: #409eff; }
+    .tree-list { padding: 8px; position: relative; min-height: 20px; }
+    .tree-node { padding: 10px 6px; cursor: pointer; border-radius: 3px; user-select: none; display: flex; align-items: center; }
+    .tree-node:hover { background-color: #f5f7fa; }
+    .tree-node.active { background-color: #e8f3ff; color: #409eff; }
+    .tree-node .checkbox { margin-right: 4px; width: 14px; height: 14px; cursor: pointer; }
+    .tree-node .toggle { display: inline-block; width: 16px; text-align: center; color: #666; font-size: 12px; }
+    .tree-node .label { margin-left: 4px; display: flex; align-items: center; gap: 4px; }
+    .tree-node .icon { width: 16px; height: 16px; object-fit: contain; }
+    .tree-node.disabled { opacity: 0.5; cursor: not-allowed; background: #f7f7f7; }
+    .tree-node.disabled * { pointer-events: none; }
+    .tree-children { padding-left: 20px; display: none; }
+    .tree-children.open { display: block; }
+    .tree-node.dragging { opacity: 0.5; background: #e6f7ff; }
+    .drop-placeholder { height: 4px; background: #007bff; margin: 6px 0; border-radius: 2px; }
+    
+    .drop-to-root {
+      height: 36px;
+      margin: 8px 0;
+      border: 2px dashed #007bff;
+      border-radius: 6px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #007bff;
+      font-size: 12px;
+      background: rgba(0,123,255,0.05);
+    }
+    .drop-to-root.show { display: flex; }
+    .drop-to-root.active { background: rgba(0,123,255,0.15); }
+
+    .tree-static { width: 350px; border: 1px solid #ddd; border-radius: 4px; }
+    .tree-static .tree-panel { position: static !important; display: block !important; max-height: none !important; border: none !important; box-shadow: none !important; }
+
+    .demo-box {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h3>📋 可视化配置面板（客户直接操作）</h3>
+<div class="config-panel">
+  <h4>⚙️ 功能开关 —— 点击立即生效</h4>
+  <div class="config-row">
+    <div class="config-item"><label><input type="checkbox" id="isDropdown"> 下拉模式</label></div>
+    <div class="config-item"><label><input type="checkbox" id="showCheckbox" checked> 显示复选框</label></div>
+    <div class="config-item"><label><input type="checkbox" id="checkChildren" checked> 勾选父节点自动勾选子节点</label></div>
+    <div class="config-item"><label><input type="checkbox" id="draggable"> 允许节点拖拽</label></div>
+    <div class="config-item"><label><input type="checkbox" id="searchable" checked> 显示搜索框</label></div>
+    <div class="config-item"><label><input type="checkbox" id="expandable" checked> 允许展开折叠</label></div>
+    <div class="config-item"><label><input type="checkbox" id="singleSelect"> 单选模式</label></div>
+    <div class="config-item"><label><input type="checkbox" id="onlyLeafValue" checked> 【核心】只提交叶子节点值</label></div>
+  </div>
+
+  <h4>📝 树数据编辑（直接修改 JSON）</h4>
+  <textarea id="treeDataEditor" class="data-editor"></textarea>
+  <div style="margin-top:10px;">
+    <button class="btn" id="refreshBtn">🔄 刷新树组件</button>
+    <button class="btn" id="getValueBtn">📄 获取选中值（仅叶子节点）</button>
+  </div>
+</div>
+
+<div class="demo-box">
+  <div>
+    <h3>模式1：下拉树形</h3>
+    <div id="dropdownTree" class="tree-dropdown"></div>
+  </div>
+  <div>
+    <h3>模式2：直展树形</h3>
+    <div id="staticTree" class="tree-static"></div>
+  </div>
+</div>
+
+<script>
+const defaultTreeData = [
+  { id: 1, label: '前端技术', disabled: false, icon: '📦', children: [
+      { id: 11, label: 'HTML/CSS', disabled: false, icon: '📄' },
+      { id: 12, label: 'JavaScript', disabled: false, icon: '🚀', children: [
+          { id: 121, label: 'ES6+', icon: '🔥' },
+          { id: 122, label: 'TypeScript', icon: '🔷' }
+        ]
+      }
+    ]
+  },
+  { id: 2, label: '后端技术', disabled: false, icon: '⚙️', children: [
+      { id: 21, label: 'Java', icon: '☕' },
+      { id: 22, label: 'Node.js', icon: '🟢' }
+    ]
+  }
+];
+
+class TreeComponent {
+  constructor(selector, data, options = {}) {
+    this.container = document.querySelector(selector);
+    this.originData = JSON.parse(JSON.stringify(data));
+    this.treeData = JSON.parse(JSON.stringify(data));
+    this.checkedMap = {};
+    this.expandedIds = new Set();
+    this.selectedId = null;
+
+    this.options = {
+      isDropdown: false,
+      showCheckbox: false,
+      checkChildren: false,
+      draggable: false,
+      searchable: false,
+      expandable: true,
+      customEvent: false,
+      singleSelect: false,
+      onlyLeafValue: true,
+      onNodeClick: null,
+      onCheckChange: null,
+      onDrop: null,
+      ...options
+    };
+    this.render();
+  }
+
+  render() {
+    const wasShow = this.options.isDropdown ? this.container.querySelector('.tree-panel')?.classList.contains('show') : false;
+    this.container.innerHTML = '';
+    const opt = this.options;
+
+    if (opt.isDropdown) {
+      const input = document.createElement('input');
+      input.className = 'tree-input';
+      input.placeholder = '请选择';
+      input.readOnly = true;
+      this.container.appendChild(input);
+    }
+
+    const panel = document.createElement('div');
+    panel.className = 'tree-panel';
+    if (opt.searchable) {
+      const search = document.createElement('div');
+      search.className = 'tree-search';
+      search.innerHTML = '<input type="text" placeholder="搜索节点">';
+      panel.appendChild(search);
+    }
+    const list = document.createElement('div');
+    list.className = 'tree-list';
+    list.innerHTML = this.createTreeHtml(this.treeData);
+
+    const dropToRoot = document.createElement('div');
+    dropToRoot.className = 'drop-to-root';
+    dropToRoot.innerText = '释放到最外层';
+    list.appendChild(dropToRoot);
+
+    panel.appendChild(list);
+    this.container.appendChild(panel);
+
+    if (!opt.isDropdown) panel.classList.add('show');
+    if (opt.isDropdown && wasShow) panel.classList.add('show');
+    
+    this.bindEvents();
+    this.updateAllCheckStatus();
+  }
+
+  createTreeHtml(nodes) {
+    const opt = this.options;
+    let html = '';
+    nodes.forEach(node => {
+      const hasChild = node.children?.length;
+      const isExpanded = this.expandedIds.has(node.id);
+      const isDisabled = node.disabled === true;
+
+      const checkbox = opt.showCheckbox && !opt.singleSelect
+        ? `<input type="checkbox" class="checkbox" data-id="${node.id}">`
+        : '';
+
+      const iconHtml = node.icon ? `<span class="icon">${node.icon}</span>` : '';
+
+      html += `
+        <div class="tree-node ${isDisabled ? 'disabled' : ''}" 
+             ${opt.draggable ? 'draggable="true"' : ''} data-id="${node.id}">
+          ${checkbox}
+          <span class="toggle">${hasChild ? (isExpanded ? '-' : '+') : ''}</span>
+          <span class="label">${iconHtml}${node.label}</span>
+        </div>
+      `;
+      html += `<div class="tree-children ${isExpanded ? 'open' : ''}">${this.createTreeHtml(node.children || [])}</div>`;
+    });
+    return html;
+  }
+
+  setValueToTarget() {
+    const opt = this.options;
+    const input = this.container.querySelector('.tree-input');
+    if (!input) return;
+
+    if (opt.singleSelect) {
+      const node = this.findNodeById(this.originData, this.selectedId);
+      input.value = node ? node.label : '';
+    } else {
+      const checkedNodes = this.getCheckedNodes();
+      input.value = checkedNodes.map(n => n.label).join('，');
+    }
+  }
+
+  getLeafNodes(nodes) {
+    let leaves = [];
+    const traverse = (items) => {
+      items.forEach(item => {
+        if (!item.children || item.children.length === 0) {
+          leaves.push(item);
+        } else {
+          traverse(item.children);
+        }
+      });
+    };
+    traverse(nodes);
+    return leaves;
+  }
+
+  getCheckedNodes() {
+    if (this.options.onlyLeafValue) {
+      const allLeafNodes = this.getLeafNodes(this.originData);
+      return allLeafNodes.filter(node => this.checkedMap[node.id] && !node.disabled);
+    }
+
+    const arr = [];
+    const find = (nodes) => {
+      nodes.forEach(n => {
+        if (this.checkedMap[n.id] && !n.disabled) arr.push(n);
+        if (n.children) find(n.children);
+      });
+    };
+    find(this.originData);
+    return arr;
+  }
+
+  bindEvents() {
+    const panel = this.container.querySelector('.tree-panel');
+    const list = this.container.querySelector('.tree-list');
+    const searchInput = this.container.querySelector('.tree-search input');
+    const opt = this.options;
+
+    if (opt.isDropdown) {
+      const input = this.container.querySelector('.tree-input');
+      input.onclick = (e) => { e.stopPropagation(); panel.classList.toggle('show'); };
+      panel.onclick = (e) => e.stopPropagation();
+      document.onclick = () => panel.classList.remove('show');
+    }
+
+    // 🔥 修复：change 事件优先绑定，确保原生状态变更优先触发
+    if (opt.showCheckbox && !opt.singleSelect) {
+      list.addEventListener('change', (e) => {
+        if (!e.target.classList.contains('checkbox')) return;
+        const id = Number(e.target.dataset.id);
+        const checked = e.target.checked;
+        const node = this.findNodeById(this.originData, id);
+        if (node?.disabled) return;
+        
+        this.checkedMap[id] = checked;
+        // 🔥 修复：递归强制更新所有子节点，无论层级多深
+        this.setChildCheckedRecursive(id, checked);
+        // 🔥 修复：取消时，递归向上更新所有父节点状态
+        this.refreshAllParentStatus(id);
+        this.updateAllCheckStatus();
+        this.setValueToTarget();
+
+        if (opt.customEvent && opt.onCheckChange) {
+          opt.onCheckChange(this.getCheckedNodes());
+        }
+      });
+    }
+
+    list.addEventListener('click', (e) => {
+      // 🔥 关键修复：点击 checkbox 时直接 return，不干扰原生行为
+      if (e.target.classList.contains('checkbox')) return;
+
+      const nodeEl = e.target.closest('.tree-node');
+      if (!nodeEl) return;
+      const id = Number(nodeEl.dataset.id);
+      const childEl = nodeEl.nextElementSibling;
+      const isToggle = e.target.classList.contains('toggle');
+      const node = this.findNodeById(this.originData, id);
+      if (node?.disabled) return;
+
+      if (opt.expandable && isToggle && childEl) {
+        this.expandedIds.has(id) ? this.expandedIds.delete(id) : this.expandedIds.add(id);
+        childEl.classList.toggle('open');
+        nodeEl.querySelector('.toggle').textContent = childEl.classList.contains('open') ? '-' : '+';
+        return;
+      }
+
+      if (opt.singleSelect) {
+        if (opt.onlyLeafValue && node.children && node.children.length > 0) return;
+        this.selectedId = id;
+        this.container.querySelectorAll('.tree-node').forEach(el => el.classList.remove('active'));
+        nodeEl.classList.add('active');
+        this.setValueToTarget();
+        if (opt.customEvent && opt.onNodeClick) opt.onNodeClick(node);
+        return;
+      }
+
+      // 🔥 修复：点击 label 也能触发 checkbox 切换
+      if (!opt.singleSelect && opt.showCheckbox) {
+        const checkbox = nodeEl.querySelector('.checkbox');
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change'));
+        }
+      }
+    });
+
+    if (opt.searchable && searchInput) {
+      searchInput.oninput = (e) => {
+        const key = e.target.value.trim().toLowerCase();
+        this.filterTree(key);
+      };
+    }
+
+    if (opt.draggable) this.bindDrag(list);
+  }
+
+  // 🔥 修复：递归强制更新所有子节点，确保取消父节点时所有子节点必取消
+  setChildCheckedRecursive(pid, checked) {
+    const node = this.findNodeById(this.originData, pid);
+    if (!node?.children) return;
+    const loop = (nodes) => {
+      nodes.forEach(c => {
+        if (c.disabled) return;
+        this.checkedMap[c.id] = checked;
+        if (c.children) loop(c.children);
+      });
+    };
+    loop(node.children);
+  }
+
+  bindDrag(list) {
+    let draggingNode = null;
+    let placeholder = document.createElement('div');
+    placeholder.className = 'drop-placeholder';
+    const dropToRoot = list.querySelector('.drop-to-root');
+
+    list.addEventListener('dragstart', (e) => {
+      const el = e.target.closest('.tree-node');
+      if (!el || el.classList.contains('disabled')) { e.preventDefault(); return; }
+      draggingNode = el;
+      el.classList.add('dragging');
+      if (dropToRoot) dropToRoot.classList.add('show');
+    });
+
+    list.addEventListener('dragend', () => {
+      if (draggingNode) draggingNode.classList.remove('dragging');
+      placeholder.remove();
+      if (dropToRoot) dropToRoot.classList.remove('show', 'active');
+      draggingNode = null;
+    });
+
+    list.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (dropToRoot && e.target.closest('.drop-to-root')) {
+        dropToRoot.classList.add('active');
+        return;
+      }
+      const targetEl = e.target.closest('.tree-node');
+      if (!targetEl || targetEl === draggingNode) return;
+      if (targetEl.classList.contains('disabled')) return;
+      const dragId = +draggingNode.dataset.id;
+      const targetId = +targetEl.dataset.id;
+      if (this.isDescendant(targetId, dragId)) return;
+      const childrenWrap = targetEl.nextElementSibling;
+      if (childrenWrap) {
+        childrenWrap.classList.add('open');
+        childrenWrap.prepend(placeholder);
+      }
+    });
+
+    list.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (!draggingNode) return;
+      const dragId = +draggingNode.dataset.id;
+      if (dropToRoot && e.target.closest('.drop-to-root')) {
+        this.moveToRoot(dragId);
+        this.treeData = JSON.parse(JSON.stringify(this.originData));
+        this.render();
+        return;
+      }
+      const targetEl = placeholder.closest('.tree-children')?.previousElementSibling;
+      if (!targetEl) return;
+      const parentId = +targetEl.dataset.id;
+      if (this.isDescendant(parentId, dragId)) return;
+      this.expandedIds.add(parentId);
+      this.moveNodeTo(dragId, parentId);
+      this.treeData = JSON.parse(JSON.stringify(this.originData));
+      this.render();
+    });
+  }
+
+  moveToRoot(dragId) {
+    const { node, parent } = this.findNodeWithParent(this.originData, dragId);
+    if (!node) return;
+    if (parent) parent.children = parent.children.filter(i => i.id !== dragId);
+    this.originData.push(node);
+  }
+
+  isDescendant(targetId, nodeId) {
+    if (targetId === nodeId) return true;
+    const node = this.findNodeById(this.originData, nodeId);
+    if (!node || !node.children) return false;
+    for (const child of node.children) {
+      if (this.isDescendant(targetId, child.id)) return true;
+    }
+    return false;
+  }
+
+  moveNodeTo(dragId, parentId) {
+    const { node, parent } = this.findNodeWithParent(this.originData, dragId);
+    if (!node) return;
+    if (parent) parent.children = parent.children.filter(i => i.id !== dragId);
+    else this.originData = this.originData.filter(i => i.id !== dragId);
+    const newParent = this.findNodeById(this.originData, parentId);
+    if (newParent) {
+      if (!newParent.children) newParent.children = [];
+      newParent.children.unshift(node);
+    }
+  }
+
+  findNodeWithParent(nodes, id, parent = null) {
+    for (const item of nodes) {
+      if (item.id === id) return { node: item, parent };
+      if (item.children) {
+        const r = this.findNodeWithParent(item.children, id, item);
+        if (r.node) return r;
+      }
+    }
+    return { node: null, parent: null };
+  }
+
+  getCheckedIds() {
+    return this.getCheckedNodes().map(n => n.id);
+  }
+
+  getChildCheckStatus(children) {
+    let total = 0, checked = 0;
+    const loop = (nodes) => {
+      nodes.forEach(n => {
+        if (n.disabled) return;
+        total++;
+        if (this.checkedMap[n.id]) checked++;
+        if (n.children) loop(n.children);
+      });
+    };
+    loop(children);
+    return { allChecked: total === checked && total > 0, noneChecked: checked === 0 };
+  }
+
+  refreshAllParentStatus(nodeId) {
+    const parent = this.findParentById(this.originData, nodeId);
+    if (!parent) return;
+    this.updateNodeCheckStatus(parent.id);
+    this.refreshAllParentStatus(parent.id);
+  }
+
+  updateNodeCheckStatus(nodeId) {
+    const node = this.findNodeById(this.originData, nodeId);
+    if (!node || !node.children?.length) return;
+    const status = this.getChildCheckStatus(node.children);
+    this.checkedMap[nodeId] = status.allChecked;
+  }
+
+  findParentById(nodes, childId, parent = null) {
+    for (const node of nodes) {
+      if (node.id === childId) return parent;
+      if (node.children) {
+        const found = this.findParentById(node.children, childId, node);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  updateAllCheckStatus() {
+    const checkboxes = this.container.querySelectorAll('.checkbox');
+    checkboxes.forEach(cb => {
+      const id = Number(cb.dataset.id);
+      const node = this.findNodeById(this.originData, id);
+      if (!node) return;
+
+      if (!node.children || node.children.length === 0) {
+        cb.checked = !!this.checkedMap[id] && !node.disabled;
+        cb.indeterminate = false;
+      } else {
+        const status = this.getChildCheckStatus(node.children);
+        if (status.allChecked) { cb.checked = true; cb.indeterminate = false; }
+        else if (status.noneChecked) { cb.checked = false; cb.indeterminate = false; }
+        else { cb.checked = false; cb.indeterminate = true; }
+      }
+    });
+  }
+
+  filterTree(keyword) {
+    if (!keyword) {
+      this.treeData = JSON.parse(JSON.stringify(this.originData));
+      this.container.querySelector('.tree-list').innerHTML = this.createTreeHtml(this.treeData);
+      this.updateAllCheckStatus();
+      this.setValueToTarget();
+      return;
+    }
+    const findMatch = (nodes) => {
+      let res = [];
+      nodes.forEach(n => {
+        const match = n.label.toLowerCase().includes(keyword);
+        const children = n.children ? findMatch(n.children) : [];
+        if (match || children.length) res.push({ ...n, children });
+      });
+      return res;
+    };
+    this.treeData = findMatch(this.originData);
+    this.container.querySelector('.tree-list').innerHTML = this.createTreeHtml(this.treeData);
+    this.container.querySelectorAll('.tree-children').forEach(el => el.classList.add('open'));
+    this.updateAllCheckStatus();
+    this.setValueToTarget();
+  }
+
+  findNodeById(nodes, id) {
+    for (const n of nodes) {
+      if (n.id === id) return n;
+      if (n.children) {
+        const r = this.findNodeById(n.children, id);
+        if (r) return r;
+      }
+    }
+    return null;
+  }
+}
+
+let tree1, tree2;
+const editor = document.getElementById('treeDataEditor');
+editor.value = JSON.stringify(defaultTreeData, null, 2);
+
+function getConfig() {
+  return {
+    isDropdown: document.getElementById('isDropdown').checked,
+    showCheckbox: document.getElementById('showCheckbox').checked,
+    checkChildren: document.getElementById('checkChildren').checked,
+    draggable: document.getElementById('draggable').checked,
+    searchable: document.getElementById('searchable').checked,
+    expandable: document.getElementById('expandable').checked,
+    singleSelect: document.getElementById('singleSelect').checked,
+    onlyLeafValue: document.getElementById('onlyLeafValue').checked,
+    customEvent: true
+  };
+}
+
+function refreshTree() {
+  let data;
+  try {
+    data = JSON.parse(editor.value);
+  } catch (err) {
+    alert('JSON 格式错误！');
+    return;
+  }
+  const config = getConfig();
+  document.getElementById('dropdownTree').innerHTML = '';
+  document.getElementById('staticTree').innerHTML = '';
+  tree1 = new TreeComponent('#dropdownTree', data, { ...config, isDropdown: true });
+  tree2 = new TreeComponent('#staticTree', data, { ...config, isDropdown: false });
+}
+
+function getCheckedValue() {
+  const nodes = tree2.getCheckedNodes();
+  alert('选中的叶子节点：\n' + JSON.stringify(nodes.map(n => n.label), null, 2));
+}
+
+document.querySelectorAll('.config-item input').forEach(item => {
+  item.addEventListener('change', refreshTree);
+});
+
+document.getElementById('refreshBtn').onclick = refreshTree;
+document.getElementById('getValueBtn').onclick = getCheckedValue;
+
+refreshTree();
+</script>
+</body>
+</html>

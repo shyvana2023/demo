@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>日期时间选择组件（多格式支持）</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    .date-time-picker {
+      display: inline-block;
+      position: relative;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 20px;
+      vertical-align: top;
+    }
+    .picker-trigger {
+      padding: 8px 12px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      width: 260px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #303133;
+      background: #fff;
+    }
+    .picker-trigger:focus {
+      outline: none;
+      border-color: #409eff;
+    }
+    .dropdown-panel {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 6px;
+      background: #fff;
+      border: 1px solid #e4e7ed;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      z-index: 9999;
+      padding: 12px;
+      width: max-content;
+    }
+    .dropdown-panel.hidden {
+      display: none;
+    }
+
+    .time-select-bar {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+    .time-part {
+      padding: 4px 8px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 70px;
+      cursor: pointer;
+      color: #303133;
+      background: #fff;
+    }
+    .time-part:focus {
+      border-color: #409eff;
+      outline: none;
+    }
+
+    .range-picker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: static;
+    }
+    .range-split {
+      color: #666;
+    }
+
+    .calendar-display {
+      width: 240px;
+      background: #fff;
+      padding: 0;
+      font-size: 13px;
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-weight: normal;
+      color: #303133;
+    }
+    .calendar-week {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      text-align: center;
+      font-size: 12px;
+      color: #909399;
+      margin-bottom: 6px;
+    }
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .calendar-day {
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #303133;
+    }
+    .calendar-day:hover {
+      background: #f0f7ff;
+    }
+    .calendar-day.active {
+      background: #409eff !important;
+      color: white !important;
+    }
+    .calendar-day.in-range {
+      background: #e6f7ff !important;
+      color: #409eff !important;
+    }
+    .calendar-day.other-month {
+      color: #c0c4cc;
+    }
+    .calendar-prev, .calendar-next {
+      cursor: pointer;
+      padding: 2px 6px;
+      user-select: none;
+      color: #606266;
+    }
+
+    .unified-range-input {
+      display: flex;
+      align-items: center;
+      width: 360px !important;
+    }
+    .unified-range-input input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      text-align: center;
+      cursor: pointer;
+    }
+    .unified-range-input .split {
+      color: #999;
+      padding: 0 4px;
+    }
+
+    .confirm-bar {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .confirm-bar button {
+      padding: 4px 16px;
+      background: #409eff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* 演示样式 */
+    .demo-box {
+      margin: 20px;
+      padding: 12px;
+      background: #f7f8fa;
+      border-radius: 6px;
+      max-width: 700px;
+    }
+    .demo-box h4 {
+      margin: 0 0 8px;
+      color: #409eff;
+    }
+    .demo-box p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+  </style>
+  <link rel="stylesheet" href="../frosted-glass.css">
+</head>
+<body>
+
+<h3>1. 标准格式：YYYY-MM-DD hh:mm:ss</h3>
+<div id="picker1"></div>
+
+<h3>2. 斜杠格式：YYYY/MM/DD hh:mm</h3>
+<div id="picker2"></div>
+
+<h3>3. 仅日期：YYYY-MM-DD</h3>
+<div id="picker3"></div>
+
+<h3>4. 月日年：MM/DD/YYYY</h3>
+<div id="picker4"></div>
+
+<h3>5. 日期区间（仅天，无时间）</h3>
+<div id="dateRangePicker"></div>
+
+<h3>6. 时间区间（仅时分秒，无日期）</h3>
+<div id="timeRangePicker"></div>
+
+<h3 style="color:#409eff">7. 🔥 完美版：一体化日期区间选择器</h3>
+<div id="unifiedRangePicker"></div>
+
+<!-- DateTimeObj 功能演示区域 -->
+<div class="demo-box">
+  <h4>✅ DateTimeObj 工具类实时演示（选择任意日期即可看到）</h4>
+  <p id="demo1">原始字符串：</p>
+  <p id="demo2">UTC 时间：</p>
+  <p id="demo3">本地日期(localDate)：</p>
+  <p id="demo4">本地时间(localTime)：</p>
+  <p id="demo5">日期时间(localDateTime)：</p>
+  <p id="demo6">HTML标准格式(htmlDate)：</p>
+  <p id="demo7">是否工作日(isWeekday)：</p>
+  <p id="demo8">是否周末(isWeekend)：</p>
+  <p id="demo9">相对现在(rel.toNow())：</p>
+</div>
+
+<script>
+// ==============================================
+// 🔥 完整实现：DateTimeObj 工具类（你要求的全部功能）
+// 支持：时区转换、格式化、相对时间、所有快捷属性
+// ==============================================
+class DateTimeObj {
+  constructor(date) {
+    if (!date) date = new Date();
+    this._date = new Date(date);
+    // 自动转 UTC 存储
+    this.utcTime = this._date.getTime();
+  }
+
+  // ============================================
+  // 静态方法：从字符串解析为 DateTimeObj（自动时区 → UTC）
+  // ============================================
+  static toDateTimeObj(value, format = "auto") {
+    let d;
+    if (format === "auto") {
+      d = new Date(value);
+    } else {
+      d = DateTimeObj.parseByFormat(value, format);
+    }
+    if (isNaN(d.getTime())) throw new Error("日期解析失败");
+    return new DateTimeObj(d);
+  }
+
+  // 简易格式解析
+  static parseByFormat(str, fmt) {
+    const y = str.substr(fmt.indexOf("YYYY"), 4) || new Date().getFullYear();
+    const M = str.substr(fmt.indexOf("MM"), 2) || 1;
+    const D = str.substr(fmt.indexOf("DD"), 2) || 1;
+    const h = str.substr(fmt.indexOf("hh"), 2) || 0;
+    const m = str.substr(fmt.indexOf("mm"), 2) || 0;
+    const s = str.substr(fmt.indexOf("ss"), 2) || 0;
+    return new Date(y, +M - 1, D, h, m, s);
+  }
+
+  // ============================================
+  // 格式化（自动 UTC → 本地时区）
+  // ============================================
+  format(fmt = "YYYY-MM-DD hh:mm:ss") {
+    const d = this._date;
+    const YYYY = d.getFullYear();
+    const MM = String(d.getMonth() + 1).padStart(2, "0");
+    const DD = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mm = String(d.getMinutes()).padStart(2, "0");
+    const ss = String(d.getSeconds()).padStart(2, "0");
+    return fmt
+      .replace(/YYYY/g, YYYY)
+      .replace(/MM/g, MM)
+      .replace(/DD/g, DD)
+      .replace(/hh/g, hh)
+      .replace(/mm/g, mm)
+      .replace(/ss/g, ss);
+  }
+
+  // ============================================
+  // 相对时间工具 rel
+  // ============================================
+  get rel() {
+    const now = Date.now();
+    const diff = now - this.utcTime;
+    const second = 1000;
+    const minute = 60 * second;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    const month = 30 * day;
+    const year = 365 * day;
+
+    return {
+      toNow: () => {
+        if (diff < minute) return "刚刚";
+        if (diff < hour) return `${Math.floor(diff / minute)} 分钟前`;
+        if (diff < day) return `${Math.floor(diff / hour)} 小时前`;
+        if (diff < month) return `${Math.floor(diff / day)} 天前`;
+        if (diff < year) return `${Math.floor(diff / month)} 个月前`;
+        return `${Math.floor(diff / year)} 年前`;
+      }
+    };
+  }
+
+  // ============================================
+  // 快捷属性（你要求的全部）
+  // ============================================
+  get isWeekday() {
+    const day = this._date.getDay();
+    return day >= 1 && day <= 5;
+  }
+
+  get isWeekend() {
+    return !this.isWeekday;
+  }
+
+  get htmlDate() {
+    return this.format("YYYY-MM-DD");
+  }
+
+  get localDate() {
+    return this._date.toLocaleDateString();
+  }
+
+  get localTime() {
+    return this._date.toLocaleTimeString();
+  }
+
+  get localDateTime() {
+    return this._date.toLocaleString();
+  }
+}
+
+// ==============================================
+// 全局面板控制
+// ==============================================
+let activePickerInstance = null;
+function closeAnyPanel() {
+  const all = document.querySelectorAll('.dropdown-panel');
+  all.forEach(p => p.classList.add('hidden'));
+  activePickerInstance = null;
+}
+
+// ==============================================
+// 7号：一体化日期区间选择器
+// ==============================================
+class UnifiedDateRangePicker {
+  constructor(opt) {
+    this.container = opt.container;
+    this.format = opt.format || 'YYYY-MM-DD';
+    this.onChange = opt.onChange || (() => {});
+    this.start = null;
+    this.end = null;
+    this.viewDate = new Date();
+    this.render();
+    this.bindOutside();
+  }
+
+  fmt(d) {
+    if (!d) return '';
+    const dt = new DateTimeObj(d);
+    return dt.format(this.format);
+  }
+
+  isInRange(date) {
+    if (!this.start || !this.end) return false;
+    const time = date.getTime();
+    const s = this.start.getTime();
+    const e = this.end.getTime();
+    return time > s && time < e;
+  }
+
+  render() {
+    this.container.innerHTML = '';
+    const root = document.createElement('div');
+    root.className = 'date-time-picker';
+    this.root = root;
+
+    const inputWrap = document.createElement('div');
+    inputWrap.className = 'picker-trigger unified-range-input';
+    
+    const inpStart = document.createElement('input');
+    inpStart.value = this.fmt(this.start);
+    inpStart.readOnly = true;
+    
+    const split = document.createElement('div');
+    split.className = 'split';
+    split.textContent = ' ~ ';
+    
+    const inpEnd = document.createElement('input');
+    inpEnd.value = this.fmt(this.end);
+    inpEnd.readOnly = true;
+    
+    inputWrap.append(inpStart, split, inpEnd);
+    this.inpStart = inpStart;
+    this.inpEnd = inpEnd;
+
+    const panel = document.createElement('div');
+    panel.className = 'dropdown-panel hidden';
+    this.panel = panel;
+
+    const cal = document.createElement('div');
+    cal.className = 'calendar-display';
+    this.renderCal(cal);
+    panel.append(cal);
+
+    const bar = document.createElement('div');
+    bar.className = 'confirm-bar';
+    const ok = document.createElement('button');
+    ok.textContent = '确定';
+    ok.onclick = (e) => {
+      e.stopPropagation();
+      closeAnyPanel();
+      this.emit();
+    };
+    bar.append(ok);
+    panel.append(bar);
+
+    inputWrap.onclick = (e) => {
+      e.stopPropagation();
+      closeAnyPanel();
+      this.panel.classList.remove('hidden');
+      activePickerInstance = this;
+    };
+
+    panel.onclick = (e) => e.stopPropagation();
+    root.append(inputWrap, panel);
+    this.container.append(root);
+  }
+
+  renderCal(container) {
+    container.innerHTML = '';
+    const y = this.viewDate.getFullYear(), M = this.viewDate.getMonth();
+    const header = document.createElement('div');
+    header.className = 'calendar-header';
+    
+    const prev = document.createElement('span');
+    prev.className = 'calendar-prev';
+    prev.textContent = '<';
+    prev.onclick = (e) => { 
+      e.stopPropagation();
+      this.viewDate.setMonth(this.viewDate.getMonth()-1); 
+      this.renderCal(this.panel.querySelector('.calendar-display'));
+    };
+    
+    const title = document.createElement('span');
+    title.textContent = `${y}-${String(M+1).padStart(2,'0')}`;
+    
+    const next = document.createElement('span');
+    next.className = 'calendar-next';
+    next.textContent = '>';
+    next.onclick = (e) => { 
+      e.stopPropagation();
+      this.viewDate.setMonth(this.viewDate.getMonth()+1); 
+      this.renderCal(this.panel.querySelector('.calendar-display'));
+    };
+    
+    header.append(prev, title, next);
+    
+    const week = document.createElement('div');
+    week.className = 'calendar-week';
+    '日一二三四五六'.split('').forEach(w => {
+      const s = document.createElement('span');
+      s.textContent = w;
+      week.append(s);
+    });
+    
+    const days = document.createElement('div');
+    days.className = 'calendar-days';
+    this.fillDays(days);
+    container.append(header, week, days);
+  }
+
+  fillDays(container) {
+    const y = this.viewDate.getFullYear(), M = this.viewDate.getMonth();
+    const first = new Date(y, M, 1);
+    const last = new Date(y, M+1, 0);
+    const pad = first.getDay();
+    
+    for(let i=0;i<pad;i++) {
+      const d = document.createElement('div');
+      d.className = 'calendar-day other-month';
+      container.append(d);
+    }
+    
+    for(let day=1;day<=last.getDate();day++) {
+      const d = document.createElement('div');
+      d.className = 'calendar-day';
+      d.textContent = day;
+      
+      const cur = new Date(y,M,day);
+      const isStart = this.start && cur.getTime() === this.start.getTime();
+      const isEnd = this.end && cur.getTime() === this.end.getTime();
+      const inRange = this.isInRange(cur);
+      
+      if (isStart || isEnd) d.classList.add('active');
+      if (inRange) d.classList.add('in-range');
+      
+      d.onclick = (e) => {
+        e.stopPropagation();
+        if (!this.start) {
+          this.start = new Date(y,M,day);
+        } else if (!this.end) {
+          this.end = new Date(y,M,day);
+          if (this.end < this.start) [this.start, this.end] = [this.end, this.start];
+        } else {
+          this.start = new Date(y,M,day);
+          this.end = null;
+        }
+        this.inpStart.value = this.fmt(this.start);
+        this.inpEnd.value = this.fmt(this.end);
+        this.renderCal(this.panel.querySelector('.calendar-display'));
+      };
+      container.append(d);
+    }
+  }
+
+  emit() {
+    this.onChange({ start: this.fmt(this.start), end: this.fmt(this.end) });
+  }
+
+  bindOutside() {
+    document.addEventListener('click', (e) => {
+      if (this.root && !this.root.contains(e.target)) closeAnyPanel();
+    });
+  }
+}
+
+// ==============================================
+// 1~6号：基础日期选择器（已整合 DateTimeObj）
+// ==============================================
+class DateTimePicker {
+  constructor(opt) {
+    this.format = opt.format || 'YYYY-MM-DD hh:mm:ss';
+    this.container = opt.container;
+    this.onChange = opt.onChange || (() => {});
+    this.range = opt.range || false;
+    this.needConfirm = opt.needConfirm || false;
+    this.date1 = new Date();
+    this.date2 = new Date();
+    this.render();
+  }
+
+  fmt(d) {
+    return new DateTimeObj(d).format(this.format);
+  }
+
+  createPicker(date) {
+    const wrap = document.createElement('div');
+    wrap.className = 'date-time-picker';
+    
+    const input = document.createElement('input');
+    input.className = 'picker-trigger';
+    input.value = this.fmt(date);
+    input.readOnly = true;
+    
+    const panel = document.createElement('div');
+    panel.className = 'dropdown-panel hidden';
+    
+    if (this.format.includes('YYYY')) {
+      const cal = document.createElement('div');
+      cal.className = 'calendar-display';
+      this.renderCal(cal, date, input);
+      panel.append(cal);
+    }
+    
+    const timeBar = document.createElement('div');
+    timeBar.className = 'time-select-bar';
+    if (this.format.includes('hh')) this.addSel(timeBar, 'hour', date, input);
+    if (this.format.includes('mm')) this.addSel(timeBar, 'minute', date, input);
+    if (this.format.includes('ss')) this.addSel(timeBar, 'second', date, input);
+    panel.append(timeBar);
+
+    if (this.needConfirm) {
+      const bar = document.createElement('div');
+      bar.className = 'confirm-bar';
+      const ok = document.createElement('button');
+      ok.textContent = '确定';
+      ok.onclick = (e) => { e.stopPropagation(); closeAnyPanel(); this.emit(); };
+      bar.append(ok);
+      panel.append(bar);
+    }
+    
+    input.onclick = e => { e.stopPropagation(); closeAnyPanel(); panel.classList.remove('hidden'); };
+    panel.onclick = e => e.stopPropagation();
+    wrap.append(input, panel);
+    return { wrap, input, panel };
+  }
+
+  addSel(container, type, date, input) {
+    const sel = document.createElement('select');
+    sel.className = 'time-part';
+    const max = type === 'hour' ? 24 : 60;
+    for (let i=0; i<max; i++) {
+      const v = String(i).padStart(2,'0');
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      sel.append(opt);
+    }
+    sel.value = type === 'hour' ? String(date.getHours()).padStart(2,'0') :
+               type === 'minute' ? String(date.getMinutes()).padStart(2,'0') :
+               String(date.getSeconds()).padStart(2,'0');
+    sel.onchange = () => {
+      if (type === 'hour') date.setHours(+sel.value);
+      else if (type === 'minute') date.setMinutes(+sel.value);
+      else date.setSeconds(+sel.value);
+      input.value = this.fmt(date);
+      showDemo(date);
+    };
+    container.append(sel);
+  }
+
+  renderCal(container, date, input) {
+    const now = date;
+    const y = now.getFullYear(), M = now.getMonth();
+    const header = document.createElement('div');
+    header.className = 'calendar-header';
+    
+    const prev = document.createElement('span');
+    prev.className = 'calendar-prev';
+    prev.textContent = '<';
+    prev.onclick = (e) => {
+      e.stopPropagation();
+      date.setMonth(date.getMonth() - 1);
+      this.renderCal(container, date, input);
+    };
+    
+    const title = document.createElement('span');
+    title.textContent = `${y}-${String(M+1).padStart(2,'0')}`;
+    
+    const next = document.createElement('span');
+    next.className = 'calendar-next';
+    next.textContent = '>';
+    next.onclick = (e) => {
+      e.stopPropagation();
+      date.setMonth(date.getMonth() + 1);
+      this.renderCal(container, date, input);
+    };
+    
+    header.append(prev, title, next);
+
+    const week = document.createElement('div');
+    week.className = 'calendar-week';
+    '日一二三四五六'.split('').forEach(w => {
+      const s = document.createElement('span');
+      s.textContent = w;
+      week.append(s);
+    });
+    
+    const days = document.createElement('div');
+    days.className = 'calendar-days';
+    const first = new Date(y, M, 1);
+    const last = new Date(y, M+1, 0);
+    
+    days.innerHTML = '';
+    for (let i=0; i<first.getDay(); i++) days.append(document.createElement('div'));
+    for (let d=1; d<=last.getDate(); d++) {
+      const el = document.createElement('div');
+      el.className = 'calendar-day';
+      el.textContent = d;
+      if (date.getDate() === d) el.classList.add('active');
+      el.onclick = () => {
+        date.setDate(d);
+        input.value = this.fmt(date);
+        showDemo(date);
+        this.renderCal(container, date, input);
+      };
+      days.append(el);
+    }
+    container.innerHTML = '';
+    container.append(header, week, days);
+  }
+
+  emit() {
+    this.onChange(this.fmt(this.date1));
+  }
+
+  render() {
+    this.container.innerHTML = '';
+    if (this.range) {
+      const root = document.createElement('div');
+      root.className = 'range-picker';
+      const left = this.createPicker(this.date1);
+      const right = this.createPicker(this.date2);
+      const split = document.createElement('span');
+      split.className = 'range-split';
+      split.textContent = '~';
+      root.append(left.wrap, split, right.wrap);
+      this.container.append(root);
+    } else {
+      const p = this.createPicker(this.date1);
+      this.container.append(p.wrap);
+    }
+  }
+}
+
+// ==============================================
+// 演示：DateTimeObj 实时展示
+// ==============================================
+function showDemo(date) {
+  const dt = new DateTimeObj(date);
+  document.getElementById("demo1").textContent = `原始字符串：${dt.format()}`;
+  document.getElementById("demo2").textContent = `UTC 时间：${dt._date.toISOString()}`;
+  document.getElementById("demo3").textContent = `本地日期(localDate)：${dt.localDate}`;
+  document.getElementById("demo4").textContent = `本地时间(localTime)：${dt.localTime}`;
+  document.getElementById("demo5").textContent = `日期时间(localDateTime)：${dt.localDateTime}`;
+  document.getElementById("demo6").textContent = `HTML标准格式(htmlDate)：${dt.htmlDate}`;
+  document.getElementById("demo7").textContent = `是否工作日(isWeekday)：${dt.isWeekday ? "是" : "否"}`;
+  document.getElementById("demo8").textContent = `是否周末(isWeekend)：${dt.isWeekend ? "是" : "否"}`;
+  document.getElementById("demo9").textContent = `相对现在(rel.toNow())：${dt.rel.toNow()}`;
+}
+
+// ==============================================
+// 初始化所有选择器
+// ==============================================
+new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
+new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
+new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
+new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
+new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
+new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
+
+// 初始演示
+
+setInterval(()=>{
+  showDemo(new Date());
+},1000)
+</script>
+</body>
+</html>

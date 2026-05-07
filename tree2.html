@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>企业级增强配置化树形组件</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { padding: 30px; max-width: 800px; margin: 0 auto; }
+    h3 { margin: 20px 0 10px; color: #333; }
+    .tree-dropdown { position: relative; width: 350px; margin-bottom: 20px; }
+    .tree-input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; outline: none; cursor: pointer; }
+    .tree-input:focus { border-color: #409eff; }
+    .tree-panel { position: absolute; top: 100%; left: 0; width: 100%; max-height: 300px; background: #fff; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px; overflow-y: auto; display: none; z-index: 999; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .tree-panel.show { display: block; }
+    .tree-search {z-index:9; padding: 8px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; }
+    .tree-search input { width: 100%; padding: 6px 8px; border: 1px solid #eee; border-radius: 3px; outline: none; }
+    .tree-search input:focus { border-color: #409eff; }
+    .tree-list { padding: 8px; position: relative; min-height: 20px; }
+    .tree-node { padding: 10px 6px; cursor: pointer; border-radius: 3px; user-select: none; display: flex; align-items: center; }
+    .tree-node:hover { background-color: #f5f7fa; }
+    .tree-node.active { background-color: #e8f3ff; color: #409eff; }
+    .tree-node .checkbox { margin-right: 4px; width: 14px; height: 14px; cursor: pointer; }
+    .tree-node .toggle { display: inline-block; width: 16px; text-align: center; color: #666; font-size: 12px; }
+    .tree-node .label { margin-left: 4px; display: flex; align-items: center; gap: 4px; }
+    .tree-node .icon { width: 16px; height: 16px; object-fit: contain; }
+    .tree-node.disabled { opacity: 0.5; cursor: not-allowed; background: #f7f7f7; }
+    .tree-node.disabled * { pointer-events: none; }
+    .tree-children { padding-left: 20px; display: none; }
+    .tree-children.open { display: block; }
+    .tree-node.dragging { opacity: 0.5; background: #e6f7ff; }
+    .drop-placeholder { height: 4px; background: #007bff; margin: 6px 0; border-radius: 2px; }
+    
+    /* 🔥 最外层放置区 样式 */
+    .drop-to-root {
+      height: 36px;
+      margin: 8px 0;
+      border: 2px dashed #007bff;
+      border-radius: 6px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #007bff;
+      font-size: 12px;
+      background: rgba(0,123,255,0.05);
+    }
+    .drop-to-root.show {
+      display: flex;
+    }
+    .drop-to-root.active {
+      background: rgba(0,123,255,0.15);
+    }
+
+    .tree-static { width: 350px; border: 1px solid #ddd; border-radius: 4px; }
+    .tree-static .tree-panel { position: static !important; display: block !important; max-height: none !important; border: none !important; box-shadow: none !important; }
+  </style>
+</head>
+<body>
+
+<h3>模式1：下拉多选树形（增强版）</h3>
+<div id="dropdownTree" class="tree-dropdown"></div>
+
+<h3>模式2：直展单选树形（增强版）</h3>
+<div id="staticTree" class="tree-static"></div>
+
+<script>
+const treeData = [
+  { id: 1, label: '前端技术', disabled: false, icon: '📦', children: [
+      { id: 11, label: 'HTML/CSS', disabled: false, icon: '📄' },
+      { id: 12, label: 'JavaScript', disabled: false, icon: '🚀', children: [
+          { id: 121, label: 'ES6+', icon: '🔥' },
+          { id: 122, label: 'TypeScript', icon: '🔷' }
+        ]
+      }
+    ]
+  },
+  { id: 2, label: '后端技术', disabled: false, icon: '⚙️', children: [
+      { id: 21, label: 'Java', icon: '☕' },
+      { id: 22, label: 'Node.js', icon: '🟢' }
+    ]
+  }
+];
+
+class TreeComponent {
+  constructor(selector, data, options = {}) {
+    this.container = document.querySelector(selector);
+    this.originData = JSON.parse(JSON.stringify(data));
+    this.treeData = JSON.parse(JSON.stringify(data));
+    this.checkedMap = {};
+    this.expandedIds = new Set();
+    this.selectedId = null;
+
+    this.options = {
+      isDropdown: false,      // 是否为【下拉选择框模式】
+      showCheckbox: false,    // 是否显示【复选框】（多选）
+      checkChildren: false,   // 勾选父节点时，是否【自动勾选所有子节点】
+      draggable: false,       // 是否开启【节点拖拽功能】
+      searchable: false,      // 是否显示【搜索框】
+      expandable: true,       // 是否允许【展开/折叠】节点
+      customEvent: false,     // 是否开启【自定义事件回调】
+      singleSelect: false,    // 是否为【单选模式】
+      onNodeClick: null,      // 节点点击回调
+      onCheckChange: null,    // 勾选状态变化回调
+      onDrop: null,           // 拖拽完成回调
+      ...options
+    };
+    this.render();
+  }
+
+  render() {
+    const wasShow = this.options.isDropdown ? this.container.querySelector('.tree-panel')?.classList.contains('show') : false;
+    this.container.innerHTML = '';
+    const opt = this.options;
+
+    if (opt.isDropdown) {
+      const input = document.createElement('input');
+      input.className = 'tree-input';
+      input.placeholder = '请选择';
+      input.readOnly = true;
+      this.container.appendChild(input);
+    }
+
+    const panel = document.createElement('div');
+    panel.className = 'tree-panel';
+    if (opt.searchable) {
+      const search = document.createElement('div');
+      search.className = 'tree-search';
+      search.innerHTML = '<input type="text" placeholder="搜索节点">';
+      panel.appendChild(search);
+    }
+    const list = document.createElement('div');
+    list.className = 'tree-list';
+    list.innerHTML = this.createTreeHtml(this.treeData);
+
+    // 🔥 最外层放置区 DOM
+    const dropToRoot = document.createElement('div');
+    dropToRoot.className = 'drop-to-root';
+    dropToRoot.innerText = '释放到最外层';
+    list.appendChild(dropToRoot);
+
+    panel.appendChild(list);
+    this.container.appendChild(panel);
+
+    if (!opt.isDropdown) panel.classList.add('show');
+    if (opt.isDropdown && wasShow) panel.classList.add('show');
+    
+    this.bindEvents();
+    this.updateAllCheckStatus();
+  }
+
+  createTreeHtml(nodes) {
+    const opt = this.options;
+    let html = '';
+    nodes.forEach(node => {
+      const hasChild = node.children?.length;
+      const isExpanded = this.expandedIds.has(node.id);
+      const isDisabled = node.disabled === true;
+      const checkbox = opt.showCheckbox && !opt.singleSelect
+        ? `<input type="checkbox" class="checkbox" data-id="${node.id}">`
+        : '';
+
+      const iconHtml = node.icon
+        ? `<span class="icon">${node.icon}</span>`
+        : '';
+
+      html += `
+        <div class="tree-node ${isDisabled ? 'disabled' : ''}" ${opt.draggable ? 'draggable="true"' : ''} data-id="${node.id}">
+          ${checkbox}
+          <span class="toggle">${hasChild ? (isExpanded ? '-' : '+') : ''}</span>
+          <span class="label">${iconHtml}${node.label}</span>
+        </div>
+      `;
+      html += `<div class="tree-children ${isExpanded ? 'open' : ''}">${this.createTreeHtml(node.children || [])}</div>`;
+    });
+    return html;
+  }
+
+  setValueToTarget() {
+    const opt = this.options;
+    const input = this.container.querySelector('.tree-input');
+    if (opt.singleSelect) {
+      const node = this.findNodeById(this.originData, this.selectedId);
+      const text = node ? node.label : '';
+      if (input) input.value = text;
+      return;
+    }
+    const checkedNodes = this.getCheckedNodes();
+    const text = checkedNodes.map(n => n.label).join('，');
+    if (input) input.value = text;
+  }
+
+  bindEvents() {
+    const panel = this.container.querySelector('.tree-panel');
+    const list = this.container.querySelector('.tree-list');
+    const searchInput = this.container.querySelector('.tree-search input');
+    const opt = this.options;
+
+    if (opt.isDropdown) {
+      const input = this.container.querySelector('.tree-input');
+      input.onclick = (e) => { e.stopPropagation(); panel.classList.toggle('show'); };
+      panel.onclick = (e) => e.stopPropagation();
+      document.onclick = () => panel.classList.remove('show');
+    }
+
+    list.onclick = null;
+    list.onchange = null;
+
+    list.addEventListener('click', (e) => {
+      const nodeEl = e.target.closest('.tree-node');
+      if (!nodeEl) return;
+      const id = Number(nodeEl.dataset.id);
+      const childEl = nodeEl.nextElementSibling;
+      const isToggle = e.target.classList.contains('toggle');
+      const isCheckbox = e.target.classList.contains('checkbox');
+      const node = this.findNodeById(this.originData, id);
+      if (node?.disabled) return;
+
+      if (opt.expandable && isToggle && childEl) {
+        this.expandedIds.has(id) ? this.expandedIds.delete(id) : this.expandedIds.add(id);
+        childEl.classList.toggle('open');
+        nodeEl.querySelector('.toggle').textContent = childEl.classList.contains('open') ? '-' : '+';
+        return;
+      }
+
+      if (opt.singleSelect) {
+        this.selectedId = id;
+        this.container.querySelectorAll('.tree-node').forEach(el => el.classList.remove('active'));
+        nodeEl.classList.add('active');
+        this.setValueToTarget();
+        if (opt.customEvent && opt.onNodeClick) opt.onNodeClick(node);
+        return;
+      }
+
+      if (opt.showCheckbox && !isCheckbox && !isToggle) {
+        const checkbox = nodeEl.querySelector('.checkbox');
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+    });
+
+    if (opt.showCheckbox && !opt.singleSelect) {
+      list.addEventListener('change', (e) => {
+        if (!e.target.classList.contains('checkbox')) return;
+        const id = Number(e.target.dataset.id);
+        const checked = e.target.checked;
+        const node = this.findNodeById(this.originData, id);
+        if (node?.disabled) return;
+        this.checkedMap[id] = checked;
+
+        if (opt.checkChildren) this.setChildChecked(id, checked);
+        this.refreshAllParentStatus(id);
+        this.updateAllCheckStatus();
+        this.setValueToTarget();
+
+        if (opt.customEvent && opt.onCheckChange) {
+          opt.onCheckChange(this.getCheckedNodes());
+        }
+      });
+    }
+
+    if (opt.searchable && searchInput) {
+      searchInput.oninput = (e) => {
+        const key = e.target.value.trim().toLowerCase();
+        this.filterTree(key);
+      };
+    }
+    if (opt.draggable) this.bindDrag(list);
+  }
+
+  // ===================== 🔥 修复：一次拖拽直接到最外层 =====================
+  bindDrag(list) {
+    let draggingNode = null;
+    let placeholder = document.createElement('div');
+    placeholder.className = 'drop-placeholder';
+    
+    // 🔥 提前获取放置区，避免多次查找导致失效
+    const dropToRoot = list.querySelector('.drop-to-root');
+
+    list.addEventListener('dragstart', (e) => {
+      const el = e.target.closest('.tree-node');
+      if (!el || el.classList.contains('disabled')) { e.preventDefault(); return; }
+      draggingNode = el;
+      el.classList.add('dragging');
+      if (dropToRoot) dropToRoot.classList.add('show');
+    });
+
+    list.addEventListener('dragend', () => {
+      if (draggingNode) draggingNode.classList.remove('dragging');
+      placeholder.remove();
+      if (dropToRoot) dropToRoot.classList.remove('show', 'active');
+      draggingNode = null;
+    });
+
+    // 🔥 统一把事件绑在 list 上，永不失效
+    list.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      
+      // 处理根节点放置区高亮
+      if (dropToRoot && e.target.closest('.drop-to-root')) {
+        dropToRoot.classList.add('active');
+        return;
+      }
+
+      // 处理子节点放置
+      const targetEl = e.target.closest('.tree-node');
+      if (!targetEl || targetEl === draggingNode) return;
+      if (targetEl.classList.contains('disabled')) return;
+
+      const dragId = +draggingNode.dataset.id;
+      const targetId = +targetEl.dataset.id;
+      if (this.isDescendant(targetId, dragId)) return;
+
+      const childrenWrap = targetEl.nextElementSibling;
+      if (childrenWrap) {
+        childrenWrap.classList.add('open');
+        childrenWrap.prepend(placeholder);
+      }
+    });
+
+    list.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (!draggingNode) return;
+      const dragId = +draggingNode.dataset.id;
+
+      // 🔥 一次判断：是否拖到了最外层
+      if (dropToRoot && e.target.closest('.drop-to-root')) {
+        this.moveToRoot(dragId);
+        this.treeData = JSON.parse(JSON.stringify(this.originData));
+        this.render();
+        return;
+      }
+
+      // 正常拖入子节点
+      const targetEl = placeholder.closest('.tree-children')?.previousElementSibling;
+      if (!targetEl) return;
+      const parentId = +targetEl.dataset.id;
+      if (this.isDescendant(parentId, dragId)) return;
+
+      this.expandedIds.add(parentId);
+      this.moveNodeTo(dragId, parentId);
+      this.treeData = JSON.parse(JSON.stringify(this.originData));
+      this.render();
+    });
+  }
+
+  // 🔥 移动到根节点
+  moveToRoot(dragId) {
+    const { node, parent } = this.findNodeWithParent(this.originData, dragId);
+    if (!node) return;
+
+    if (parent) {
+      parent.children = parent.children.filter(i => i.id !== dragId);
+    } else {
+      return;
+    }
+
+    this.originData.push(node);
+  }
+
+  // 🔥 禁止父节点拖入自己子节点
+  isDescendant(targetId, nodeId) {
+    if (targetId === nodeId) return true;
+    const node = this.findNodeById(this.originData, nodeId);
+    if (!node || !node.children) return false;
+    for (const child of node.children) {
+      if (this.isDescendant(targetId, child.id)) return true;
+    }
+    return false;
+  }
+
+  moveNodeTo(dragId, parentId) {
+    const { node, parent } = this.findNodeWithParent(this.originData, dragId);
+    if (!node) return;
+
+    if (parent) {
+      parent.children = parent.children.filter(i => i.id !== dragId);
+    } else {
+      this.originData = this.originData.filter(i => i.id !== dragId);
+    }
+
+    const newParent = this.findNodeById(this.originData, parentId);
+    if (newParent) {
+      if (!newParent.children) newParent.children = [];
+      newParent.children.unshift(node);
+    }
+  }
+
+  findNodeWithParent(nodes, id, parent = null) {
+    for (const item of nodes) {
+      if (item.id === id) return { node: item, parent };
+      if (item.children) {
+        const r = this.findNodeWithParent(item.children, id, item);
+        if (r.node) return r;
+      }
+    }
+    return { node: null, parent: null };
+  }
+
+  getCheckedIds() {
+    return Object.keys(this.checkedMap).filter(k => this.checkedMap[k]).map(Number);
+  }
+  
+  getCheckedNodes() {
+    const arr = [];
+    const find = (nodes) => {
+      nodes.forEach(n => {
+        if (this.checkedMap[n.id] && !n.disabled) arr.push(n);
+        if (n.children) find(n.children);
+      });
+    };
+    find(this.originData);
+    return arr;
+  }
+
+  getChildCheckStatus(children) {
+    let total = 0, checked = 0;
+    const loop = (nodes) => {
+      nodes.forEach(n => {
+        if (n.disabled) return;
+        total++;
+        if (this.checkedMap[n.id]) checked++;
+        if (n.children) loop(n.children);
+      });
+    };
+    loop(children);
+    return { allChecked: total === checked && total > 0, noneChecked: checked === 0 };
+  }
+
+  setChildChecked(pid, checked) {
+    const node = this.findNodeById(this.originData, pid);
+    if (!node?.children) return;
+    const loop = (nodes) => {
+      nodes.forEach(c => {
+        if (c.disabled) return;
+        this.checkedMap[c.id] = checked;
+        if (c.children) loop(c.children);
+      });
+    };
+    loop(node.children);
+  }
+
+  refreshAllParentStatus(nodeId) {
+    const parent = this.findParentById(this.originData, nodeId);
+    if (!parent) return;
+    this.updateNodeCheckStatus(parent.id);
+    this.refreshAllParentStatus(parent.id);
+  }
+
+  updateNodeCheckStatus(nodeId) {
+    const node = this.findNodeById(this.originData, nodeId);
+    if (!node || !node.children?.length) return;
+    const status = this.getChildCheckStatus(node.children);
+    this.checkedMap[nodeId] = status.allChecked;
+  }
+
+  findParentById(nodes, childId, parent = null) {
+    for (const node of nodes) {
+      if (node.id === childId) return parent;
+      if (node.children) {
+        const found = this.findParentById(node.children, childId, node);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  updateAllCheckStatus() {
+    const checkboxes = this.container.querySelectorAll('.checkbox');
+    checkboxes.forEach(cb => {
+      const id = Number(cb.dataset.id);
+      const node = this.findNodeById(this.originData, id);
+      if (!node) return;
+      if (!node.children || node.children.length === 0) {
+        cb.checked = !!this.checkedMap[id] && !node.disabled;
+        cb.indeterminate = false;
+      } else {
+        const status = this.getChildCheckStatus(node.children);
+        if (status.allChecked) { cb.checked = true; cb.indeterminate = false; }
+        else if (status.noneChecked) { cb.checked = false; cb.indeterminate = false; }
+        else { cb.checked = false; cb.indeterminate = true; }
+      }
+    });
+  }
+
+  filterTree(keyword) {
+    if (!keyword) {
+      this.treeData = JSON.parse(JSON.stringify(this.originData));
+      this.container.querySelector('.tree-list').innerHTML = this.createTreeHtml(this.treeData);
+      this.updateAllCheckStatus();
+      this.setValueToTarget();
+      return;
+    }
+    const findMatch = (nodes) => {
+      let res = [];
+      nodes.forEach(n => {
+        const match = n.label.toLowerCase().includes(keyword);
+        const children = n.children ? findMatch(n.children) : [];
+        if (match || children.length) res.push({ ...n, children });
+      });
+      return res;
+    };
+    this.treeData = findMatch(this.originData);
+    this.container.querySelector('.tree-list').innerHTML = this.createTreeHtml(this.treeData);
+    this.container.querySelectorAll('.tree-children').forEach(el => el.classList.add('open'));
+    this.updateAllCheckStatus();
+    this.setValueToTarget();
+  }
+
+  findNodeById(nodes, id) {
+    for (const n of nodes) {
+      if (n.id === id) return n;
+      if (n.children) {
+        const r = this.findNodeById(n.children, id);
+        if (r) return r;
+      }
+    }
+    return null;
+  }
+}
+
+// ==============================================
+// 🔥 初始化配置 + 每一项都有清晰中文注释
+// ==============================================
+const tree1 = new TreeComponent('#dropdownTree', treeData, {
+  isDropdown: true,        // 开启【下拉框模式】
+  showCheckbox: true,      // 显示【复选框】（支持多选）
+  checkChildren: true,    // 勾选父节点时，自动勾选【所有子节点】
+  draggable: false,         // 开启【节点拖拽排序】
+  searchable: true,        // 显示【搜索框】
+  expandable: true,        // 允许【展开/折叠】
+  customEvent: true,       // 开启回调事件
+  singleSelect: false      // 关闭【单选模式】→ 走多选
+});
+
+const tree2 = new TreeComponent('#staticTree', treeData, {
+  isDropdown: false,       // 关闭【下拉模式】→ 直接展示
+   showCheckbox: true,      // 显示【复选框】（支持多选）
+  checkChildren: true,    // 勾选父节点时，自动勾选【所有子节点】
+  draggable: true,         // 开启【节点拖拽排序】
+  searchable: true,        // 显示【搜索框】
+  expandable: true,        // 允许【展开/折叠】
+  customEvent: true,       // 开启回调事件
+  singleSelect: false      // 关闭【单选模式】→ 走多选
+});
+</script>
+</body>
+</html>

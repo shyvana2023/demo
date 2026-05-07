@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿ElementPlus Table 索引多选+框选+右键复制</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+    body {
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .table-container {
+      width: 1000px;
+      height: 700px;
+      background: #fff;
+      border: 1px solid #ebeef5;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .table-scroll {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+    .table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .table-scroll::-webkit-scrollbar-thumb { border-radius: 3px; background: #dcdfe6; }
+    .table-scroll::-webkit-scrollbar-track { background: #f5f7fa; }
+
+    .el-table {
+      width: 100%;
+      border-collapse: collapse;
+      empty-cells: show;
+      table-layout: fixed;
+    }
+    .el-table thead th {
+      height: 50px;
+      padding: 0 12px;
+      background: #fafafa;
+      border-bottom: 1px solid #ebeef5;
+      color: #303133;
+      font-weight: 500;
+      font-size: 14px;
+      text-align: left;
+      white-space: nowrap;
+      position: relative;
+      cursor: move;
+      overflow: visible !important;
+    }
+    .el-table th.index-col,
+    .el-table td.index-col {
+      width: 70px !important;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      border-right: 1px solid #ebeef5;
+    }
+    .el-table td.index-col:hover {
+      background: #f0f9ff;
+    }
+    .th-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 排序箭头 */
+    .sort-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sort-btn.active { color: #409eff; }
+    .sort-icon {
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+    }
+    .sort-up {
+      border-bottom: 4px solid currentColor;
+      margin-bottom: 2px;
+    }
+    .sort-down {
+      border-top: 4px solid currentColor;
+      margin-top: 2px;
+    }
+    .sort-default {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* 更多按钮 */
+    .menu-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #909399;
+      font-size: 14px;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      background-image: url(./images/screen.svg);
+      background-size: 100%;
+      width: 18px;
+      height: 18px;
+    }
+    .menu-btn:hover {
+      color: #409eff;
+    }
+
+    /* 下拉菜单 */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 120px;
+      background: #fff;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      z-index: 9999;
+      display: none;
+    }
+    .dropdown-menu.show { display: block; }
+    .dropdown-item {
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #606266;
+      cursor: pointer;
+    }
+    .dropdown-item:hover {
+      background: #f5f7fa;
+      color: #409eff;
+    }
+
+    .el-table tbody tr { height: 50px; }
+    .el-table tbody td {
+      padding: 0 12px;
+      border-bottom: 1px solid #ebeef5;
+      color: #606266;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .el-table tbody tr:hover { background-color: #f5f7fa; }
+
+    .el-table td.selected { background: #e6f7ff !important; }
+    .el-table tr.row-selected { background: #f0f9ff !important; }
+
+    .el-table th.dragging { opacity: 0.4; background: #eee; }
+    .el-table th.drag-over { border-left: 2px solid #409eff; }
+
+    /* 右键菜单 */
+    .context-menu {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 6px 0;
+      z-index: 9999;
+      display: none;
+    }
+    .context-menu-item {
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #303133;
+      cursor: pointer;
+    }
+    .context-menu-item:hover {
+      background: #f5f7fa;
+      color: #409eff;
+    }
+
+    /* 列宽拖动条（完美不冲突） */
+    .resize-handle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 6px;
+      height: 100%;
+      cursor: col-resize;
+      z-index: 10;
+      background: transparent;
+    }
+    .resize-handle:hover {
+      background: #409eff;
+      opacity: 0.3;
+    }
+    .table-scroll {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      /* 新增：禁止表格撑宽容器 */
+      overflow-x: auto;
+    }
+    .el-table {
+      width: 100%;
+      table-layout: fixed; /* 必须保留 */
+      min-width: 100% !important; /* 不小于容器 */
+      max-width: 100% !important; /* 不大于容器 */
+    }
+  </style>
+</head>
+<body>
+<div id="tableRoot"></div>
+<div id="contextMenu" class="context-menu">
+  <div class="context-menu-item" id="copySelected">复制选中数据</div>
+</div>
+
+<script>
+const tableData = [
+  { id: 1, orderNo: '105202301', name: '小王', phone: '13800138000', goods: '精品水果套餐', price: '¥299.00', status: '已完成' },
+  { id: 2, orderNo: '20231059', name: '王总', phone: '13900139000', goods: '王牌耳机', price: '¥599.00', status: '待发货' },
+  { id: 3, orderNo: '999999', name: '小飞侠', phone: '13700137000', goods: '无人机套装', price: '¥1299.00', status: '已发货' },
+  { id: 4, orderNo: '102345', name: '张三', phone: '13600136000', goods: '测试商品', price: '¥99.00', status: '已取消' },
+  { id: 5, orderNo: '55667788', name: '李四', phone: '13500135000', goods: '智能手表', price: '¥899.00', status: '已完成' },
+  { id: 6, orderNo: '77889900', name: '赵五', phone: '13400134000', goods: '机械键盘', price: '¥399.00', status: '待付款' },
+  { id: 7, orderNo: '11223344', name: '钱六', phone: '13300133000', goods: '电竞鼠标', price: '¥199.00', status: '已完成' },
+  { id: 8, orderNo: '55661122', name: '孙七', phone: '13200132000', goods: '高清显示器', price: '¥1599.00', status: '待发货' },
+  { id: 9, orderNo: '99887766', name: '周八', phone: '13100131000', goods: '游戏主机', price: '¥4999.00', status: '已完成' },
+  { id: 10, orderNo: '66554433', name: '吴九', phone: '13000130000', goods: '蓝牙耳机', price: '¥299.00', status: '已发货' }
+];
+
+const columns = [
+  { prop: 'index', label: '序号', fixed: true },
+  { prop: 'id', label: 'ID', type: 'number' },
+  { prop: 'orderNo', label: '订单编号', type: 'string' },
+  { prop: 'name', label: '客户名称', type: 'string' },
+  { prop: 'phone', label: '联系方式', type: 'string' },
+  { prop: 'goods', label: '商品名称', type: 'string' },
+  { prop: 'price', label: '订单金额', type: 'price' },
+  { prop: 'status', label: '订单状态', type: 'string' }
+];
+// 原始表头备份，用于重置
+const originColumns = JSON.parse(JSON.stringify(columns));
+let sortState = { prop: '', order: 0 };
+let list = [...tableData];
+let displayColumns = [...columns];
+
+let isSelecting = false;
+let cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+let selectedRows = new Set();
+
+// 拖拽隐藏
+let draggedTh = null;
+let tableRect = null;
+const HIDE_OFFSET = 150;
+
+function renderTable() {
+  const root = document.getElementById('tableRoot');
+  root.innerHTML = `
+  <div class="table-container">
+    <div class="table-scroll">
+      <table class="el-table" id="dataTable">
+        <thead><tr>${renderHeader()}</tr></thead>
+        <tbody>${renderBody()}</tbody>
+      </table>
+    </div>
+  </div>`;
+  initCellSelection();
+  initHeaderDrag();
+  initContextMenu();
+}
+
+function renderHeader() {
+  return displayColumns.map((col, idx) => {
+    const isIndex = col.prop === 'index';
+    const isActive = sortState.prop === col.prop;
+    const order = sortState.order;
+
+    let iconHtml = '';
+    if (isActive) {
+      if (order === 1) iconHtml = `<div class="sort-icon sort-up"></div>`;
+      else if (order === 2) iconHtml = `<div class="sort-icon sort-down"></div>`;
+      else iconHtml = `<div class="sort-default"><div class="sort-icon sort-up"></div><div class="sort-icon sort-down"></div></div>`;
+    } else {
+      iconHtml = `<div class="sort-default"><div class="sort-icon sort-up"></div><div class="sort-icon sort-down"></div></div>`;
+    }
+
+    if (isIndex) {
+      return `
+      <th data-index="${idx}" draggable="false" class="index-col">
+        <div class="th-content">
+          <span>${col.label}</span>
+        </div>
+      </th>`;
+    }
+
+    return `
+    <th data-index="${idx}" draggable="true">
+      <div class="th-content">
+        <span>${col.label}</span>
+        <div style="display:flex;gap:4px;">
+          <button class="sort-btn ${isActive ? 'active' : ''}" onclick="cycleSort('${col.prop}')">${iconHtml}</button>
+          <button class="menu-btn" onclick="toggleMenu(this)"></button>
+          <div class="dropdown-menu">
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',1)">冻结列</div>
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',2)">隐藏列</div>
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',3)">筛选</div>
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',4)">重置</div>
+          </div>
+        </div>
+      </div>
+      <div class="resize-handle"></div>
+    </th>`;
+  }).join('');
+}
+
+function renderBody() {
+  return list.map((row, rowIdx) => `
+  <tr class="${selectedRows.has(rowIdx) ? 'row-selected' : ''}">
+    <td class="index-col" data-row="${rowIdx}">${rowIdx + 1}</td>
+    ${displayColumns.slice(1).map((col, colIdx) => `
+      <td class="${isCellSelected(rowIdx, colIdx + 1) ? 'selected' : ''}">
+        ${row[col.prop]}
+      </td>
+    `).join('')}
+  </tr>`).join('');
+}
+
+function isCellSelected(rowIdx, colIdx) {
+  if (cellRange.startRow === -1) return false;
+  const minRow = Math.min(cellRange.startRow, cellRange.endRow);
+  const maxRow = Math.max(cellRange.startRow, cellRange.endRow);
+  const minCol = Math.min(cellRange.startCol, cellRange.endCol);
+  const maxCol = Math.max(cellRange.startCol, cellRange.endCol);
+  return rowIdx >= minRow && rowIdx <= maxRow && colIdx >= minCol && colIdx <= maxCol;
+}
+
+// 排序
+window.cycleSort = function (prop) {
+  if (prop === 'index') return;
+
+  if (sortState.prop !== prop) {
+    sortState = { prop, order: 1 };
+  } else {
+    if (sortState.order === 0) sortState.order = 1;
+    else if (sortState.order === 1) sortState.order = 2;
+    else if (sortState.order === 2) sortState.order = 0;
+  }
+
+  if (sortState.order === 0) {
+    list = [...tableData];
+  } else {
+    const col = columns.find(c => c.prop === prop);
+    const type = col?.type || 'string';
+
+    list.sort((a, b) => {
+      let va = a[prop];
+      let vb = b[prop];
+
+      if (type === 'number') { va = Number(va) || 0; vb = Number(vb) || 0; }
+      if (type === 'price') { va = parseFloat(String(va).replace(/[^\d.]/g, '')) || 0; vb = parseFloat(String(vb).replace(/[^\d.]/g, '')) || 0; }
+      if (sortState.order === 1) return va > vb ? 1 : -1;
+      if (sortState.order === 2) return va < vb ? 1 : -1;
+      return 0;
+    });
+  }
+  clearAllSelection();
+  renderTable();
+};
+
+window.toggleMenu = function (el) {
+  const menu = el.nextElementSibling;
+  document.querySelectorAll('.dropdown-menu').forEach(m => { if (m !== menu) m.classList.remove('show'); });
+  menu.classList.toggle('show');
+};
+
+window.menuClick = function (prop, type) {
+ const text = ['冻结列', '隐藏列', '筛选', '重置'][type - 1];
+  
+  // 点击重置 → 恢复整个表头
+  if(type === 4){
+    resetTableHeader();
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+    return;
+  }else if(type === 2){
+    // 隐藏列原有逻辑保留
+    const idx = displayColumns.findIndex(c => c.prop === prop);
+    if(idx > -1) displayColumns.splice(idx, 1);
+    clearAllSelection();
+    renderTable();
+  }
+
+  
+
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+};
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.menu-btn') && !e.target.closest('.dropdown-menu')) {
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+  }
+});
+
+// 框选
+function initCellSelection() {
+  const table = document.getElementById('dataTable');
+  table.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    const td = e.target.closest('td');
+    if (!td || td.classList.contains('index-col')) return;
+    e.preventDefault(); e.stopPropagation();
+    const tr = td.closest('tr');
+    const rowIdx = Array.from(table.querySelectorAll('tbody tr')).indexOf(tr);
+    const colIdx = Array.from(tr.children).indexOf(td);
+    isSelecting = true; selectedRows.clear();
+    cellRange = { startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx };
+    renderTable();
+  });
+
+  table.addEventListener('mousemove', e => {
+    if (!isSelecting) return;
+    const td = e.target.closest('td');
+    if (!td || td.classList.contains('index-col')) return;
+    const tr = td.closest('tr');
+    const rowIdx = Array.from(table.querySelectorAll('tbody tr')).indexOf(tr);
+    const colIdx = Array.from(tr.children).indexOf(td);
+    cellRange.endRow = rowIdx; cellRange.endCol = colIdx;
+    renderTable();
+  });
+
+  document.addEventListener('mouseup', e => {
+    if (e.button === 0) isSelecting = false;
+  });
+
+  table.addEventListener('click', e => {
+    const indexTd = e.target.closest('td.index-col');
+    if (!indexTd) return;
+    const rowIdx = +indexTd.dataset.row;
+    if (e.ctrlKey) {
+      selectedRows.has(rowIdx) ? selectedRows.delete(rowIdx) : selectedRows.add(rowIdx);
+    } else {
+      selectedRows.clear(); selectedRows.add(rowIdx);
+    }
+    cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+    renderTable();
+  });
+}
+
+function clearAllSelection() {
+  cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+  selectedRows.clear();
+}
+
+// 拖拽排序 + 拖出隐藏
+function initHeaderDrag() {
+  const table = document.getElementById('dataTable');
+  const ths = table.querySelectorAll('th:not(.index-col)');
+  ths.forEach(th => {
+    th.addEventListener('dragstart', e => {
+      draggedTh = th;
+      tableRect = table.getBoundingClientRect();
+      setTimeout(() => th.classList.add('dragging'), 0);
+    });
+    th.addEventListener('dragover', e => { e.preventDefault(); th.classList.add('drag-over'); });
+    th.addEventListener('dragleave', () => { th.classList.remove('drag-over'); });
+    th.addEventListener('drop', e => {
+      e.preventDefault(); th.classList.remove('drag-over');
+      if (draggedTh === th) return;
+      const from = +draggedTh.dataset.index;
+      const to = +th.dataset.index;
+      [displayColumns[from], displayColumns[to]] = [displayColumns[to], displayColumns[from]];
+      draggedTh = null; renderTable();
+    });
+    th.addEventListener('dragend', e => {
+      ths.forEach(t => t.classList.remove('dragging', 'drag-over'));
+      if (!draggedTh) return;
+      const mouseX = e.clientX;
+      const out = mouseX < tableRect.left - HIDE_OFFSET || mouseX > tableRect.right + HIDE_OFFSET;
+      if (out) {
+        const idx = +draggedTh.dataset.index;
+        displayColumns.splice(idx, 1);
+        renderTable();
+      }
+      draggedTh = null;
+    });
+  });
+}
+
+// 右键菜单
+function initContextMenu() {
+  const table = document.getElementById('dataTable');
+  const menu = document.getElementById('contextMenu');
+  table.addEventListener('contextmenu', e => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    
+    // 任意位置都弹出
+    menu.style.left = e.pageX + 'px';
+    menu.style.top = e.pageY + 'px';
+    menu.style.display = 'block';
+  });
+  document.addEventListener('click', () => { menu.style.display = 'none'; });
+  document.getElementById('copySelected').addEventListener('click', copySelectedData);
+}
+function copySelectedData() {
+  const table = document.getElementById('dataTable');
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+  let copyData;
+
+  // 有选中行 或 选中单元格
+  if (selectedRows.size > 0 || cellRange.startRow !== -1) {
+    if (selectedRows.size > 0) {
+      copyData = [];
+      selectedRows.forEach(idx => copyData.push(list[idx]));
+    } else {
+      const minRow = Math.min(cellRange.startRow, cellRange.endRow);
+      const maxRow = Math.max(cellRange.startRow, cellRange.endRow);
+      const minCol = Math.min(cellRange.startCol, cellRange.endCol);
+      const maxCol = Math.max(cellRange.startCol, cellRange.endCol);
+      copyData = [];
+      for (let i = minRow; i <= maxRow; i++) {
+        const row = [];
+        for (let j = minCol; j <= maxCol; j++) {
+          row.push(rows[i].cells[j].textContent.trim());
+        }
+        copyData.push(row);
+      }
+    }
+  } else {
+    // 没有任何选中 → 复制整表
+    copyData = JSON.parse(JSON.stringify(list));
+  }
+
+  navigator.clipboard.writeText(JSON.stringify(copyData, null, 2))
+    .then(() => alert('复制成功！'))
+    .catch(() => alert('复制失败'));
+  
+  document.getElementById('contextMenu').style.display = 'none';
+}
+// 修复版：总宽度固定，拖动只影响当前列+下一列
+function initResize() {
+  let resizing = false;
+  let currentTh = null;
+  let nextTh = null; // 新增：下一列
+  let startX = 0;
+  let startWidth = 0;
+  let nextStartWidth = 0;
+  const MIN_WIDTH = 80; // 统一最小宽度
+
+  document.addEventListener('mousedown', e => {
+    const handle = e.target.closest('.resize-handle');
+    if (!handle) return;
+    e.preventDefault();
+
+    currentTh = handle.closest('th');
+    if (!currentTh) return;
+
+    // 找到下一列（关键）
+    const allTh = Array.from(currentTh.parentElement.children);
+    const myIndex = allTh.indexOf(currentTh);
+    nextTh = allTh[myIndex + 1]; // 只动下一列
+
+    // 最后一列不能拉宽（否则无列可压缩）
+    if (!nextTh || nextTh.classList.contains('index-col')) {
+      return;
+    }
+
+    resizing = true;
+    startX = e.pageX;
+    startWidth = currentTh.offsetWidth;
+    nextStartWidth = nextTh.offsetWidth;
+    document.body.style.cursor = 'col-resize';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!resizing || !currentTh || !nextTh) return;
+
+    const diff = e.pageX - startX;
+    let newCurrent = startWidth + diff;
+    let newNext = nextStartWidth - diff;
+
+    // 左右都限制最小宽度
+    if (newCurrent < MIN_WIDTH || newNext < MIN_WIDTH) {
+      return;
+    }
+
+    // 只改当前和下一列，总宽不变
+    currentTh.style.width = newCurrent + 'px';
+    nextTh.style.width = newNext + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (resizing) {
+      resizing = false;
+      currentTh = null;
+      nextTh = null;
+      document.body.style.cursor = '';
+    }
+  });
+}
+
+initResize();
+
+// 重置表头：恢复列顺序、显示所有列、重置列宽、清空排序
+window.resetTableHeader = function(){
+  // 1. 还原原始列配置 + 顺序
+  displayColumns = JSON.parse(JSON.stringify(originColumns));
+  
+  // 2. 清空排序状态
+  sortState = { prop: '', order: 0 };
+  
+  // 3. 清空选区
+  clearAllSelection();
+
+  // 4. 清除所有 th 自定义宽度
+  document.querySelectorAll('.el-table th').forEach(th => {
+    th.style.width = '';
+  });
+
+  // 5. 重新渲染
+  renderTable();
+}
+
+window.onload = renderTable;
+</script>
+</body>
+</html>
+

@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>WebComponent 后台模板</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: system-ui; }
+    body { height: 100vh; display: flex; }
+
+    /* 右侧内容区 */
+    #content {
+      flex: 1;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 内容出口：页面会渲染在这里 -->
+<div id="content"></div>
+
+<script>
+// ==============================================
+// 【页面1】组件化页面（WebComponent）
+// ==============================================
+class PageProduct extends HTMLElement {
+  constructor() {
+    super()
+    this.attachShadow({ mode: 'open' }) // 样式完全隔离
+  }
+
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        .page { padding: 20px; background: white; border-radius: 12px; }
+        h2 { color: #06b6d4; margin-bottom: 10px; }
+      </style>
+      <div class="page">
+        <h2>Product 页面</h2>
+        <p>我是 WebComponent 页面，无 HTML 文件</p>
+      </div>
+    `
+  }
+}
+customElements.define('page-product', PageProduct)
+
+// ==============================================
+// 【页面2】组件化页面
+// ==============================================
+class PageBom extends HTMLElement {
+  constructor() {
+    super()
+    this.attachShadow({ mode: 'open' })
+  }
+
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        .page { padding: 20px; background: white; border-radius: 12px; }
+        h2 { color: #a855f7; }
+      </style>
+      <div class="page">
+        <h2>BOM 页面</h2>
+        <p>我也是组件页面，样式完全独立</p>
+      </div>
+    `
+  }
+}
+customElements.define('page-bom', PageBom)
+
+// ==============================================
+// 路由：渲染对应页面组件
+// ==============================================
+function renderPage(pageName) {
+  const content = document.getElementById('content')
+  content.innerHTML = `<page-${pageName}></page-${pageName}>`
+}
+
+// ==============================================
+// 模拟左侧菜单点击
+// ==============================================
+setTimeout(() => {
+  // 打开 Product 页面
+  renderPage('product')
+}, 500)
+
+setTimeout(() => {
+  // 打开 BOM 页面
+  renderPage('bom')
+}, 2000)
+</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tree Component</title>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.487.0/dist/umd/lucide.min.js"></script>
+  <style>
+    /* 仅保留样式，无任何多余代码 */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui; }
+    :root {
+      --frosted-text-primary:#1e293b; --frosted-text-secondary:#475569; --frosted-text-tertiary:#94a3b8;
+      --frosted-bg-default:rgb(228,234,241); --frosted-bg-subtle:rgb(235,240,246); --frosted-bg-transparent:rgba(255,255,255,0.5);
+      --frosted-border-default:rgba(226,232,240,0.8); --frosted-border-subtle:rgba(226,232,240,0.5);
+      --frosted-cyan-bg:rgba(6,182,212,0.1); --frosted-cyan-text:#06b6d4;
+      --frosted-blur-md:8px; --frosted-radius-sm:6px; --frosted-radius-md:10px; --frosted-radius-lg:16px;
+      --frosted-shadow-md:0 2px 6px rgba(0,0,0,0.08); --frosted-shadow-xl:0 8px 24px rgba(0,0,0,0.15);
+    }
+    body { padding:30px; max-width:1200px; margin:0 auto; background:var(--frosted-bg-default); }
+    h3 { margin:20px 0 10px; color:var(--frosted-text-primary); border-left:4px solid var(--frosted-cyan-text); padding-left:10px; }
+    .tree-dropdown { position:relative; width:350px; margin-bottom:20px; }
+    .tree-static { width:350px; border:1px solid var(--frosted-border-default); border-radius:var(--frosted-radius-md); background:var(--frosted-bg-subtle); backdrop-filter:blur(var(--frosted-blur-md)); }
+    .tree-static .tree-panel { position:static!important; display:block!important; max-height:none!important; border:none!important; box-shadow:none!important; background:transparent!important; }
+    .tree-panel { position:absolute; top:100%; left:0; width:100%; max-height:500px; background:var(--frosted-bg-subtle); border:1px solid var(--frosted-border-default); border-radius:var(--frosted-radius-md); margin-top:6px; overflow-y:auto; display:none; z-index:999; backdrop-filter:blur(12px); box-shadow:var(--frosted-shadow-xl); }
+    .tree-panel.show { display:block; }
+    .tree-search { padding:10px; border-bottom:1px solid var(--frosted-border-subtle); position:sticky; top:0; background:var(--frosted-bg-subtle); }
+    .tree-list { padding:10px; position:relative; min-height:20px; }
+    .tree-node { padding:8px 6px; cursor:pointer; border-radius:var(--frosted-radius-sm); user-select:none; display:flex; align-items:center; transition:all 0.15s ease; color:var(--frosted-text-secondary); }
+    .tree-node:hover { background:var(--frosted-bg-transparent); }
+    .tree-node.active { background:var(--frosted-cyan-bg); color:var(--frosted-cyan-text); }
+    .tree-node .checkbox { margin-right:6px; width:16px; height:16px; cursor:pointer; accent-color:var(--frosted-cyan-text); }
+    .tree-node .toggle { width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color:var(--frosted-text-tertiary); font-size:12px; margin-right:2px; border-radius:var(--frosted-radius-sm); }
+    .tree-node .label { margin-left:4px; display:flex; align-items:center; gap:6px; flex:1; }
+    .tree-node.disabled { opacity:0.5; cursor:not-allowed; }
+    .tree-children { padding-left:20px; display:none; }
+    .tree-children.open { display:block; }
+    .speed-input-group { position:relative; width:100%; }
+    .speed-input { width:100%; height:40px; background:transparent; border:none; outline:none; font-size:14px; color:var(--frosted-text-primary); padding:0 4px; z-index:1; }
+    .tree-speed-line-input { position:absolute; left:0; bottom:0; width:100%; height:2px; background:var(--frosted-border-subtle); }
+    .tree-speed-line-input::after { content:''; position:absolute; left:0; bottom:0; width:0; height:100%; background:var(--frosted-cyan-text); transition:width 0.25s ease; }
+    .speed-input:focus+.tree-speed-line-input::after { width:100%; }
+    .tree-input { width:100%; height:40px; padding:0 14px; border:none; outline:none; cursor:pointer; background:transparent; font-size:14px; color:var(--frosted-text-primary); z-index:1; }
+    .tree-search input { width:100%; height:36px; padding:0 10px; border:none; outline:none; background:transparent; color:var(--frosted-text-primary); font-size:14px; }
+    input:focus,textarea:focus { outline:none!important; box-shadow:none!important; border-color:transparent!important; }
+    .drop-placeholder { height:4px; background:var(--frosted-cyan-text); margin:4px 0; border-radius:2px; }
+    .drop-to-root { height:36px; margin:8px 0; border:2px dashed var(--frosted-cyan-text); border-radius:var(--frosted-radius-sm); display:none; align-items:center; justify-content:center; color:var(--frosted-cyan-text); font-size:12px; background:var(--frosted-cyan-bg); }
+    .drop-to-root.show { display:flex; }
+    .demo-box { display:flex; gap:40px; flex-wrap:wrap; margin-top:20px; }
+  </style>
+  <link rel="stylesheet" href="./frosted-glass.css">
+</head>
+<body>
+
+  <h3>Dropdown Tree</h3>
+  <div id="dropdownTree" class="tree-dropdown"></div>
+
+  <h3>Static Tree</h3>
+  <div id="staticTree" class="tree-static"></div>
+
+  <button id="getValueBtn" style="margin-top:20px;">获取选中值</button>
+
+  <!-- 只引入核心JS -->
+  <script src="./tree.js"></script>
+
+  <!-- HTML 只留：初始化 + 取值（最干净版本） -->
+  <script>
+    // 1. 你的数据
+    const treeData = [
+      { id:1, label:'前端技术', icon:'📦', children:[
+        { id:11, label:'HTML/CSS', icon:'📄' },
+        { id:12, label:'JavaScript', icon:'🚀', children:[
+          { id:121, label:'ES6+' },
+          { id:122, label:'TypeScript' }
+        ]}
+      ]},
+      { id:2, label:'后端技术', icon:'⚙️', children:[
+        { id:21, label:'Java' },
+        { id:22, label:'Node.js' }
+      ]}
+    ];
+
+    // 2. 你要的标准调用
+    const tree1 = new TreeComponent('#dropdownTree', treeData, {
+      isDropdown:true, showCheckbox:true, checkChildren:true, draggable:false, searchable:true, expandable:true
+    });
+
+    const tree2 = new TreeComponent('#staticTree', treeData, {
+      isDropdown:false, showCheckbox:true, checkChildren:true, draggable:true, searchable:true, expandable:true
+    });
+
+    // 3. 取值
+    document.getElementById('getValueBtn').onclick = () => {
+      alert('选中节点：' + JSON.stringify(tree2.getCheckedNodes(), null, 2));
+    };
+  </script>
+
+</body>
+</html>

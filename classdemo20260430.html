@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Form Input Components | 表单输入组件合集</title>
+  <style>
+    /* 全局基础样式（仅重置，不参与组件耦合） */
+    /* ============================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --frosted-text-primary: #1e293b;
+      --frosted-text-secondary: #475694;
+      --frosted-text-tertiary: #94a3b8;
+      --frosted-bg-default: rgb(228, 234, 241);
+      --frosted-bg-subtle: rgb(235, 240, 246);
+      --frosted-border-default: rgba(226, 232, 240, 0.8);
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.1);
+      --frosted-cyan-text: #06b2d4;
+      --frosted-cyan-border: rgba(6, 182, 212, 0.4);
+      --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --frosted-radius-md: 10px;
+      --frosted-blur-md: 8px;
+      --warning-color: #f43f5e;
+      /* 只新增变量 */
+    }
+
+    /*
+    注释123
+    */
+
+    /* === Frostd CSS variables (converted from getFrostedCSSVariables) === */
+    :root {
+      --frosted-bg-transparent: rgba(255, 255, 255, 0);
+      --frosted-bg-subtle: rgb(235, 240, 246);
+      --frosted-bg-default: rgb(228, 234, 241);
+      --frosted-bg-emphasis: #ffffff;
+      --frosted-bg-solid: #ffffff;
+
+      --frosted-border-subtle: rgba(226, 232, 240, 0.6);
+      --frosted-border-default: rgba(226, 232, 240, 0.8);
+      --frosted-border-emphasis: rgba(6, 182, 212, 0.4);
+
+      --frosted-highlight-subtle: rgba(255, 255, 255, 0.6);
+      --frosted-highlight-default: rgba(255, 255, 255, 0.85);
+
+      --frosted-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --frosted-shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+      --frosted-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.16);
+
+      --frosted-blur-sm: 4px;
+      --frosted-blur-md: 8px;
+      --frosted-blur-lg: 16px;
+      --frosted-blur-xl: 24px;
+      --frosted-blur-2xl: 40px;
+
+      --frosted-text-primary: #1e293b;
+      --frosted-text-secondary: #475694;
+      --frosted-text-tertiary: #94a3b8;
+
+      --frosted-surface-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4));
+      /*
+      --frosted-surface-bg-gradient: linear-gradient(180deg, rgba(228,234,241,0.6), rgba(235,240,246,0.3));
+      */
+
+      --frosted-surface-bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%);
+      --frosted-radius-sm: 6px;
+      --frosted-radius-md: 10px;
+      --frosted-radius-lg: 14px;
+      --frosted-radius-xl: 20px;
+      --frosted-radius-2xl: 28px;
+      --frosted-radius-full: 9999px;
+
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.15);
+      --frosted-cyan-border: rgba(6, 182, 212, 0.3);
+      --frosted-cyan-text: #06b2d4;
+      --frosted-cyan-glow: 0 0 15px rgba(6, 182, 212, 0.25);
+
+      --frosted-purple-bg: rgba(168, 85, 247, 0.15);
+      --frosted-purple-border: rgba(168, 85, 247, 0.3);
+      --frosted-purple-text: #9333ea;
+      --frosted-purple-glow: 0 0 15px rgba(168, 85, 247, 0.25);
+
+      --frosted-green-bg: rgba(34, 197, 94, 0.15);
+      --frosted-green-border: rgba(34, 197, 94, 0.3);
+      --frosted-green-text: #16a34a;
+      --frosted-green-glow: 0 0 15px rgba(34, 197, 94, 0.25);
+
+      --frosted-orange-bg: rgba(249, 115, 22, 0.15);
+      --frosted-orange-border: rgba(249, 115, 22, 0.3);
+      --frosted-orange-text: #ea580c;
+      --frosted-orange-glow: 0 0 15px rgba(249, 115, 22, 0.25);
+
+      --frosted-red-bg: rgba(239, 68, 68, 0.15);
+      --frosted-red-border: rgba(239, 68, 68, 0.3);
+      --frosted-red-text: #dc2626;
+      --frosted-red-glow: 0 0 15px rgba(239, 68, 68, 0.25);
+    }
+
+    /* Dark theme overrides */
+    [data-theme="dark"] {
+      --frosted-bg-transparent: rgba(0, 0, 0, 0);
+      --frosted-bg-subtle: rgba(15, 23, 42, 0.6);
+      --frosted-bg-default: #0b1220;
+      --frosted-bg-emphasis: rgba(255, 255, 255, 0.03);
+      --frosted-bg-solid: rgba(10, 14, 20, 0.8);
+
+      --frosted-border-subtle: rgba(255, 255, 255, 0.03);
+      --frosted-border-default: rgba(255, 255, 255, 0.06);
+      --frosted-border-emphasis: rgba(6, 182, 212, 0.18);
+
+      --frosted-highlight-subtle: rgba(255, 255, 255, 0.04);
+      --frosted-highlight-default: rgba(255, 255, 255, 0.06);
+
+      --frosted-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+      --frosted-shadow-md: 0 4px 10px rgba(0, 0, 0, 0.6);
+      --frosted-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
+      --frosted-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+      --frosted-blur-sm: 6px;
+      --frosted-blur-md: 10px;
+      --frosted-blur-lg: 20px;
+      --frosted-blur-xl: 28px;
+      --frosted-blur-2xl: 48px;
+
+      --frosted-text-primary: #e6eef9;
+      --frosted-text-secondary: #c9d6ee;
+      --frosted-text-tertiary: #9fb3d1;
+
+      --frosted-surface-bg: linear-gradient(180deg, rgba(20, 30, 45, 0.6), rgba(10, 14, 20, 0.6));
+      /*
+      --frosted-surface-bg-gradient: linear-gradient(180deg, rgba(12,18,28,0.6), rgba(8,10,16,0.6));
+      */
+
+      --frosted-surface-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+
+      --frosted-radius-sm: 6px;
+      --frosted-radius-md: 10px;
+      --frosted-radius-lg: 14px;
+      --frosted-radius-xl: 20px;
+      --frosted-radius-2xl: 28px;
+      --frosted-radius-full: 9999px;
+
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.12);
+      --frosted-cyan-border: rgba(6, 182, 212, 0.28);
+      --frosted-cyan-text: #22d3ee;
+      --frosted-cyan-glow: 0 0 20px rgba(34, 211, 238, 0.18);
+
+      --frosted-purple-bg: rgba(168, 85, 247, 0.12);
+      --frosted-purple-border: rgba(168, 85, 247, 0.28);
+      --frosted-purple-text: #c084fc;
+      --frosted-purple-glow: 0 0 20px rgba(192, 132, 252, 0.12);
+
+      --frosted-green-bg: rgba(34, 197, 94, 0.12);
+      --frosted-green-border: rgba(34, 197, 94, 0.28);
+      --frosted-green-text: #4ade80;
+      --frosted-green-glow: 0 0 18px rgba(74, 222, 128, 0.12);
+
+      --frosted-orange-bg: rgba(249, 115, 22, 0.12);
+      --frosted-orange-border: rgba(249, 115, 22, 0.28);
+      --frosted-orange-text: #fb923c;
+      --frosted-orange-glow: 0 0 16px rgba(251, 146, 60, 0.12);
+
+      --frosted-red-bg: rgba(239, 68, 68, 0.12);
+      --frosted-red-border: rgba(239, 68, 68, 0.28);
+      --frosted-red-text: #f87171;
+      --frosted-red-glow: 0 0 18px rgba(248, 113, 113, 0.12);
+    }
+
+    body {
+      background-color: var(--frosted-surface-bg-gradient);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .main-title {
+      font-size: 24px;
+      color: var(--frosted-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .main-subtitle {
+      font-size: 13px;
+      color: var(--frosted-text-tertiary);
+      margin-bottom: 36px;
+    }
+
+    .item-title {
+      font-size: 16px;
+      color: var(--frosted-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: var(--frosted-text-tertiary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .input-group {
+      margin-bottom: 32px;
+      max-width: 420px;
+    }
+
+    /* ============================================== */
+    /* 组件1：普通文本输入框 独立样式（无耦合） */
+    /* ============================================== */
+    .text-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .text-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .text-input-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .text-input-wrapper:focus-within .text-input-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .text-input-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    /* ============================================== */
+    /* 组件2：数字输入框 独立样式（无耦合） */
+    /* ============================================== */
+    .number-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .number-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .number-input-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .number-input-wrapper:focus-within .number-input-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .number-input-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    /* ============================================== */
+    /* 组件3：多行文本域 独立样式（无耦合） */
+    /* ============================================== */
+    .textarea-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .textarea-field {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      resize: vertical;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+      font-family: inherit;
+    }
+
+    .textarea-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .textarea-wrapper:focus-within .textarea-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .textarea-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    /* ============================================== */
+    /* 组件4：自动补全输入框 独立样式（无耦合） */
+    /* ============================================== */
+    .autocomplete-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .autocomplete-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .autocomplete-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .autocomplete-input-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .autocomplete-input-wrapper:focus-within .autocomplete-input-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .autocomplete-input-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    .autocomplete-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 100%;
+      background: var(--frosted-bg-subtle);
+      backdrop-filter: blur(var(--frosted-blur-md));
+      border: 1px solid var(--frosted-border-default);
+      border-radius: var(--frosted-radius-md);
+      box-shadow: var(--frosted-shadow-md);
+      z-index: 10;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .autocomplete-panel.show {
+      display: block;
+    }
+
+    .autocomplete-item {
+      padding: 8px 14px;
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      cursor: pointer;
+    }
+
+    .autocomplete-item:hover,
+    .autocomplete-item.active {
+      background: var(--frosted-cyan-bg);
+      color: var(--frosted-cyan-text);
+    }
+
+    /* ============================================== */
+    /* 组件5：按钮组 - 3种风格 完全独立解耦 */
+    /* ============================================== */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    /* Plain 朴素按钮 */
+    .btn-plain {
+      padding: 10px 16px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      background: var(--frosted-bg-subtle);
+      color: var(--frosted-text-secondary);
+      border: 1px solid var(--frosted-border-default);
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .btn-plain:hover {
+      opacity: 0.8;
+    }
+
+    /* Speed 速度线按钮 */
+    .btn-speed {
+      position: relative;
+      padding: 10px 16px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      background: var(--frosted-bg-subtle);
+      color: var(--frosted-text-secondary);
+      border: 1px solid var(--frosted-border-default);
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .btn-speed::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      border-radius: 1px;
+      transition: width 0.2s ease;
+    }
+
+    .btn-speed:hover::after {
+      width: 100%;
+    }
+
+    /* Fancy 精致渐变按钮 */
+    .btn-fancy {
+      padding: 10px 16px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      background: linear-gradient(135deg, #06b2d4, #06d4b2);
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: var(--frosted-shadow-md);
+    }
+
+    .btn-fancy:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* —————————————— 以下【只新增】，不修改原有 —————————————— */
+    .error-msg {
+      font-size: 12px;
+      color: var(--warning-color);
+      height: 16px;
+      margin-top: 4px;
+    }
+
+    /* 新增：验证失败边框样式（仅用于无滑动条组件） */
+    .input-error {
+      border-color: var(--warning-color) !important;
+      box-shadow: 0 0 0 1px var(--warning-color) !important;
+    }
+
+    .viewClass {
+      background: var(--frosted-surface-bg-gradient);
+      padding: 40px;
+    }
+  </style>
+  <!--
+  export const frostedVariants = {
+  // 青色 (Primary)
+  cyan: {
+    light: {
+      bg: 'rgba(6, 182, 212, 0.15)',
+      border: 'rgba(6, 182, 212, 0.3)',
+      text: '#0891b2',
+      glow: '0 0 15px rgba(6, 182, 212, 0.4)',
+    },
+    dark: {
+      bg: 'rgba(6, 182, 212, 0.2)',
+      border: 'rgba(6, 182, 212, 0.4)',
+      text: '#22d3ee',
+      glow: '0 0 20px rgba(6, 182, 212, 0.5)',
+    },
+  },
+  // 紫色
+  purple: {
+    light: {
+      bg: 'rgba(168, 85, 247, 0.15)',
+      border: 'rgba(168, 85, 247, 0.3)',
+      text: '#9333ea',
+      glow: '0 0 15px rgba(168, 85, 247, 0.4)',
+    },
+    dark: {
+      bg: 'rgba(168, 85, 247, 0.2)',
+      border: 'rgba(168, 85, 247, 0.4)',
+      text: '#c084fc',
+      glow: '0 0 20px rgba(168, 85, 247, 0.5)',
+    },
+  },
+  // 绿色 (Success)
+  green: {
+    light: {
+      bg: 'rgba(34, 197, 94, 0.15)',
+      border: 'rgba(34, 197, 94, 0.3)',
+      text: '#16a34a',
+      glow: '0 0 15px rgba(34, 197, 94, 0.4)',
+    },
+    dark: {
+      bg: 'rgba(34, 197, 94, 0.2)',
+      border: 'rgba(34, 197, 94, 0.4)',
+      text: '#4ade80',
+      glow: '0 0 20px rgba(34, 197, 94, 0.5)',
+    },
+  },
+  // 橙色 (Warning)
+  orange: {
+    light: {
+      bg: 'rgba(249, 115, 22, 0.15)',
+      border: 'rgba(249, 115, 22, 0.3)',
+      text: '#ea580c',
+      glow: '0 0 15px rgba(249, 115, 22, 0.4)',
+    },
+    dark: {
+      bg: 'rgba(249, 115, 22, 0.2)',
+      border: 'rgba(249, 115, 22, 0.4)',
+      text: '#fb923c',
+      glow: '0 0 20px rgba(249, 115, 22, 0.5)',
+    },
+  },
+  // 红色 (Error)
+  red: {
+    light: {
+      bg: 'rgba(239, 68, 68, 0.15)',
+      border: 'rgba(239, 68, 68, 0.3)',
+      text: '#dc2626',
+      glow: '0 0 15px rgba(239, 68, 68, 0.4)',
+    },
+    dark: {
+      bg: 'rgba(239, 68, 68, 0.2)',
+      border: 'rgba(239, 68, 68, 0.4)',
+      text: '#f87171',
+      glow: '0 0 20px rgba(239, 68, 68, 0.5)',
+    },
+  },
+} as const;
+
+待定，css主题样式
+  -->
+  <link rel="stylesheet" href="./frosted-glass.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <div class="viewClass">
+
+
+    <h2 class="main-title">Form Input Components / 表单输入组件</h2>
+    <div class="main-subtitle">Unified frosted style | 统一磨砂玻璃风格 · Universal interaction | 通用交互体验</div>
+
+    <!-- ============================================== -->
+    <!-- 组件1：普通文本输入框 —— 【完全原样不动】 -->
+    <!-- ============================================== -->
+    <div class="input-group">
+      <h3 class="item-title">Text Input / 普通文本输入框</h3>
+      <div class="item-desc">Single line text entry | 单行文字录入，基础通用输入控件</div>
+      <div class="text-input-wrapper">
+        <input type="text" class="text-input-field" placeholder="Please enter content / 请输入内容">
+        <div class="text-input-line"></div>
+      </div>
+      <div class="error-msg" data-key="text"></div> <!-- 只新增提示行 -->
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 组件2：数字输入框 —— 【完全原样不动】 -->
+    <!-- ============================================== -->
+    <div class="input-group">
+      <h3 class="item-title">Number Input / 数字输入框</h3>
+      <div class="item-desc">Auto decimal formatting | 失去焦点自动补全两位小数，仅允许数字与小数点</div>
+      <div class="number-input-wrapper">
+        <input type="number" inputmode="numeric" id="numberInput" class="number-input-field"
+          placeholder="Enter number | 输入数字自动格式化">
+        <div class="number-input-line"></div>
+      </div>
+      <div class="error-msg" data-key="number"></div> <!-- 只新增提示行 -->
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 组件3：多行文本域 —— 【完全原样不动】 -->
+    <!-- ============================================== -->
+    <div class="input-group">
+      <h3 class="item-title">Textarea / 多行文本域</h3>
+      <div class="item-desc">Multi-line text editing | 支持换行、拖动缩放，适用于大段文本编辑</div>
+      <div class="textarea-wrapper">
+        <textarea class="textarea-field" placeholder="Please enter multi-line content / 请输入多行文本内容"></textarea>
+        <div class="textarea-line"></div>
+      </div>
+      <div class="error-msg" data-key="textarea"></div> <!-- 只新增提示行 -->
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 组件4：自动补全输入框 —— 【完全原样不动】 -->
+    <!-- ============================================== -->
+    <div class="input-group">
+      <h3 class="item-title">Auto Complete Input / 智能补全输入框</h3>
+      <div class="item-desc">联动按键：↑上键 / ↓下键 / Enter回车 / Tab键 ｜ Key binding: Arrow Up, Arrow Down, Enter, Tab</div>
+      <div class="autocomplete-wrapper">
+        <div class="autocomplete-input-wrapper">
+          <input id="autoInput" class="autocomplete-input-field"
+            placeholder="Input keyword for fuzzy matching | 输入关键词模糊匹配">
+          <div class="autocomplete-input-line"></div>
+        </div>
+        <div id="autoPanel" class="autocomplete-panel"></div>
+      </div>
+      <div class="error-msg" data-key="auto"></div> <!-- 只新增提示行 -->
+    </div>
+    <!-- ============================================== -->
+    <!-- 下拉框 -->
+    <!-- ============================================== -->
+    <div class="bbbb">
+      <!-- Dropdown / 纯 JS 实现（样式沿用 autocomplete） -->
+      <div class="input-group" style="max-width:360px;">
+        <h3 class="item-title">Dropdown / 下拉选择</h3>
+        <div class="item-desc">Pure JS 下拉，样式沿用自动补全输入框</div>
+
+        <div class="autocomplete-wrapper" style="position:relative;">
+          <div class="autocomplete-input-wrapper" id="ddToggle" tabindex="0" style="cursor:pointer;">
+            <input id="customDropdownInput" class="autocomplete-input-field" placeholder="请选择一个选项" readonly>
+            <div class="autocomplete-input-line"></div>
+          </div>
+          <div id="customDropdownPanel" class="autocomplete-panel" aria-hidden="true" style="min-width:220px;">
+            <div class="autocomplete-item" data-value="A">Option A</div>
+            <div class="autocomplete-item" data-value="B">Option B</div>
+            <div class="autocomplete-item" data-value="C">Option C</div>
+            <div class="autocomplete-item" data-value="D">Option D</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const toggle = document.getElementById('ddToggle');
+          const input = document.getElementById('customDropdownInput');
+          const panel = document.getElementById('customDropdownPanel');
+          let items = [];
+          if (!toggle || !input || !panel) return;
+
+          function openPanel() { panel.classList.add('show'); panel.setAttribute('aria-hidden', 'false'); }
+          function closePanel() { panel.classList.remove('show'); panel.setAttribute('aria-hidden', 'true'); }
+
+          // 初始化 items
+          items = Array.from(panel.querySelectorAll('.autocomplete-item'));
+          items.forEach((it, idx) => {
+            it.tabIndex = -1;
+            it.addEventListener('click', () => {
+              const v = it.getAttribute('data-value') || it.textContent;
+              input.value = it.textContent;
+              input.dataset.value = v;
+              closePanel();
+            });
+          });
+
+          // 切换面板
+          toggle.addEventListener('click', (e) => { e.stopPropagation(); if (panel.classList.contains('show')) closePanel(); else openPanel(); });
+
+          // 键盘导航
+          toggle.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') { e.preventDefault(); openPanel(); items[0] && items[0].focus(); }
+            if (e.key === 'ArrowUp') { e.preventDefault(); openPanel(); items[items.length - 1] && items[items.length - 1].focus(); }
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (panel.classList.contains('show')) closePanel(); else openPanel(); }
+          });
+
+          panel.addEventListener('keydown', (e) => {
+            const idx = items.indexOf(document.activeElement);
+            if (e.key === 'ArrowDown') { e.preventDefault(); const next = items[idx + 1] || items[0]; next && next.focus(); }
+            if (e.key === 'ArrowUp') { e.preventDefault(); const prev = items[idx - 1] || items[items.length - 1]; prev && prev.focus(); }
+            if (e.key === 'Enter') { e.preventDefault(); document.activeElement.click(); }
+            if (e.key === 'Escape') { e.preventDefault(); closePanel(); toggle.focus(); }
+          });
+
+          // 点击外部关闭
+          document.addEventListener('click', (e) => {
+            if (!toggle.contains(e.target) && !panel.contains(e.target)) closePanel();
+          });
+
+          // 可选：对外提供 getValue
+          input.getValue = function () { return this.dataset.value || this.value; };
+        })();
+      </script>
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- 组件5：三种风格按钮 —— 【完全原样不动】 -->
+    <!-- ============================================== -->
+    <div class="input-group">
+      <h3 class="item-title">Buttons / 按钮组件</h3>
+      <div class="item-desc">Plain 朴素型 | Speed 速度线 | Fancy 精致渐变</div>
+      <div class="flex gap-3 items-center">
+        <button class="frosted-button frosted-button-cyan">
+          cyan
+        </button>
+        <button class="frosted-button frosted-button-orange">
+          orange
+        </button>
+        <button class="frosted-button frosted-button-red">
+          red
+        </button>
+        <button class="frosted-button frosted-button-green">
+          green
+        </button>
+        <button class="frosted-button frosted-button-purple">
+          purple
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- tags -->
+    <!-- ============================================== -->
+    <div class="cccc">
+      <!-- Pure JS Toggle (复用 frosted-toggle 样式) -->
+      <div class="frosted-card flex items-center gap-8" style="padding:12px;max-width:360px;">
+        <div id="ccToggle" class="frosted-toggle" role="switch" aria-checked="false" tabindex="0"
+          style="cursor:pointer;">
+          <div class="frosted-toggle-knob"></div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="ccToggleLabel" style="color:var(--frosted-text-secondary)">OFF</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const toggle = document.getElementById('ccToggle');
+          const label = document.getElementById('ccToggleLabel');
+          if (!toggle || !label) return;
+          let isOn = false;
+          function update() {
+            if (isOn) {
+              toggle.classList.add('frosted-toggle-active');
+              toggle.setAttribute('aria-checked', 'true');
+              label.textContent = 'ON';
+            } else {
+              toggle.classList.remove('frosted-toggle-active');
+              toggle.setAttribute('aria-checked', 'false');
+              label.textContent = 'OFF';
+            }
+          }
+          toggle.addEventListener('click', () => { isOn = !isOn; update(); });
+          toggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); isOn = !isOn; update(); } });
+          // init
+          update();
+        })();
+      </script>
+
+      <!-- Badges / Tags (静态，复用 frosted-badge 样式) -->
+      <section class="space-y-4" style="margin-top:12px;">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold" style="color: var(--frosted-text-primary)">10. Badges / Tags</h2>
+          <span class="frosted-badge frosted-badge-orange">Status</span>
+        </div>
+
+        <div class="frosted-card" style="padding:12px;">
+          <div class="flex flex-wrap gap-3">
+            <span class="frosted-badge frosted-badge-cyan">New</span>
+            <span class="frosted-badge frosted-badge-purple">Featured</span>
+            <span class="frosted-badge frosted-badge-green">Active</span>
+            <span class="frosted-badge frosted-badge-orange">Pending</span>
+            <span class="frosted-badge frosted-badge-red">Urgent</span>
+            <span class="frosted-badge">Default</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm" style="margin-top:8px">
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Material</div>
+            <div style="color:var(--frosted-text-primary)">3D Frosted Class</div>
+          </div>
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Height</div>
+            <div style="color:var(--frosted-text-primary)">24px</div>
+          </div>
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Border Radius</div>
+            <div style="color:var(--frosted-text-primary)">12px (pill)</div>
+          </div>
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Tints</div>
+            <div style="color:var(--frosted-cyan-text)">All variants</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 组件6：单选复选框 —— 【完全原样不动】 -->
+    <!-- ============================================== -->
+
+    <div style="display: flex;margin-top: 20px;">
+      <div class="frosted-card space-y-4" style="width: 40%;margin-right: 20px;">
+        <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);">
+          Checkboxes
+        </h4>
+        <div class="space-y-3">
+          <div class="crystal-checkbox" id="checkbox1">
+            <div class="checkbox-box">
+              <div class="checkbox-glint"></div>
+              <div class="checkbox-bead">
+                <div class="bead-inner">
+                  <div class="bead-highlight"></div>
+                  <div class="bead-secondary"></div>
+                </div>
+              </div>
+            </div>
+            <span class="checkbox-label">Unchecked</span>
+          </div>
+          <div class="crystal-checkbox" id="checkbox2">
+            <div class="checkbox-box checked">
+              <div class="checkbox-glint"></div>
+              <div class="checkbox-bead">
+                <div class="bead-inner">
+                  <div class="bead-highlight"></div>
+                  <div class="bead-secondary"></div>
+                </div>
+              </div>
+            </div>
+            <span class="checkbox-label">Checked</span>
+          </div>
+        </div>
+        <div class="text-xs pt-2" style="color: var(--frosted-text-tertiary);">
+          <div>Border: Gray</div>
+          <div>Fill: Cyan Gradient</div>
+          <div>Knob: Crystal Bead</div>
+        </div>
+      </div>
+      <div class="frosted-card space-y-4" style="width: 40%;">
+        <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);">
+          Radio Buttons
+        </h4>
+        <div class="space-y-3">
+          <div class="crystal-radio" id="radio1">
+            <div class="radio-box">
+              <div class="radio-glint"></div>
+              <div class="radio-bead">
+                <div class="bead-inner">
+                  <div class="bead-highlight"></div>
+                  <div class="bead-secondary"></div>
+                </div>
+              </div>
+            </div>
+            <span class="radio-label">Unchecked</span>
+          </div>
+          <div class="crystal-radio" id="radio2">
+            <div class="radio-box checked">
+              <div class="radio-glint"></div>
+              <div class="radio-bead">
+                <div class="bead-inner">
+                  <div class="bead-highlight"></div>
+                  <div class="bead-secondary"></div>
+                </div>
+              </div>
+            </div>
+            <span class="radio-label">Checked</span>
+          </div>
+        </div>
+        <div class="text-xs pt-2" style="color: var(--frosted-text-tertiary);">
+          <div>Border: Gray</div>
+          <div>Fill: Cyan Gradient</div>
+          <div>Dot: Crystal Bead</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex;margin-top: 20px;">
+      <div class="frosted-card" style="padding:14px; width:100%; max-width:720px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-weight:600;color:var(--frosted-text-primary);">Frosted Demo — 纯 JS + HTML</div>
+            <div style="font-size:13px;color:var(--frosted-text-tertiary)">把 React 组件转为纯前端实现，样式已引入</div>
+          </div>
+          <button id="fmThemeToggle" class="frosted-button frosted-button-cyan" style="height:36px">切换主题</button>
+        </div>
+
+        <!-- Main panel -->
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;flex-direction: column;">
+          <div style="flex:1;min-width:280px;">
+            <div style="margin-bottom:10px;color:var(--frosted-text-secondary)">进度展示（只读）</div>
+            <div class="frosted-progress-track frosted-progress" style="width:100%">
+              <div id="fmProgressFill" class="frosted-progress-fill" style="width:40%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <div id="fmProgressLabel" class="frosted-progress-label">40%</div>
+              <input id="fmReadOnlySlider" type="range" min="0" max="100" value="40"
+                style="width:220px;touch-action:none;" tabindex="-1" aria-hidden="true">
+            </div>
+          </div>
+
+          <div style="width:320px;min-width:240px;">
+            <div style="margin-bottom:10px;color:var(--frosted-text-secondary)">控制面板</div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+              <input id="fmProgressInput" type="number" min="0" max="100" value="40"
+                style="width:84px;padding:6px;border-radius:6px;border:1px solid var(--frosted-border-default)">
+              <button style="padding: 0 10px;" id="fmApplyBtn" class="frosted-button frosted-button-cyan"
+                style="height:36px">应用</button>
+              <button style="padding: 0 10px;" id="fmIncBtn" class="frosted-button" style="height:36px">+10%</button>
+              <button style="padding: 0 10px;" id="fmDecBtn" class="frosted-button" style="height:36px">-10%</button>
+            </div>
+
+            <div style="margin-top:6px;color:var(--frosted-text-secondary);margin-bottom:6px">示例滑块（用于其他交互）</div>
+            <input id="fmDemoSlider" type="range" min="0" max="100" value="30" style="width:100%">
+            <div id="fmDemoSliderVal"
+              style="text-align:right;font-weight:600;color:var(--frosted-text-primary);margin-top:6px">30%</div>
+          </div>
+
+          <button id="getValueBtn" class="frosted-button frosted-button-cyan" style="margin-top:20px;">获取选中值</button>
+        </div>
+
+      </div>
+    </div>
+    <!-- Toggle / Switch (纯 HTML + JS, 插入到 .aaaa 容器中) -->
+    <div>
+
+      <section class="space-y-4" id="fmToggleSection">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold" style="color: var(--frosted-text-primary)">
+            12. Toggle / Switch
+          </h2>
+          <span class="frosted-badge frosted-badge-cyan">Control</span>
+        </div>
+
+        <div class="frosted-card" style="display:flex;align-items:center;gap:16px;padding:12px;">
+          <div id="fmToggle" class="frosted-toggle" role="switch" aria-checked="false" tabindex="0"
+            style="cursor:pointer;">
+            <div class="frosted-toggle-knob"></div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span id="fmToggleLabel" style="color:var(--frosted-text-secondary)">OFF</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm" style="margin-top:8px">
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Track</div>
+            <div style="color:var(--frosted-text-primary)">Flat Gray (#E5E7EB)</div>
+          </div>
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Active Track</div>
+            <div style="color:var(--frosted-cyan-text)">Cyan Tint</div>
+          </div>
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Knob</div>
+            <div style="color:var(--frosted-text-primary)">3D Frosted Sphere</div>
+          </div>
+          <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle)">
+            <div style="color:var(--frosted-text-tertiary)">Size</div>
+            <div style="color:var(--frosted-text-primary)">48px × 26px</div>
+          </div>
+        </div>
+
+        <script>
+          (function () {
+            const toggle = document.getElementById('fmToggle');
+            const label = document.getElementById('fmToggleLabel');
+            if (!toggle || !label) return;
+            let isOn = false;
+            function updateUI() {
+              if (isOn) {
+                toggle.classList.add('frosted-toggle-active');
+                toggle.setAttribute('aria-checked', 'true');
+                label.textContent = 'ON';
+              } else {
+                toggle.classList.remove('frosted-toggle-active');
+                toggle.setAttribute('aria-checked', 'false');
+                label.textContent = 'OFF';
+              }
+            }
+            toggle.addEventListener('click', () => { isOn = !isOn; updateUI(); });
+            toggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); isOn = !isOn; updateUI(); } });
+            // 初始化
+            updateUI();
+          })();
+        </script>
+      </section>
+
+    </div>
+
+
+
+    <!-- ============================================== -->
+    <!-- 【新增】完整独立表单 - 沿用你的所有样式 -->
+    <!-- ============================================== -->
+    <div class="input-group" style="margin-top: 40px;">
+      <h3 class="item-title">Complete Form / 完整表单</h3>
+      <div class="item-desc">Unified validation | 统一验证，空值边框变红</div>
+
+      <!-- 表单文本框 -->
+      <div class="text-input-wrapper" style="margin-bottom:16px;">
+        <input type="text" id="formName" class="text-input-field" placeholder="请输入姓名">
+        <div class="text-input-line"></div>
+      </div>
+
+      <!-- 表单数字框 -->
+      <div class="number-input-wrapper" style="margin-bottom:16px;">
+        <input type="text" id="formPhone" class="number-input-field" placeholder="请输入手机号">
+        <div class="number-input-line"></div>
+      </div>
+
+      <!-- 表单文本域 -->
+      <div class="textarea-wrapper" style="margin-bottom:16px;">
+        <textarea id="formDesc" class="textarea-field" placeholder="请输入备注信息"></textarea>
+        <div class="textarea-line"></div>
+      </div>
+
+      <!-- 表单按钮 -->
+      <button class="frosted-button frosted-button-cyan" id="formSubmitBtn">提交表单</button>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 时间控件 -->
+    <!-- ============================================== -->
+    <h3>1. Standard: YYYY-MM-DD hh:mm:ss</h3>
+    <div id="picker1"></div>
+
+    <h3>2. Slash Format: YYYY/MM/DD hh:mm</h3>
+    <div id="picker2"></div>
+
+    <h3>3. Date Only: YYYY-MM-DD</h3>
+    <div id="picker3"></div>
+
+    <h3>4. US Format: MM/DD/YYYY</h3>
+    <div id="picker4"></div>
+
+    <h3>5. Date Range (Date Only)</h3>
+    <div id="dateRangePicker"></div>
+
+    <h3>6. Time Range (Time Only)</h3>
+    <div id="timeRangePicker"></div>
+
+    <h3 style="color:var(--frosted-cyan-text)">7. 🔥 Perfect: Unified Date Range Picker</h3>
+    <div id="unifiedRangePicker"></div>
+
+    <div class="demo-box">
+      <h4>✅ DateTimeObj Live Demo</h4>
+      <p id="demo1">Raw String: </p>
+      <p id="demo2">UTC Time: </p>
+      <p id="demo3">Local Date: </p>
+      <p id="demo4">Local Time: </p>
+      <p id="demo5">Local DateTime: </p>
+      <p id="demo6">HTML Standard: </p>
+      <p id="demo7">Is Weekday: </p>
+      <p id="demo8">Is Weekend: </p>
+      <p id="demo9">Relative Time: </p>
+    </div>
+
+
+    <h3>Dropdown Tree</h3>
+    <div id="dropdownTree" class="tree-dropdown"></div>
+
+    <h3>Static Tree</h3>
+    <div id="staticTree" class="tree-static"></div>
+  </div>
+
+  <script src="./time-picker.js"></script>
+  <script>
+    /* ============================================== */
+    /* 你原有 JS —— 【一行未改，完全保留】 */
+    /* ============================================== */
+
+    /* ============================================== */
+    /* JS 组件1：普通文本输入框（独立） */
+    /* ============================================== */
+    (function () {
+      const inputs = document.querySelectorAll('.text-input-field');
+      inputs.forEach(el => {
+        el.addEventListener('focus', () => { });
+        el.addEventListener('blur', () => { });
+      });
+    })();
+
+    /* ============================================== */
+    /* JS 组件2：数字输入框（独立，自动小数） */
+    /* ============================================== */
+    (function () {
+      const numberInput = document.getElementById('numberInput');
+      numberInput.addEventListener('blur', function () {
+        let val = this.value.trim();
+        if (!val) return;
+        val = val.replace(/[^\d.]/g, '');
+        if (!val.includes('.')) {
+          this.value = val + '.00';
+        } else {
+          const [intPart, decPart = '00'] = val.split('.');
+          this.value = intPart + '.' + decPart.slice(0, 2);
+        }
+      });
+    })();
+
+    /* ============================================== */
+    /* JS 组件3：多行文本域（独立） */
+    /* ============================================== */
+    (function () {
+      const textarea = document.querySelector('.textarea-field');
+      textarea.addEventListener('input', function () { });
+    })();
+
+    /* ============================================== */
+    /* JS 组件4：自动补全输入框（独立，无耦合） */
+    /* ============================================== */
+    (function () {
+      const options = [
+        'Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'Fig', 'Grape', 'Honeydew', 'Kiwi', 'Lemon', 'Mango', 'Orange',
+        'Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Hangzhou', 'Nanjing', 'Chengdu', 'Chongqing', 'Wuhan', 'Xi\'an',
+        'JavaScript', 'TypeScript', 'Java', 'Python', 'Go', 'Vue', 'React', 'Angular', 'Node.js', 'HTML', 'CSS', 'MySQL',
+        'Admin', 'User', 'Guest', 'Manager', 'Editor', 'Design', 'Develop', 'Test', 'Release', 'Deploy', 'Search', 'Query',
+        'Cyan', 'Blue', 'Green', 'Red', 'Yellow', 'Purple', 'Pink', 'Gray', 'Black', 'White'
+      ];
+
+      const input = document.getElementById('autoInput');
+      const panel = document.getElementById('autoPanel');
+      let activeIndex = -1;
+
+      input.addEventListener('input', function () {
+        const kw = this.value.trim().toLowerCase();
+        panel.innerHTML = '';
+        activeIndex = -1;
+        if (!kw) { panel.classList.remove('show'); return; }
+        const list = options.filter(i => i.toLowerCase().includes(kw));
+        if (list.length === 0) { panel.classList.remove('show'); return; }
+        list.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'autocomplete-item';
+          div.textContent = item;
+          div.onclick = () => { input.value = item; panel.classList.remove('show'); };
+          panel.appendChild(div);
+        });
+        panel.classList.add('show');
+      });
+
+      input.addEventListener('keydown', function (e) {
+        const items = panel.querySelectorAll('.autocomplete-item');
+        if (items.length === 0 || !panel.classList.contains('show')) return;
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIndex++;
+          if (activeIndex >= items.length) activeIndex = 0;
+          items.forEach(i => i.classList.remove('active'));
+          items[activeIndex].classList.add('active');
+          items[activeIndex].scrollIntoView({ block: 'nearest' });
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIndex--;
+          if (activeIndex < 0) activeIndex = items.length - 1;
+          items.forEach(i => i.classList.remove('active'));
+          items[activeIndex].classList.add('active');
+          items[activeIndex].scrollIntoView({ block: 'nearest' });
+        }
+        if (e.key === 'Enter' || e.key === 'Tab') {
+          e.preventDefault();
+          const idx = activeIndex === -1 ? 0 : activeIndex;
+          if (items[idx]) input.value = items[idx].textContent;
+          panel.classList.remove('show');
+          activeIndex = -1;
+        }
+      });
+
+      document.addEventListener('click', function (e) {
+        const inInput = input.contains(e.target);
+        const inPanel = panel.contains(e.target);
+        if (!inInput && !inPanel) {
+          panel.classList.remove('show');
+          activeIndex = -1;
+        }
+      });
+    })();
+
+
+    // 复选框逻辑
+    function setupCheckbox(checkboxId) {
+      const checkbox = document.getElementById(checkboxId);
+      const checkboxBox = checkbox.querySelector('.checkbox-box');
+      const checkboxLabel = checkbox.querySelector('.checkbox-label');
+
+      checkbox.addEventListener('click', () => {
+        checkboxBox.classList.toggle('checked');
+        if (checkboxBox.classList.contains('checked')) {
+          checkboxLabel.style.color = 'var(--frosted-cyan-text)';
+        } else {
+          checkboxLabel.style.color = 'var(--frosted-text-secondary)';
+        }
+      });
+    }
+
+    // 初始化复选框
+    setupCheckbox('checkbox1');
+    setupCheckbox('checkbox2');
+
+
+    // 单选框逻辑
+    function setupRadioGroup(radioIds) {
+      const radios = radioIds.map(id => document.getElementById(id));
+
+      radios.forEach(radio => {
+        const radioBox = radio.querySelector('.radio-box');
+        const radioLabel = radio.querySelector('.radio-label');
+
+        radio.addEventListener('click', () => {
+          // 取消所有选中状态
+          radios.forEach(r => {
+            const box = r.querySelector('.radio-box');
+            const label = r.querySelector('.radio-label');
+            box.classList.remove('checked');
+            label.style.color = 'var(--frosted-text-secondary)';
+          });
+
+          // 设置当前选中状态
+          radioBox.classList.add('checked');
+          radioLabel.style.color = 'var(--frosted-cyan-text)';
+        });
+      });
+    }
+
+    // 初始化单选框组
+    setupRadioGroup(['radio1', 'radio2']);
+
+  </script>
+  <script>
+    // 绑定 .aaaa 演示控件（在页面加载后执行）
+    document.addEventListener('DOMContentLoaded', () => {
+      const demoSlider = document.getElementById('demoSlider');
+      const demoSliderVal = document.getElementById('demoSliderVal');
+      const slider1 = document.getElementById('slider1');
+
+      const demoProgressInput = document.getElementById('demoProgressInput');
+      const demoSetProgressBtn = document.getElementById('demoSetProgressBtn');
+      const demoIncBtn = document.getElementById('demoIncBtn');
+      const demoDecBtn = document.getElementById('demoDecBtn');
+
+      const progressFill = document.getElementById('progress1Fill');
+      const progressLabel = document.getElementById('progress1Label');
+
+      // 同步 demoSlider -> slider1
+      if (demoSlider && slider1) {
+        demoSlider.addEventListener('input', (e) => {
+          const v = e.target.value;
+          demoSliderVal.textContent = v + '%';
+          slider1.value = v;
+          // 如果 slider1 有 input 监听则触发
+          slider1.dispatchEvent(new Event('input'));
+        });
+      }
+
+      // 如果 slider1 改变，更新 demo 显示
+      if (slider1 && demoSliderVal) {
+        slider1.addEventListener('input', (e) => {
+          const v = e.target.value;
+          demoSliderVal.textContent = v + '%';
+          if (demoSlider) demoSlider.value = v;
+        });
+      }
+
+      // 简单进度 API
+      function setProgressValue(idPrefix, value, unit) {
+        const fill = document.getElementById(idPrefix + 'Fill');
+        const label = document.getElementById(idPrefix + 'Label');
+        if (!fill) return;
+        const pct = Math.max(0, Math.min(100, Number(value) || 0));
+        fill.style.width = pct + '%';
+        if (label) label.textContent = (unit ? String(value) + unit : pct + '%');
+      }
+
+      // 按钮绑定
+      if (demoSetProgressBtn) {
+        demoSetProgressBtn.addEventListener('click', () => {
+          const v = Number(demoProgressInput.value || 0);
+          setProgressValue('progress1', v, '%');
+        });
+      }
+      if (demoIncBtn) demoIncBtn.addEventListener('click', () => {
+        let v = Number(demoProgressInput.value || 0); v = Math.min(100, v + 10); demoProgressInput.value = v; setProgressValue('progress1', v, '%');
+      });
+      if (demoDecBtn) demoDecBtn.addEventListener('click', () => {
+        let v = Number(demoProgressInput.value || 0); v = Math.max(0, v - 10); demoProgressInput.value = v; setProgressValue('progress1', v, '%');
+      });
+
+      // 初始化显示
+      setProgressValue('progress1', Number(demoProgressInput.value || 0), '%');
+    });
+  </script>
+
+  <!-- ============================================== -->
+  <!-- 【新增】独立表单模块 - 注释清晰 空值滑动条报红 -->
+  <!-- ============================================== -->
+  <script>
+    /* ============================================== */
+    /* 模块1：获取表单元素（独立） */
+    /* ============================================== */
+    const formName = document.getElementById('formName');
+    const formPhone = document.getElementById('formPhone');
+    const formDesc = document.getElementById('formDesc');
+    const formSubmitBtn = document.getElementById('formSubmitBtn');
+
+    // 获取滑动条元素
+    const formNameLine = formName.nextElementSibling;
+    const formPhoneLine = formPhone.nextElementSibling;
+    const formDescLine = formDesc.nextElementSibling;
+
+    /* ============================================== */
+    /* 模块2：输入时清除红色错误（独立） */
+    /* ============================================== */
+    function clearInputError(el, line) {
+      el.classList.remove('input-error');
+      if (line) line.classList.remove('error');
+    }
+
+    formName.addEventListener('input', () => clearInputError(formName, formNameLine));
+    formPhone.addEventListener('input', () => clearInputError(formPhone, formPhoneLine));
+    formDesc.addEventListener('input', () => clearInputError(formDesc, formDescLine));
+
+    /* ============================================== */
+    /* 模块3：表单验证主函数（独立） */
+    /* ============================================== */
+    function validateForm() {
+      let isValid = true;
+
+      // 验证姓名：滑动条变红
+      if (!formName.value.trim()) {
+        formNameLine.classList.add('error');
+        isValid = false;
+      }
+
+      // 验证手机号：滑动条变红
+      if (!formPhone.value.trim()) {
+        formPhoneLine.classList.add('error');
+        isValid = false;
+      }
+
+      // 验证备注：滑动条变红
+      if (!formDesc.value.trim()) {
+        formDescLine.classList.add('error');
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    /* ============================================== */
+    /* 模块4：提交按钮点击事件（独立） */
+    /* ============================================== */
+    formSubmitBtn.addEventListener('click', () => {
+      const pass = validateForm();
+      if (pass) {
+        alert('表单提交成功！');
+        console.log('表单提交成功！');
+      } else {
+        console.log('请完善所有必填项！');
+      }
+    });
+
+  </script>
+  <!--时间控件-->
+  <script>
+    function showDemo(date) {
+      const dt = new DateTimeObj(date);
+      document.getElementById("demo1").textContent = `Raw String: ${dt.format()}`;
+      document.getElementById("demo2").textContent = `UTC Time: ${dt._date.toISOString()}`;
+      document.getElementById("demo3").textContent = `Local Date: ${dt.localDate}`;
+      document.getElementById("demo4").textContent = `Local Time: ${dt.localTime}`;
+      document.getElementById("demo5").textContent = `Local DateTime: ${dt.localDateTime}`;
+      document.getElementById("demo6").textContent = `HTML Standard: ${dt.htmlDate}`;
+      document.getElementById("demo7").textContent = `Is Weekday: ${dt.isWeekday ? "Yes" : "No"}`;
+      document.getElementById("demo8").textContent = `Is Weekend: ${dt.isWeekend ? "Yes" : "No"}`;
+      document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
+    }
+    // 初始化所有选择器
+    const datetimepicker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
+    const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
+    const datetimepicker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
+    const datetimepicker4 = new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
+    const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+    const datetimetimeRangePicker = new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
+    const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
+
+    setInterval(() => {
+      showDemo(new Date());
+    }, 1000);
+  </script>
+
+  <!--树形控件-->
+  <script src="./tree.js"></script>
+  <script>
+    // 1. 你的数据
+    const treeData = [
+      {
+        id: 1, label: '前端技术', icon: '📦', children: [
+          { id: 11, label: 'HTML/CSS', icon: '📄' },
+          {
+            id: 12, label: 'JavaScript', icon: '🚀', children: [
+              { id: 121, label: 'ES6+' },
+              { id: 122, label: 'TypeScript' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2, label: '后端技术', icon: '⚙️', children: [
+          { id: 21, label: 'Java' },
+          { id: 22, label: 'Node.js' }
+        ]
+      }
+    ];
+
+    // 2. 你要的标准调用
+    const tree1 = new TreeComponent('#dropdownTree', treeData, {
+      isDropdown: true, showCheckbox: true, checkChildren: true, draggable: false, searchable: true, expandable: true
+    });
+
+    const tree2 = new TreeComponent('#staticTree', treeData, {
+      isDropdown: false, showCheckbox: true, checkChildren: true, draggable: true, searchable: true, expandable: true
+    });
+
+    // 3. 取值
+    document.getElementById('getValueBtn').onclick = () => {
+      alert('选中节点：' + JSON.stringify(tree2.getCheckedNodes(), null, 2));
+    };
+  </script>
+
+  <!--进度条对应js-->
+  <script>
+    (function () {
+      function $(id) { return document.getElementById(id) }
+      const themeToggle = $('fmThemeToggle');
+      const progressFill = $('fmProgressFill');
+      const progressLabel = $('fmProgressLabel');
+      const readOnlySlider = $('fmReadOnlySlider');
+      const input = $('fmProgressInput');
+      const applyBtn = $('fmApplyBtn');
+      const incBtn = $('fmIncBtn');
+      const decBtn = $('fmDecBtn');
+      const demoSlider = $('fmDemoSlider');
+      const demoSliderVal = $('fmDemoSliderVal');
+
+      let syncLock = false; // 防止循环同步
+
+      // 主题切换：toggle data-theme="dark"
+      if (themeToggle) themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      });
+
+      // 设置进度值（0-100），更新填充和滑块/输入
+      function setProgress(v) {
+        const n = Math.max(0, Math.min(100, Number(v) || 0));
+        if (syncLock) return;
+        syncLock = true;
+        if (progressFill) progressFill.style.width = n + '%';
+        if (progressLabel) progressLabel.textContent = n + '%';
+        if (readOnlySlider) readOnlySlider.value = n;
+        if (demoSlider) demoSlider.value = n;
+        if (input) input.value = n;
+        validateInput();
+        syncLock = false;
+      }
+
+      // 校验输入并控制 Apply 按钮的启用状态
+      function validateInput() {
+        if (!input) return false;
+        const val = Number(input.value);
+        const ok = !Number.isNaN(val) && val >= 0 && val <= 100;
+        if (applyBtn) {
+          applyBtn.disabled = !ok;
+          applyBtn.style.opacity = ok ? '1' : '0.6';
+          applyBtn.style.pointerEvents = ok ? 'auto' : 'none';
+        }
+        return ok;
+      }
+
+      // 绑定事件
+      if (applyBtn) applyBtn.addEventListener('click', () => { if (validateInput()) setProgress(input.value); });
+      if (incBtn) incBtn.addEventListener('click', () => setProgress(Number(input.value || 0) + 10));
+      if (decBtn) decBtn.addEventListener('click', () => setProgress(Number(input.value || 0) - 10));
+
+      // 输入框交互：输入时校验；回车时应用并同步滑块
+      if (input) {
+        input.addEventListener('input', () => {
+          validateInput();
+          if (!syncLock) {
+            syncLock = true;
+            const v = Number(input.value) || 0;
+            if (demoSlider) demoSlider.value = v;
+            if (readOnlySlider) readOnlySlider.value = v;
+            if (progressFill) progressFill.style.width = (Math.max(0, Math.min(100, v))) + '%';
+            if (progressLabel) progressLabel.textContent = (Math.max(0, Math.min(100, v))) + '%';
+            syncLock = false;
+          }
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (validateInput()) setProgress(input.value);
+          }
+        });
+      }
+
+      // demo slider sync: 拖动 demoSlider 时同步到输入与进度
+      if (demoSlider) demoSlider.addEventListener('input', (e) => {
+        const v = Number(e.target.value) || 0;
+        demoSliderVal.textContent = v + '%';
+        if (!syncLock) {
+          syncLock = true;
+          if (input) input.value = v;
+          if (readOnlySlider) readOnlySlider.value = v;
+          if (progressFill) progressFill.style.width = v + '%';
+          if (progressLabel) progressLabel.textContent = v + '%';
+          validateInput();
+          syncLock = false;
+        }
+      });
+
+      // 如果只读滑块被意外拖动（某些设备上可能可拖），也同步
+      if (readOnlySlider) readOnlySlider.addEventListener('input', (e) => {
+        const v = Number(e.target.value) || 0;
+        if (!syncLock) {
+          syncLock = true;
+          if (input) input.value = v;
+          if (demoSlider) demoSlider.value = v;
+          if (progressFill) progressFill.style.width = v + '%';
+          if (progressLabel) progressLabel.textContent = v + '%';
+          validateInput();
+          syncLock = false;
+        }
+      });
+
+      // init
+      validateInput();
+      setProgress(input ? input.value : 0);
+    })();
+  </script>
+</body>
+
+</html>

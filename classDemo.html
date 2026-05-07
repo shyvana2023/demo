@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frosted Material UI Showcase</title>
+    <!-- Lucide Icons CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.487.0/dist/umd/lucide.min.js"></script>
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--frosted-bg-default);
+            padding: 24px;
+            transition: background-color 0.3s ease;
+        }
+
+      
+        /* 通用组件样式 
+        /* ============================================
+       */
+        .frosted-card {
+            margin: 20px;
+            position: relative;
+            padding: 20px;
+            border-radius: var(--frosted-radius-lg);
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.08) 0%,
+                    var(--frosted-bg-subtle) 15%,
+                    var(--frosted-bg-subtle) 85%,
+                    rgba(0, 0, 0, 0.02) 100%);
+            backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
+            -webkit-backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
+            border: 1px solid var(--frosted-border-default);
+            box-shadow:
+                0 1px 0 0 var(--frosted-highlight-default) inset,
+                0 -2px 6px rgba(0, 0, 0, 0.04) inset,
+                1px 0 0 rgba(255, 255, 255, 0.2) inset,
+                -1px 0 0 rgba(0, 0, 0, 0.02) inset,
+                var(--frosted-shadow-md);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        .frosted-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.12) 0%,
+                    transparent 100%);
+            pointer-events: none;
+        }
+
+        .frosted-card:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 1px 0 0 var(--frosted-highlight-default) inset,
+                0 -2px 6px rgba(0, 0, 0, 0.04) inset,
+                1px 0 0 rgba(255, 255, 255, 0.2) inset,
+                -1px 0 0 rgba(0, 0, 0, 0.02) inset,
+                var(--frosted-shadow-lg);
+        }
+
+        /* 彩色卡片 */
+        .frosted-card-cyan {
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    var(--frosted-cyan-bg) 15%,
+                    var(--frosted-cyan-bg) 85%,
+                    rgba(6, 182, 212, 0.2) 100%);
+            border-color: var(--frosted-cyan-border);
+        }
+
+        .frosted-card-purple {
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    var(--frosted-purple-bg) 15%,
+                    var(--frosted-purple-bg) 85%,
+                    rgba(168, 85, 247, 0.2) 100%);
+            border-color: var(--frosted-purple-border);
+        }
+
+        .frosted-card-green {
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    var(--frosted-green-bg) 15%,
+                    var(--frosted-green-bg) 85%,
+                    rgba(34, 197, 94, 0.2) 100%);
+            border-color: var(--frosted-green-border);
+        }
+
+        .frosted-card-orange {
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    var(--frosted-orange-bg) 15%,
+                    var(--frosted-orange-bg) 85%,
+                    rgba(249, 115, 22, 0.2) 100%);
+            border-color: var(--frosted-orange-border);
+        }
+
+        .frosted-highlight {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .frosted-glass-emphasis {
+            background: var(--frosted-bg-default);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--frosted-border-default);
+        }
+
+        .frosted-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 16px;
+            border-radius: 8px;
+            border: 1px solid var(--frosted-border-default);
+            background: var(--frosted-bg-subtle);
+            color: var(--frosted-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .frosted-button:hover {
+            background: var(--frosted-bg-transparent);
+            border-color: var(--frosted-border-emphasis);
+        }
+
+        .frosted-button-cyan {
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%);
+            border-color: rgba(6, 182, 212, 0.3);
+            color: var(--frosted-cyan-text);
+        }
+
+        .frosted-button-cyan:hover {
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.12) 100%);
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .frosted-button-purple {
+            background: linear-gradient(180deg, rgba(147, 51, 234, 0.15) 0%, rgba(147, 51, 234, 0.08) 100%);
+            border-color: rgba(147, 51, 234, 0.3);
+            color: var(--frosted-purple-text);
+        }
+
+        .frosted-button-purple:hover {
+            background: linear-gradient(180deg, rgba(147, 51, 234, 0.2) 0%, rgba(147, 51, 234, 0.12) 100%);
+            border-color: rgba(147, 51, 234, 0.4);
+        }
+
+        .frosted-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--frosted-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-radius: 15%;
+        }
+
+        .frosted-icon:hover {
+            background: var(--frosted-bg-subtle);
+            border-color: var(--frosted-border-default);
+        }
+
+        .frosted-icon-active {
+            background: var(--frosted-cyan-bg);
+            color: var(--frosted-cyan-text);
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+
+        .frosted-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--frosted-bg-subtle);
+            border: 1px solid var(--frosted-border-default);
+        }
+
+        .frosted-badge-cyan {
+            color: var(--frosted-cyan-text);
+            border-color: rgba(6, 182, 212, 0.3);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .frosted-badge-purple {
+            color: var(--frosted-purple-text);
+            border-color: rgba(147, 51, 234, 0.3);
+            background: rgba(147, 51, 234, 0.1);
+        }
+
+        .frosted-badge-green {
+            color: var(--frosted-green-text);
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .frosted-badge-orange {
+            color: var(--frosted-orange-text);
+            border-color: rgba(249, 115, 22, 0.3);
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .frosted-badge-red {
+            color: var(--frosted-red-text);
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .frosted-input {
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            border: 1px solid var(--frosted-border-default);
+            background: var(--frosted-bg-subtle);
+            padding: 0 12px;
+        }
+
+        .frosted-modal {
+            background: var(--frosted-bg-default);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--frosted-border-default);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        
+
+      
+        /* 布局样式 */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--frosted-text-primary);
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .grid-cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .grid-cols-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .grid-cols-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-3 {
+            gap: 12px;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .gap-6 {
+            gap: 24px;
+        }
+
+        .space-y-1>*+* {
+            margin-top: 4px;
+        }
+
+        .space-y-2>*+* {
+            margin-top: 8px;
+        }
+
+        .space-y-3>*+* {
+            margin-top: 12px;
+        }
+
+        .space-y-4>*+* {
+            margin-top: 16px;
+        }
+
+        .text-sm {
+            font-size: 14px;
+        }
+
+        .text-xs {
+            font-size: 12px;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .text-tertiary {
+            color: var(--frosted-text-tertiary);
+        }
+
+        .text-secondary {
+            color: var(--frosted-text-secondary);
+        }
+
+        .text-primary {
+            color: var(--frosted-text-primary);
+        }
+
+        .text-cyan {
+            color: var(--frosted-cyan-text);
+        }
+
+        .p-3 {
+            padding: 12px;
+        }
+
+        .p-4 {
+            padding: 16px;
+        }
+
+        .pt-2 {
+            padding-top: 8px;
+        }
+
+        .pt-4 {
+            padding-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .rounded-lg {
+            border-radius: 8px;
+        }
+
+        .rounded-2xl {
+            border-radius: 16px;
+        }
+
+        .w-56 {
+            width: 224px;
+        }
+
+        .flex-1 {
+            flex: 1;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .absolute {
+            position: absolute;
+        }
+
+        .top-4 {
+            top: 16px;
+        }
+
+        .right-4 {
+            right: 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .md\:flex {
+                display: flex;
+            }
+
+            .md\:hidden {
+                display: none;
+            }
+
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .md\:grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .md\:grid-cols-5 {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lg\:flex-row {
+                flex-direction: row;
+            }
+        }
+
+        /* 弹性容器 */
+        .flex {
+            display: flex;
+        }
+
+        /* 垂直居中 */
+        .items-center {
+            align-items: center;
+        }
+
+        .items-start {
+            align-items: flex-start;
+        }
+
+        .items-end {
+            align-items: flex-end;
+        }
+
+        /* 水平居中 */
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .justify-around {
+            justify-content: space-around;
+        }
+
+        .justify-start {
+            justify-content: flex-start;
+        }
+
+        .justify-end {
+            justify-content: flex-end;
+        }
+
+        /* 横向换行 */
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .flex-nowrap {
+            flex-wrap: nowrap;
+        }
+
+        /* 垂直排列 */
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .flex-row {
+            flex-direction: row;
+        }
+
+        /* 子元素自动占满剩余空间 */
+        .flex-1 {
+            flex: 1;
+        }
+    </style>
+        <style>
+        /* 全局重置与基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .component-section {
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 12px;
+            background: #fff;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+        }
+        .specs {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #6e6e73;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        .spec-label {
+            color: #86868b;
+        }
+        .spec-value {
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+        .color-tint {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        /* 6. Table / Data Table 样式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .data-table th, .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .data-table th {
+            font-weight: 600;
+            color: #6e6e73;
+            font-size: 13px;
+        }
+        .data-table td {
+            font-size: 14px;
+            color: #1d1d1f;
+        }
+        /* 状态点（Status Dot）- 磨砂水晶珠样式 */
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            /* 径向渐变+内外阴影实现水晶质感 */
+            background: radial-gradient(circle at top-left, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            box-shadow: 
+                inset 0 1px 1px rgba(255,255,255,0.8), /* 内阴影 */
+                0 1px 3px rgba(0,0,0,0.1); /* 外阴影 */
+            position: relative;
+        }
+        .status-dot.sm { background-color: #007aff; } /* cyan */
+        .status-dot.md { background-color: #34c759; } /* green */
+        .status-dot.lg { background-color: #ff3b30; } /* red */
+        .status-dot.orange { background-color: #ff9500; } /* orange */
+        .status-dot.pulse { background-color: #af52de; } /* purple */
+        /* 操作按钮 */
+        .action-btn {
+            background: transparent;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .action-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 7. Buttons / Button Variants 样式 */
+        .btn-group {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        /* Speed Buttons - 快速响应 */
+        .speed-btn {
+            height: 32px;
+            padding: 0 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 150ms ease; /* 150ms fast 过渡 */
+            position: relative;
+            overflow: hidden;
+        }
+        .speed-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: currentColor;
+            transition: width 150ms ease;
+        }
+        .speed-btn:hover::after {
+            width: 100%; /* hover 显示速度线 */
+        }
+        .speed-btn.primary { color: #007aff; background: #f2f9ff; }
+        .speed-btn.secondary { color: #6e6e73; background: #f5f5f7; }
+        .speed-btn.success { color: #34c759; background: #f2fef4; }
+        .speed-btn.warning { color: #ff9500; background: #fff8f0; }
+        .speed-btn.danger { color: #ff3b30; background: #ffebee; }
+        .speed-btn.save { color: #007aff; background: #f2f9ff; }
+        .speed-btn.publish { color: #007aff; background: #e8f4ff; }
+        .speed-btn.deploy { color: #6e6e73; background: #f5f5f7; }
+
+        /* Ghost Buttons - 低调隐形 */
+        .ghost-btn {
+            height: 32px;
+            padding: 0 12px;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: #1d1d1f;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 150ms ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ghost-btn:hover {
+            background-color: #f0f0f0; /* hover 浅背景 */
+        }
+        .ghost-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Crystal Buttons - 水晶质感 */
+        .crystal-btn {
+            height: 36px; /* standard 高度 */
+            padding: 0 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            /* 3D 磨砂玻璃 + 光泽效果 */
+            background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.08), /* 3D 厚度 */
+                inset 0 1px 0 rgba(255,255,255,0.9); /* 光泽 */
+            transition: all 150ms ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .crystal-btn:hover {
+            box-shadow: 
+                0 6px 16px rgba(0,0,0,0.12), /* lift 悬浮提升 */
+                inset 0 1px 0 rgba(255,255,255,0.9),
+                0 0 12px rgba(0,122,255,0.2); /* glow 发光 */
+            transform: translateY(-1px);
+        }
+        .crystal-btn.add { color: #fff; background: linear-gradient(145deg, #007aff, #0066cc); }
+        .crystal-btn.edit { color: #1d1d1f; background: linear-gradient(145deg, #f5f5f7, #e5e5e7); }
+        .crystal-btn.delete { color: #fff; background: linear-gradient(145deg, #ff3b30, #cc2e25); }
+        .crystal-btn.disabled { color: #86868b; background: linear-gradient(145deg, #f9f9f9, #ececec); cursor: not-allowed; }
+        .crystal-btn.disabled:hover {
+            box-shadow: inherit;
+            transform: none;
+        }
+
+        /* 8. Cards / Content Container 样式 */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 15px;
+        }
+        .card {
+            padding: 16px;
+            border-radius: 12px; /* 圆角 12px */
+            /* 3D Frosted Glass 磨砂玻璃材质 */
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); /* 3-4mm 深度 */
+            border: 1px solid rgba(255,255,255,0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        .card .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .card .card-content {
+            font-size: 13px;
+            color: #6e6e73;
+            line-height: 1.4;
+        }
+        /* 卡片颜色变体 */
+        .card.cyan .card-title { color: #007aff; }
+        .card.purple .card-title { color: #af52de; }
+        .card.green .card-title { color: #34c759; border-bottom: 2px solid #34c759; padding-bottom: 8px; }
+        .card.orange .card-title { color: #ff9500; }
+
+        /* 9. List / Menu 样式 */
+        .nav-menu {
+            width: 200px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .menu-item {
+            height: 40px; /* Item Height 40px */
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #1d1d1f;
+            cursor: pointer;
+            transition: background 150ms ease; /* 150ms fast 过渡 */
+            position: relative;
+        }
+        .menu-item.active {
+            background-color: #e8f4ff; /* Cyan Background 激活态 */
+        }
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: #007aff; /* Speed Line Left 左侧速度线 */
+        }
+        .menu-item:hover:not(.active) {
+            background-color: #f5f5f7;
+        }
+
+        /* 10. Badges / Tags 样式 */
+        .badge-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .badge {
+            height: 24px; /* Height 24px */
+            padding: 0 12px;
+            border-radius: 12px; /* pill 圆角 12px */
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 3D Frosted Class 磨砂玻璃 */
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        /* Badge 颜色变体 */
+        .badge.new { color: #007aff; background: rgba(0,122,255,0.1); }
+        .badge.featured { color: #af52de; background: rgba(175,82,222,0.1); }
+        .badge.active { color: #34c759; background: rgba(52,199,89,0.1); }
+        .badge.pending { color: #ff9500; background: rgba(255,149,0,0.1); }
+        .badge.urgent { color: #ff3b30; background: rgba(255,59,48,0.1); }
+        .badge.default { color: #6e6e73; background: rgba(110,110,115,0.1); }
+    </style>
+    <link rel="stylesheet" type="text/css" href="./frosted-glass.css">
+</head>
+
+<body data-theme="light">
+    <!-- 主题切换按钮 -->
+    <button id="themeToggle" class="frosted-button frosted-highlight mb-8">
+        <i id="themeIcon" data-lucide="moon" style="width: 18px; height: 18px;"></i>
+        <span id="themeText">Dark Mode</span>
+    </button>
+
+    <!-- Section 1: Main Panel -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">1. Main Panel</h2>
+            <span class="frosted-badge frosted-badge-cyan">Container</span>
+        </div>
+
+        <div class="grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Main Panel Demo -->
+            <div class="frosted-card frosted-highlight" style="min-height: 200px;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="frosted-icon frosted-icon-active">
+                        <i data-lucide="home" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--frosted-text-primary); font-weight: 600;">Dashboard</h3>
+                        <p style="color: var(--frosted-text-tertiary); font-size: 12px;">User Info • 20 minutes</p>
+                    </div>
+                </div>
+                <div class="rounded-lg p-4"
+                    style="background: var(--frosted-bg-subtle); border: 1px solid var(--frosted-border-default);">
+                    <p style="color: var(--frosted-text-secondary);">
+                        Main content area with frosted glass background.
+                        This panel demonstrates the subtle transparency effect.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Documentation -->
+            <div class="frosted-card" style="background: var(--frosted-bg-subtle);">
+                <h4 style="color: var(--frosted-text-primary); font-weight: 600; margin-bottom: 12px;">技术规格</h4>
+                <ul class="space-y-2 text-sm" style="color: var(--frosted-text-secondary);">
+                    <li><strong>Material:</strong> Flat White (#FFFFFF)</li>
+                    <li><strong>Opacity:</strong> 70% (default), 40% (subtle), 85% (emphasis)</li>
+                    <li><strong>Shadow:</strong> 0 2px 6px rgba(0,0,0,0.08)</li>
+                    <li><strong>Border Radius:</strong> 16px</li>
+                    <li><strong>Blur:</strong> 8px (md) backdrop-filter</li>
+                    <li><strong>Border:</strong> 1px solid rgba(255,255,255,0.5)</li>
+                </ul>
+
+                <div class="mt-4 p-3 rounded-lg" style="background: var(--frosted-bg-transparent);">
+                    <code class="text-xs" style="color: var(--frosted-cyan-text);">
+.frosted-card {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Header -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">2. Header / Top Bar</h2>
+            <span class="frosted-badge frosted-badge-purple">Navigation</span>
+        </div>
+
+        <div class="frosted-glass-emphasis frosted-highlight rounded-2xl p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold"
+                            style="background: var(--frosted-cyan-bg); color: var(--frosted-cyan-text);">
+                            P
+                        </div>
+                        <span style="color: var(--frosted-text-primary); font-weight: 600;">
+                            PRAM
+                        </span>
+                    </div>
+
+                    <nav class="hidden md:flex items-center gap-4 text-sm">
+                        <span style="color: var(--frosted-text-secondary);">Home</span>
+                        <i data-lucide="chevron-right"
+                            style="width: 14px; height: 14px; color: var(--frosted-text-tertiary);"></i>
+                        <span style="color: var(--frosted-text-secondary);">Production</span>
+                        <i data-lucide="chevron-right"
+                            style="width: 14px; height: 14px; color: var(--frosted-text-tertiary);"></i>
+                        <span style="color: var(--frosted-text-primary);">Recipe Configuration</span>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="frosted-input" style="width: 200px; height: 36px;">
+                        <div class="flex items-center gap-2 h-full">
+                            <i data-lucide="search"
+                                style="width: 16px; height: 16px; color: var(--frosted-text-tertiary);"></i>
+                            <span style="color: var(--frosted-text-tertiary); font-size: 13px;">
+                                Search...
+                            </span>
+                        </div>
+                    </div>
+                    <button class="frosted-icon">
+                        <i data-lucide="bell" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <div class="w-8 h-8 rounded-full frosted-glass-subtle flex items-center justify-center">
+                        <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <button class="frosted-button frosted-button-cyan text-sm" style="height: 32px;">
+                        Share
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-4">
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Material</div>
+                <div style="color: var(--frosted-text-primary);">Flat White (#FFFFFF)</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Shadow</div>
+                <div style="color: var(--frosted-text-primary);">0 1px 5px rgba(0,0,0,0.08)</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Height</div>
+                <div style="color: var(--frosted-text-primary);">64px</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Action Button</div>
+                <div style="color: var(--frosted-cyan-text);">3D Frosted Glass (Cyan)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Sidebar -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">3. Sidebar / Navigation</h2>
+            <span class="frosted-badge frosted-badge-green">Navigation</span>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Sidebar Demo -->
+            <div class="w-56 frosted-card frosted-highlight" style="padding: 12px;">
+                <ul class="space-y-1" id="sidebarList">
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Home" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Home</span>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Working" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="folder" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Working</span>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Production" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Production</span>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="System" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="menu" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">System</span>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Recipe" style="height: 40px; border: 1px solid transparent;" data-active="true">
+                        <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Recipe</span>
+                        <div class="ml-auto w-1 h-1 rounded-full" style="background: var(--frosted-cyan-text);"></div>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Report" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Report</span>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Request" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Request</span>
+                    </li>
+                    <li class="sidebar-item flex items-center gap-3 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                        data-label="Settings" style="height: 40px; border: 1px solid transparent;">
+                        <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
+                        <span class="text-sm font-medium">Settings</span>
+                    </li>
+                </ul>
+
+                <div class="mt-4 pt-4" style="border-top: 1px solid var(--frosted-border-subtle);">
+                    <button class="w-full frosted-button frosted-button-purple text-sm" style="height: 36px;">
+                        <i data-lucide="plus" style="width: 16px; height: 16px;" class="mr-2"></i>
+                        CREATE
+                    </button>
+                </div>
+            </div>
+
+            <!-- Checkbox & Radio Demo -->
+            <div class="flex-1 grid-cols-2 gap-4">
+                <!-- Checkbox Section -->
+                <div class="frosted-card space-y-4">
+                    <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);">
+                        Checkboxes
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="crystal-checkbox" id="checkbox1">
+                            <div class="checkbox-box">
+                                <div class="checkbox-glint"></div>
+                                <div class="checkbox-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="checkbox-label">Unchecked</span>
+                        </div>
+                        <div class="crystal-checkbox" id="checkbox2">
+                            <div class="checkbox-box checked">
+                                <div class="checkbox-glint"></div>
+                                <div class="checkbox-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="checkbox-label">Checked</span>
+                        </div>
+                    </div>
+                    <div class="text-xs pt-2" style="color: var(--frosted-text-tertiary);">
+                        <div>Border: Gray</div>
+                        <div>Fill: Cyan Gradient</div>
+                        <div>Knob: Crystal Bead</div>
+                    </div>
+                </div>
+
+                <!-- Radio Section -->
+                <div class="frosted-card space-y-4">
+                    <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);">
+                        Radio Buttons
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="crystal-radio" id="radio1">
+                            <div class="radio-box">
+                                <div class="radio-glint"></div>
+                                <div class="radio-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="radio-label">Unchecked</span>
+                        </div>
+                        <div class="crystal-radio" id="radio2">
+                            <div class="radio-box checked">
+                                <div class="radio-glint"></div>
+                                <div class="radio-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="radio-label">Checked</span>
+                        </div>
+                    </div>
+                    <div class="text-xs pt-2" style="color: var(--frosted-text-tertiary);">
+                        <div>Border: Gray</div>
+                        <div>Fill: Cyan Gradient</div>
+                        <div>Dot: Crystal Bead</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmation Dialog Demo -->
+            <div class="frosted-modal frosted-highlight" style="max-width: 280px; position: relative;">
+                <button class="absolute top-4 right-4"
+                    style="color: var(--frosted-text-tertiary); background: transparent; border: none; cursor: pointer;">
+                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                </button>
+                <h4 style="color: var(--frosted-text-primary); font-weight: 600; margin-bottom: 8px;">
+                    Confirmation
+                </h4>
+                <p style="color: var(--frosted-text-secondary); font-size: 14px; margin-bottom: 20px;">
+                    Are you sure you want to proceed?
+                </p>
+                <div class="flex gap-3 justify-end">
+                    <button class="frosted-button text-sm" style="height: 36px;">
+                        Cancel
+                    </button>
+                    <button class="frosted-button frosted-button-cyan text-sm" style="height: 36px;">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-cols-2 md:grid-cols-5 gap-4 text-sm mt-4">
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Material</div>
+                <div style="color: var(--frosted-text-primary);">3D Frosted Glass</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Shadow</div>
+                <div style="color: var(--frosted-text-primary);">0 2px 6px rgba(0,0,0,0.18)</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Width</div>
+                <div style="color: var(--frosted-text-primary);">240px</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Item Height</div>
+                <div style="color: var(--frosted-text-primary);">40px</div>
+            </div>
+            <div class="p-3 rounded-lg" style="background: var(--frosted-bg-subtle);">
+                <div style="color: var(--frosted-text-tertiary);">Selected</div>
+                <div style="color: var(--frosted-cyan-text);">Gradient + Border</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Form / Input Fields -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">4. Form / Input Fields</h2>
+            <span class="frosted-badge frosted-badge-orange">Input</span>
+        </div>
+
+        <div class="grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Form Demo -->
+            <div class="frosted-card space-y-4">
+                <div class="grid-cols-2 gap-4">
+                    <!-- Speed Input - Username -->
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-medium" style="color: var(--frosted-text-secondary);">
+                            Username
+                        </label>
+                        <div class="relative">
+                            <input type="text" placeholder="Enter name" class="speed-input" id="usernameInput" />
+                            <div class="speed-line-input"></div>
+                        </div>
+                    </div>
+
+                    <!-- Speed Input - Email -->
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-medium" style="color: var(--frosted-text-secondary);">
+                            Email
+                        </label>
+                        <div class="relative">
+                            <input type="text" placeholder="Enter email" class="speed-input" id="emailInput" />
+                            <div class="speed-line-input"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Speed Select - Role -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-medium" style="color: var(--frosted-text-secondary);">
+                        Role
+                    </label>
+                    <div class="relative" id="roleSelectContainer">
+                        <div class="speed-select" id="roleSelect">
+                            <span>Select role...</span>
+                            <i data-lucide="chevron-right"
+                                style="width: 14px; height: 14px; color: var(--frosted-text-tertiary);"
+                                class="transition-transform duration-150"></i>
+                        </div>
+                        <div class="speed-line-select"></div>
+                        <div class="select-dropdown" id="roleDropdown">
+                            <div class="select-option" data-value="Admin">Admin</div>
+                            <div class="select-option" data-value="Editor">Editor</div>
+                            <div class="select-option" data-value="Viewer">Viewer</div>
+                            <div class="select-option" data-value="Guest">Guest</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 space-y-3">
+                    <div class="text-xs font-medium" style="color: var(--frosted-text-secondary);">
+                        Options
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="crystal-checkbox" id="formCheckbox1">
+                            <div class="checkbox-box">
+                                <div class="checkbox-glint"></div>
+                                <div class="checkbox-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="checkbox-label">Enable feature</span>
+                        </div>
+                        <div class="crystal-checkbox" id="formCheckbox2">
+                            <div class="checkbox-box checked">
+                                <div class="checkbox-glint"></div>
+                                <div class="checkbox-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="checkbox-label">Auto save</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 space-y-3">
+                    <div class="text-xs font-medium" style="color: var(--frosted-text-secondary);">
+                        Type
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="crystal-radio" id="formRadio1">
+                            <div class="radio-box checked">
+                                <div class="radio-glint"></div>
+                                <div class="radio-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="radio-label">Personal</span>
+                        </div>
+                        <div class="crystal-radio" id="formRadio2">
+                            <div class="radio-box">
+                                <div class="radio-glint"></div>
+                                <div class="radio-bead">
+                                    <div class="bead-inner">
+                                        <div class="bead-highlight"></div>
+                                        <div class="bead-secondary"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="radio-label">Business</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specs -->
+            <div class="frosted-card" style="background: var(--frosted-bg-subtle);">
+                <h4 class="text-sm font-semibold mb-4" style="color: var(--frosted-text-primary);">
+                    Speed Input 设计规格
+                </h4>
+
+                <div class="space-y-4 text-sm">
+                    <div class="grid-cols-2 gap-4">
+                        <div class="p-3 rounded-lg" style="background: var(--frosted-bg-transparent);">
+                            <div style="color: var(--frosted-text-tertiary);">Effect</div>
+                            <div style="color: var(--frosted-text-primary);">Bottom Speed Line</div>
+                        </div>
+                        <div class="p-3 rounded-lg" style="background: var(--frosted-bg-transparent);">
+                            <div style="color: var(--frosted-text-tertiary);">Height</div>
+                            <div style="color: var(--frosted-text-primary);">40px (compact)</div>
+                        </div>
+                        <div class="p-3 rounded-lg" style="background: var(--frosted-bg-transparent);">
+                            <div style="color: var(--frosted-text-tertiary);">Transition</div>
+                            <div style="color: var(--frosted-text-primary);">200ms (fast)</div>
+                        </div>
+                        <div class="p-3 rounded-lg" style="background: var(--frosted-bg-transparent);">
+                            <div style="color: var(--frosted-text-tertiary);">Active Color</div>
+                            <div style="color: var(--frosted-cyan-text);">Cyan Line</div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-lg text-xs" style="background: var(--frosted-bg-transparent);">
+                        <div class="font-medium mb-2" style="color: var(--frosted-cyan-text);">
+                            特点
+                        </div>
+                        <ul class="space-y-1" style="color: var(--frosted-text-secondary);">
+                            <li>• 底部速度线指示焦点状态</li>
+                            <li>• 输入内容时保持激活状态</li>
+                            <li>• 紧凑的 40px 高度设计</li>
+                            <li>• 与 Speed Buttons 保持一致风格</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Popup / Modal -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">5. Popup / Modal Dialog</h2>
+            <span class="frosted-badge frosted-badge-red">Overlay</span>
+        </div>
+
+        <div class="flex gap-4">
+            <button class="frosted-button frosted-button-cyan" id="openModalBtn">
+                Open Modal
+            </button>
+
+            <div class="frosted-modal frosted-highlight" id="demoModal"
+                style="max-width: 400px; position: relative; display: none;">
+                <button class="absolute top-4 right-4"
+                    style="color: var(--frosted-text-tertiary); background: transparent; border: none; cursor: pointer;"
+                    id="closeModalBtn">
+                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                </button>
+                <h4 style="color: var(--frosted-text-primary); font-weight: 600; margin-bottom: 8px;">
+                    Modal Dialog
+                </h4>
+                <p style="color: var(--frosted-text-secondary); font-size: 14px; margin-bottom: 20px;">
+                    This is a frosted glass modal dialog with subtle transparency and blur effects.
+                    It supports both light and dark themes seamlessly.
+                </p>
+                <div class="flex gap-3 justify-end">
+                    <button class="frosted-button text-sm" style="height: 36px;">
+                        Cancel
+                    </button>
+                    <button class="frosted-button frosted-button-cyan text-sm" style="height: 36px;">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section 5: Popup / Modal Dialog -->
+    <section>
+        <div>
+            <h2>5. Popup / Modal Dialog</h2>
+            <span>Overlay</span>
+        </div>
+
+        <div>
+            <button id="openModalBtn">
+                Open Modal
+            </button>
+
+            <div id="demoModal">
+                <button id="closeModalBtn">
+                    <i data-lucide="x"></i>
+                </button>
+                <h4>Modal Dialog</h4>
+                <p>
+                    This is a frosted glass modal dialog with subtle transparency and blur effects.
+                    It supports both light and dark themes seamlessly.
+                </p>
+                <div>
+                    <button>
+                        Cancel
+                    </button>
+                    <button>
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Buttons -->
+    <section>
+        <div>
+            <h2>6. Buttons</h2>
+            <span>Interaction</span>
+        </div>
+
+        <div>
+            <!-- Buttons Demo -->
+            <div>
+                <div>
+                    <button id="btnDefault">
+                        <i data-lucide="save"></i>
+                        <span>Default Button</span>
+                    </button>
+                    <button id="btnCyan">
+                        <i data-lucide="plus"></i>
+                        <span>Cyan Button</span>
+                    </button>
+                    <button id="btnPurple">
+                        <i data-lucide="edit"></i>
+                        <span>Purple Button</span>
+                    </button>
+                </div>
+
+                <div>
+                    <button id="btnIconOnly">
+                        <i data-lucide="heart"></i>
+                    </button>
+                    <button id="btnIconOnlyActive">
+                        <i data-lucide="star"></i>
+                    </button>
+                    <button id="btnDisabled">
+                        <i data-lucide="lock"></i>
+                        <span>Disabled</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Button Specs -->
+            <div>
+                <h4>Speed Buttons 设计规格</h4>
+                <div>
+                    <div>
+                        <div>Height</div>
+                        <div>40px (standard)</div>
+                    </div>
+                    <div>
+                        <div>Padding</div>
+                        <div>0 16px</div>
+                    </div>
+                    <div>
+                        <div>Border Radius</div>
+                        <div>8px</div>
+                    </div>
+                    <div>
+                        <div>Hover Effect</div>
+                        <div>Subtle BG Change (150ms)</div>
+                    </div>
+                    <div>
+                        <div>Icon Size</div>
+                        <div>18px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Badges & Tags -->
+    <section>
+        <div>
+            <h2>7. Badges & Tags</h2>
+            <span>Indicator</span>
+        </div>
+
+        <div>
+            <!-- Badges Demo -->
+            <div>
+                <div>
+                    <span id="badgeDefault">Default</span>
+                    <span id="badgeCyan">Cyan</span>
+                    <span id="badgePurple">Purple</span>
+                    <span id="badgeGreen">Success</span>
+                    <span id="badgeOrange">Warning</span>
+                    <span id="badgeRed">Error</span>
+                </div>
+
+                <div>
+                    <div>
+                        <button>
+                            <i data-lucide="bell"></i>
+                            <span id="notificationBadge">5</span>
+                        </button>
+                        <button>
+                            <i data-lucide="mail"></i>
+                            <span id="mailBadge">12</span>
+                        </button>
+                        <button>
+                            <i data-lucide="cart"></i>
+                            <span id="cartBadge">3</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badge Specs -->
+            <div>
+                <h4>Badge 设计规格</h4>
+                <ul>
+                    <li><strong>Border Radius:</strong> 12px (pill shape)</li>
+                    <li><strong>Padding:</strong> 4px 8px</li>
+                    <li><strong>Font Size:</strong> 12px</li>
+                    <li><strong>Font Weight:</strong> 500</li>
+                    <li><strong>Notification Dot:</strong> 8px x 8px circle</li>
+                    <li><strong>Notification Badge:</strong> 18px diameter circle</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Cards & Containers -->
+    <section>
+        <div>
+            <h2>8. Cards & Containers</h2>
+            <span>Layout</span>
+        </div>
+
+        <div>
+            <!-- Cards Demo -->
+            <div>
+                <div id="cardDefault">
+                    <div>
+                        <h3>Default Card</h3>
+                        <p>Basic frosted glass card with standard styling</p>
+                    </div>
+                    <div>
+                        <button>
+                            <i data-lucide="more-horizontal"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <p>
+                            This card uses the default frosted glass material with 70% opacity
+                            and 8px backdrop blur for a subtle transparency effect.
+                        </p>
+                    </div>
+                    <div>
+                        <button>
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+
+                <div id="cardHighlight">
+                    <div>
+                        <h3>Highlighted Card</h3>
+                        <p>Emphasized card with stronger shadow</p>
+                    </div>
+                    <div>
+                        <span id="badgeCyan">Featured</span>
+                    </div>
+                    <div>
+                        <p>
+                            This card has an enhanced shadow (0 4px 12px rgba(0,0,0,0.1))
+                            and slightly higher opacity for emphasis.
+                        </p>
+                    </div>
+                    <div>
+                        <button>
+                            <i data-lucide="arrow-right"></i>
+                            <span>View Details</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Specs -->
+            <div>
+                <h4>Card 设计规格</h4>
+                <div>
+                    <div>
+                        <div>Default Card</div>
+                        <div>
+                            <ul>
+                                <li>• 8px backdrop blur</li>
+                                <li>• 70% opacity</li>
+                                <li>• 0 2px 6px shadow</li>
+                                <li>• 16px border radius</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Highlighted Card</div>
+                        <div>
+                            <ul>
+                                <li>• 12px backdrop blur</li>
+                                <li>• 85% opacity</li>
+                                <li>• 0 4px 12px shadow</li>
+                                <li>• 16px border radius</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Tabs -->
+    <section>
+        <div>
+            <h2>9. Tabs</h2>
+            <span>Navigation</span>
+        </div>
+
+        <div>
+            <!-- Tabs Demo -->
+            <div>
+                <div id="tabContainer">
+                    <div id="tab1" data-active="true">
+                        <i data-lucide="grid"></i>
+                        <span>Overview</span>
+                    </div>
+                    <div id="tab2">
+                        <i data-lucide="bar-chart"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div id="tab3">
+                        <i data-lucide="users"></i>
+                        <span>Team</span>
+                    </div>
+                    <div id="tab4">
+                        <i data-lucide="settings"></i>
+                        <span>Settings</span>
+                    </div>
+                </div>
+
+                <div id="tabContent">
+                    <h3>Overview Content</h3>
+                    <p>
+                        Tab content area with frosted glass background.
+                        This section displays the content for the currently active tab.
+                    </p>
+                    <div>
+                        <div>
+                            <span>Total Views</span>
+                            <span>24,589</span>
+                        </div>
+                        <div>
+                            <span>Conversion</span>
+                            <span>4.8%</span>
+                        </div>
+                        <div>
+                            <span>Engagement</span>
+                            <span>78%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Specs -->
+            <div>
+                <h4>Tab 设计规格</h4>
+                <ul>
+                    <li><strong>Tab Height:</strong> 48px</li>
+                    <li><strong>Active Indicator:</strong> 2px cyan line (bottom)</li>
+                    <li><strong>Icon Size:</strong> 18px</li>
+                    <li><strong>Font Size:</strong> 14px</li>
+                    <li><strong>Hover Effect:</strong> Subtle background change</li>
+                    <li><strong>Content Area:</strong> Frosted glass (70% opacity)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Progress & Loaders -->
+    <section>
+        <div>
+            <h2>10. Progress & Loaders</h2>
+            <span>Feedback</span>
+        </div>
+
+        <div>
+            <!-- Progress Demo -->
+            <div>
+                <!-- Progress Bar -->
+                <div>
+                    <div>
+                        <span>Progress Bar</span>
+                        <span>75%</span>
+                    </div>
+                    <div id="progressBarContainer">
+                        <div id="progressBarFill" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <!-- Circular Progress -->
+                <div>
+                    <div>
+                        <span>Circular Progress</span>
+                        <span>60%</span>
+                    </div>
+                    <div id="circularProgressContainer">
+                        <div id="circularProgressTrack"></div>
+                        <div id="circularProgressFill"></div>
+                        <div id="circularProgressText">60%</div>
+                    </div>
+                </div>
+
+                <!-- Loader -->
+                <div>
+                    <span>Loader</span>
+                    <div id="loaderContainer">
+                        <div id="loader1"></div>
+                        <div id="loader2"></div>
+                        <div id="loader3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Specs -->
+            <div>
+                <h4>Progress 设计规格</h4>
+                <div>
+                    <div>
+                        <div>Progress Bar</div>
+                        <div>
+                            <ul>
+                                <li>• Height: 8px</li>
+                                <li>• Border Radius: 4px</li>
+                                <li>• Color: Cyan gradient</li>
+                                <li>• Track: Subtle gray</li>
+                                <li>• Transition: 300ms ease</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Circular Progress</div>
+                        <div>
+                            <ul>
+                                <li>• Diameter: 64px</li>
+                                <li>• Stroke Width: 4px</li>
+                                <li>• Color: Cyan gradient</li>
+                                <li>• Track: Subtle gray</li>
+                                <li>• Text: 14px, 500 weight</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+     <!-- 6. Table / Data Table -->
+    <div class="component-section">
+        <h2 class="section-title">6. Table / Data Table</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>11</td>
+                    <td>Flat White</td>
+                    <td><span class="status-dot sm"></span></td>
+                    <td><button class="action-btn">⋮</button></td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Nane Conury</td>
+                    <td><span class="status-dot md"></span></td>
+                    <td><button class="action-btn">⋮</button></td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>Altart olice</td>
+                    <td><span class="status-dot lg"></span></td>
+                    <td><button class="action-btn">⋮</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="specs">
+            <div class="spec-item">
+                <span class="spec-label">Material</span>
+                <span class="spec-value">Jade-like Crystal</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Rendering</span>
+                <span class="spec-value">Radial Gradient</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Highlight</span>
+                <span class="spec-value">Top-Left Gloss</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Shadow</span>
+                <span class="spec-value">Inner + Outer</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Glow</span>
+                <span class="spec-value">Soft Halo</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Variants</span>
+                <span class="spec-value">
+                    <span class="status-dot sm"></span> sm
+                    <span class="status-dot md"></span> md
+                    <span class="status-dot lg"></span> lg
+                    <span class="status-dot orange"></span> orange
+                    <span class="status-dot pulse"></span> pulse
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Buttons / Button Variants -->
+    <div class="component-section">
+        <h2 class="section-title">7. Buttons / Button Variants</h2>
+        
+        <!-- Speed Buttons -->
+        <div>
+            <p>Speed Buttons - 快速响应</p>
+            <div class="btn-group">
+                <button class="speed-btn primary">Primary</button>
+                <button class="speed-btn secondary">Secondary</button>
+                <button class="speed-btn success">Success</button>
+                <button class="speed-btn warning">Warning</button>
+                <button class="speed-btn danger">Danger</button>
+                <button class="speed-btn save">Save</button>
+                <button class="speed-btn publish">Publish</button>
+                <button class="speed-btn deploy">Deploy</button>
+            </div>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Height</span>
+                    <span class="spec-value">32px (compact)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Transition</span>
+                    <span class="spec-value">150ms (fast)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Effect</span>
+                    <span class="spec-value">Speed line on hover</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ghost Buttons -->
+        <div style="margin-top: 20px;">
+            <p>Ghost Buttons - 低调隐形</p>
+            <div class="btn-group">
+                <button class="ghost-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Edit
+                </button>
+                <button class="ghost-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Delete
+                </button>
+                <button class="ghost-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6"></path>
+                        <path d="M1 20v-6h6"></path>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    Refresh
+                </button>
+                <button class="ghost-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="19" r="3"></circle>
+                        <path d="M18 8a9 9 0 0 1-9 9"></path>
+                        <path d="M6 16a9 9 0 0 1 9-9"></path>
+                    </svg>
+                    Share
+                </button>
+                <button class="ghost-btn">Cancel</button>
+                <button class="ghost-btn">More options</button>
+                <button class="ghost-btn">Advanced</button>
+            </div>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Background</span>
+                    <span class="spec-value">Transparent</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Border</span>
+                    <span class="spec-value">None</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Hover</span>
+                    <span class="spec-value">Subtle bg reveal</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crystal Buttons -->
+        <div style="margin-top: 20px;">
+            <p>Crystal Buttons - 水晶质感</p>
+            <div class="btn-group">
+                <button class="crystal-btn add">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add New
+                </button>
+                <button class="crystal-btn edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Edit
+                </button>
+                <button class="crystal-btn delete">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Delete
+                </button>
+                <button class="crystal-btn disabled" disabled>Disabled</button>
+            </div>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Height</span>
+                    <span class="spec-value">36px (standard)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Depth</span>
+                    <span class="spec-value">3D with gloss</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Effect</span>
+                    <span class="spec-value">Lift + glow on hover</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Cards / Content Container -->
+    <div class="component-section">
+        <h2 class="section-title">8. Cards / Content Container</h2>
+        <div class="card-container">
+            <div class="card cyan">
+                <div class="card-title">Title title</div>
+                <div class="card-content">Lorem ipsum dolor sit amet, consectetur ut content ut..</div>
+            </div>
+            <div class="card purple">
+                <div class="card-title">Title title</div>
+                <div class="card-content">Lorem ipsum dolor sit amet, consectetur ut content ut..</div>
+            </div>
+            <div class="card green">
+                <div class="card-title">Title title</div>
+                <div class="card-content">Lorem ipsum dolor sit amet, consectetur ut content ut..</div>
+            </div>
+            <div class="card orange">
+                <div class="card-title">Title title</div>
+                <div class="card-content">Lorem ipsum dolor sit amet, consectetur ut content ut..</div>
+            </div>
+        </div>
+        <div class="specs">
+            <div class="spec-item">
+                <span class="spec-label">Material</span>
+                <span class="spec-value">3D Frosted Glass</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Depth</span>
+                <span class="spec-value">3-4mm</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Border Radius</span>
+                <span class="spec-value">12px</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Color Tints</span>
+                <span class="spec-value">Cyan, Purple, Green, Orange</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. List / Menu -->
+    <div class="component-section">
+        <h2 class="section-title">9. List / Menu</h2>
+        <div class="nav-menu">
+            <div class="menu-item">Item 1</div>
+            <div class="menu-item active">Item 2</div>
+            <div class="menu-item">Item 3</div>
+            <div class="menu-item">Item 4</div>
+            <div class="menu-item">Item 5</div>
+        </div>
+        <div class="specs">
+            <div class="spec-item">
+                <span class="spec-label">Effect</span>
+                <span class="spec-value">Speed Line Left</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Item Height</span>
+                <span class="spec-value">40px</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Transition</span>
+                <span class="spec-value">150ms (fast)</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Active</span>
+                <span class="spec-value">Cyan Background</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Badges / Tags -->
+    <div class="component-section">
+        <h2 class="section-title">10. Badges / Tags</h2>
+        <div class="badge-group">
+            <span class="badge new">New</span>
+            <span class="badge featured">Featured</span>
+            <span class="badge active">Active</span>
+            <span class="badge pending">Pending</span>
+            <span class="badge urgent">Urgent</span>
+            <span class="badge default">Default</span>
+        </div>
+        <div class="specs">
+            <div class="spec-item">
+                <span class="spec-label">Material</span>
+                <span class="spec-value">3D Frosted Class</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Height</span>
+                <span class="spec-value">24px</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Border Radius</span>
+                <span class="spec-value">12px (pill)</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Tints</span>
+                <span class="spec-value">All variants</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 初始化Lucide图标
+        lucide.createIcons();
+
+        // 主题切换逻辑
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const htmlElement = document.documentElement;
+
+        let isDark = false;
+
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            if (isDark) {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeIcon.setAttribute('data-lucide', 'sun');
+                themeText.textContent = 'Light Mode';
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeIcon.setAttribute('data-lucide', 'moon');
+                themeText.textContent = 'Dark Mode';
+            }
+            // 重新渲染图标
+            lucide.createIcons();
+        });
+
+        // 侧边栏选中逻辑
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        let activeItem = 'Recipe';
+
+        function setActiveSidebarItem(label) {
+            sidebarItems.forEach(item => {
+                const itemLabel = item.dataset.label;
+                const isActive = itemLabel === label;
+
+                if (isActive) {
+                    item.style.background = 'linear-gradient(90deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%)';
+                    item.style.border = '1px solid rgba(6, 182, 212, 0.3)';
+                    item.style.boxShadow = '0 1px 0 0 rgba(255,255,255,0.3) inset, 0 -1px 2px rgba(0,0,0,0.03) inset';
+                    item.style.color = 'var(--frosted-cyan-text)';
+
+                    // 添加激活指示器
+                    const indicator = document.createElement('div');
+                    indicator.className = 'ml-auto w-1 h-1 rounded-full';
+                    indicator.style.background = 'var(--frosted-cyan-text)';
+
+                    // 移除已存在的指示器
+                    const existingIndicator = item.querySelector('.ml-auto.w-1.h-1.rounded-full');
+                    if (existingIndicator) {
+                        item.removeChild(existingIndicator);
+                    }
+
+                    item.appendChild(indicator);
+                } else {
+                    item.style.background = 'transparent';
+                    item.style.border = '1px solid transparent';
+                    item.style.boxShadow = 'none';
+                    item.style.color = 'var(--frosted-text-secondary)';
+
+                    // 移除指示器
+                    const indicator = item.querySelector('.ml-auto.w-1.h-1.rounded-full');
+                    if (indicator) {
+                        item.removeChild(indicator);
+                    }
+                }
+            });
+            activeItem = label;
+        }
+
+        // 初始化激活状态
+        setActiveSidebarItem(activeItem);
+
+        // 绑定侧边栏点击事件
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                setActiveSidebarItem(item.dataset.label);
+            });
+        });
+
+        // 复选框逻辑
+        function setupCheckbox(checkboxId) {
+            const checkbox = document.getElementById(checkboxId);
+            const checkboxBox = checkbox.querySelector('.checkbox-box');
+            const checkboxLabel = checkbox.querySelector('.checkbox-label');
+
+            checkbox.addEventListener('click', () => {
+                checkboxBox.classList.toggle('checked');
+                if (checkboxBox.classList.contains('checked')) {
+                    checkboxLabel.style.color = 'var(--frosted-cyan-text)';
+                } else {
+                    checkboxLabel.style.color = 'var(--frosted-text-secondary)';
+                }
+            });
+        }
+
+        // 初始化复选框
+        setupCheckbox('checkbox1');
+        setupCheckbox('checkbox2');
+        setupCheckbox('formCheckbox1');
+        setupCheckbox('formCheckbox2');
+
+        // 单选框逻辑
+        function setupRadioGroup(radioIds) {
+            const radios = radioIds.map(id => document.getElementById(id));
+
+            radios.forEach(radio => {
+                const radioBox = radio.querySelector('.radio-box');
+                const radioLabel = radio.querySelector('.radio-label');
+
+                radio.addEventListener('click', () => {
+                    // 取消所有选中状态
+                    radios.forEach(r => {
+                        const box = r.querySelector('.radio-box');
+                        const label = r.querySelector('.radio-label');
+                        box.classList.remove('checked');
+                        label.style.color = 'var(--frosted-text-secondary)';
+                    });
+
+                    // 设置当前选中状态
+                    radioBox.classList.add('checked');
+                    radioLabel.style.color = 'var(--frosted-cyan-text)';
+                });
+            });
+        }
+
+        // 初始化单选框组
+        setupRadioGroup(['radio1', 'radio2']);
+        setupRadioGroup(['formRadio1', 'formRadio2']);
+
+        // 速度选择框逻辑
+        const roleSelect = document.getElementById('roleSelect');
+        const roleDropdown = document.getElementById('roleDropdown');
+        const roleSelectContainer = document.getElementById('roleSelectContainer');
+        const selectOptions = roleDropdown.querySelectorAll('.select-option');
+        const selectText = roleSelect.querySelector('span');
+        const selectIcon = roleSelect.querySelector('i');
+
+        let isSelectOpen = false;
+        let selectedValue = '';
+
+        // 切换下拉框显示/隐藏
+        roleSelect.addEventListener('click', () => {
+            isSelectOpen = !isSelectOpen;
+            if (isSelectOpen) {
+                roleDropdown.classList.add('open');
+                roleSelect.classList.add('open');
+                selectIcon.style.transform = 'rotate(90deg)';
+            } else {
+                roleDropdown.classList.remove('open');
+                roleSelect.classList.remove('open');
+                selectIcon.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // 选择选项
+        selectOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // 移除所有选中状态
+                selectOptions.forEach(opt => opt.classList.remove('selected'));
+
+                // 设置当前选中状态
+                option.classList.add('selected');
+                selectedValue = option.dataset.value;
+                selectText.textContent = selectedValue;
+                roleSelect.classList.add('has-value');
+
+                // 关闭下拉框
+                isSelectOpen = false;
+                roleDropdown.classList.remove('open');
+                roleSelect.classList.remove('open');
+                selectIcon.style.transform = 'rotate(0deg)';
+            });
+        });
+
+        // 点击外部关闭下拉框
+        document.addEventListener('click', (e) => {
+            if (!roleSelectContainer.contains(e.target) && isSelectOpen) {
+                isSelectOpen = false;
+                roleDropdown.classList.remove('open');
+                roleSelect.classList.remove('open');
+                selectIcon.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // Modal逻辑
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const demoModal = document.getElementById('demoModal');
+
+        openModalBtn.addEventListener('click', () => {
+            demoModal.style.display = 'block';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            demoModal.style.display = 'none';
+        });
+
+        // 输入框值变化监听（保持速度线激活状态）
+        const usernameInput = document.getElementById('usernameInput');
+        const emailInput = document.getElementById('emailInput');
+
+        [usernameInput, emailInput].forEach(input => {
+            input.addEventListener('input', () => {
+                if (input.value) {
+                    input.classList.add('has-value');
+                } else {
+                    input.classList.remove('has-value');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

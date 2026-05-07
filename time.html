@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Date Time Picker (Multi Format)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --frosted-text-primary: #1e293b;
+            --frosted-text-secondary: #475569;
+            --frosted-text-tertiary: #94a3b8;
+            --frosted-bg-default: rgb(228, 234, 241);
+            --frosted-bg-subtle: rgb(235, 240, 246);
+            --frosted-bg-transparent: rgba(255, 255, 255, 0.5);
+            --frosted-border-default: rgba(226, 232, 240, 0.8);
+            --frosted-border-subtle: rgba(226, 232, 240, 0.5);
+            --frosted-border-emphasis: rgba(203, 213, 225, 1);
+            --frosted-cyan-bg: rgba(6, 182, 212, 0.1);
+            --frosted-cyan-text: #06b6d4;
+            --frosted-cyan-border: rgba(6, 182, 212, 0.4);
+            --frosted-purple-text: #9333ea;
+            --frosted-green-text: #10b981;
+            --frosted-orange-text: #f97316;
+            --frosted-red-text: #ef4444;
+            --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+            --frosted-radius-lg: 16px;
+            --frosted-radius-md: 10px;
+            --frosted-blur-md: 8px;
+        }
+
+        [data-theme="dark"] {
+            --frosted-text-primary: #f8fafc;
+            --frosted-text-secondary: #e2e8f0;
+            --frosted-text-tertiary: #94a3b8;
+            --frosted-bg-default: rgba(15, 23, 42, 0.9);
+            --frosted-bg-subtle: rgba(15, 23, 42, 0.7);
+            --frosted-bg-transparent: rgba(15, 23, 42, 0.5);
+            --frosted-border-default: rgba(51, 65, 85, 0.8);
+            --frosted-border-subtle: rgba(51, 65, 85, 0.5);
+            --frosted-border-emphasis: rgba(71, 85, 105, 1);
+        }
+
+        body {
+            background-color: var(--frosted-bg-default);
+            transition: background-color 0.3s ease;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        h3 {
+            color: var(--frosted-text-primary);
+            font-weight: 600;
+            margin: 24px 0 12px;
+        }
+
+        .date-time-picker {
+            display: inline-block;
+            position: relative;
+            margin: 10px 20px;
+            vertical-align: top;
+        }
+
+        .picker-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .picker-trigger {
+            padding: 10px 14px;
+            border-radius: var(--frosted-radius-md);
+            width: 260px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--frosted-text-secondary);
+            background: var(--frosted-bg-subtle);
+            border: none;
+            border-bottom: 1px solid var(--frosted-border-default);
+            outline: none !important;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(var(--frosted-blur-md));
+        }
+
+        .time-part {
+            padding: 6px 10px;
+            border-radius: var(--frosted-radius-md);
+            font-size: 14px;
+            width: 70px;
+            cursor: pointer;
+            color: var(--frosted-text-secondary);
+            background: var(--frosted-bg-subtle);
+            border: 1px solid var(--frosted-border-default);
+            outline: none !important;
+            transition: all 0.2s ease;
+        }
+
+        .speed-line-input {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--frosted-cyan-text);
+            transition: width 0.2s ease;
+            border-radius: 1px;
+        }
+
+        .picker-wrapper.active .speed-line-input {
+            width: 100%;
+        }
+
+        .dropdown-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: var(--frosted-bg-subtle);
+            backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
+            border: 1px solid var(--frosted-border-default);
+            border-radius: var(--frosted-radius-lg);
+            box-shadow: var(--frosted-shadow-md);
+            z-index: 9999;
+            padding: 16px;
+            width: max-content;
+        }
+
+        .dropdown-panel.hidden {
+            display: none;
+        }
+
+        .time-select-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .time-part:focus {
+            border-color: var(--frosted-cyan-border);
+            background: var(--frosted-cyan-bg);
+            color: var(--frosted-cyan-text);
+        }
+
+        .range-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .range-split {
+            color: var(--frosted-text-tertiary);
+        }
+
+        .calendar-display {
+            width: 240px;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--frosted-text-primary);
+        }
+
+        .calendar-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--frosted-text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border-radius: var(--frosted-radius-md);
+            cursor: pointer;
+            color: var(--frosted-text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            background: var(--frosted-cyan-bg);
+            color: var(--frosted-cyan-text);
+        }
+
+        .calendar-day.active {
+            background: var(--frosted-cyan-text) !important;
+            color: white !important;
+        }
+
+        .calendar-day.in-range {
+            background: var(--frosted-cyan-bg) !important;
+            color: var(--frosted-cyan-text) !important;
+        }
+
+        .calendar-day.other-month {
+            color: var(--frosted-text-tertiary);
+        }
+
+        .calendar-prev,
+        .calendar-next {
+            cursor: pointer;
+            padding: 4px 8px;
+            user-select: none;
+            color: var(--frosted-text-secondary);
+            border-radius: var(--frosted-radius-md);
+            transition: background 0.2s;
+        }
+
+        .calendar-prev:hover,
+        .calendar-next:hover {
+            background: var(--frosted-bg-subtle);
+        }
+
+        .unified-range-input {
+            display: flex;
+            align-items: center;
+            width: 360px !important;
+        }
+
+        .unified-range-input input {
+            flex: 1;
+            border: none;
+            outline: none !important;
+            background: transparent;
+            text-align: center;
+            cursor: pointer;
+            color: var(--frosted-text-secondary);
+        }
+
+        .unified-range-input .split {
+            color: var(--frosted-text-tertiary);
+            padding: 0 6px;
+        }
+
+        .confirm-bar {
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .confirm-bar button {
+            padding: 6px 20px;
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%);
+            color: var(--frosted-cyan-text);
+            border: 1px solid var(--frosted-cyan-border);
+            border-radius: var(--frosted-radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .confirm-bar button:hover {
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.12) 100%);
+        }
+
+        .demo-box {
+            margin: 30px 20px;
+            padding: 18px;
+            background: var(--frosted-bg-subtle);
+            border-radius: var(--frosted-radius-lg);
+            max-width: 700px;
+            border: 1px solid var(--frosted-border-default);
+            backdrop-filter: blur(var(--frosted-blur-md));
+        }
+
+        .demo-box h4 {
+            margin: 0 0 12px;
+            color: var(--frosted-cyan-text);
+            font-weight: 600;
+        }
+
+        .demo-box p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: var(--frosted-text-secondary);
+        }
+    </style>
+    <link rel="stylesheet" href="./frosted-glass.css">
+</head>
+
+<body data-theme="light">
+
+    <h3>1. Standard: YYYY-MM-DD hh:mm:ss</h3>
+    <div id="picker1"></div>
+
+    <h3>2. Slash Format: YYYY/MM/DD hh:mm</h3>
+    <div id="picker2"></div>
+
+    <h3>3. Date Only: YYYY-MM-DD</h3>
+    <div id="picker3"></div>
+
+    <h3>4. US Format: MM/DD/YYYY</h3>
+    <div id="picker4"></div>
+
+    <h3>5. Date Range (Date Only)</h3>
+    <div id="dateRangePicker"></div>
+
+    <h3>6. Time Range (Time Only)</h3>
+    <div id="timeRangePicker"></div>
+
+    <h3 style="color:var(--frosted-cyan-text)">7. 🔥 Perfect: Unified Date Range Picker</h3>
+    <div id="unifiedRangePicker"></div>
+
+    <div class="demo-box">
+        <h4>✅ DateTimeObj Live Demo</h4>
+        <p id="demo1">Raw String: </p>
+        <p id="demo2">UTC Time: </p>
+        <p id="demo3">Local Date: </p>
+        <p id="demo4">Local Time: </p>
+        <p id="demo5">Local DateTime: </p>
+        <p id="demo6">HTML Standard: </p>
+        <p id="demo7">Is Weekday: </p>
+        <p id="demo8">Is Weekend: </p>
+        <p id="demo9">Relative Time: </p>
+    </div>
+
+    <!-- 只保留这一行引入 JS -->
+    <script src="./time-picker.js"></script>
+    <script>
+        function showDemo(date) {
+            const dt = new DateTimeObj(date);
+            document.getElementById("demo1").textContent = `Raw String: ${dt.format()}`;
+            document.getElementById("demo2").textContent = `UTC Time: ${dt._date.toISOString()}`;
+            document.getElementById("demo3").textContent = `Local Date: ${dt.localDate}`;
+            document.getElementById("demo4").textContent = `Local Time: ${dt.localTime}`;
+            document.getElementById("demo5").textContent = `Local DateTime: ${dt.localDateTime}`;
+            document.getElementById("demo6").textContent = `HTML Standard: ${dt.htmlDate}`;
+            document.getElementById("demo7").textContent = `Is Weekday: ${dt.isWeekday ? "Yes" : "No"}`;
+            document.getElementById("demo8").textContent = `Is Weekend: ${dt.isWeekend ? "Yes" : "No"}`;
+            document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
+        }
+
+        // ========== 实例化并挂载到 window，方便全局取值 ==========
+        const datetimepicker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
+        const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
+        const datetimepicker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
+        const datetimepicker4 = new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
+        const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+        const datetimetimeRangePicker = new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
+        const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
+
+        setInterval(() => {
+            showDemo(new Date());
+        }, 1000)
+
+            //< button onclick = "testGetValue()" > 测试取值</button >
+            //    function testGetValue() {
+            //        console.log('picker1:', picker1.getValue())
+            //        console.log('日期范围:', dateRangePicker.getRangeValue())
+            //        console.log('统一范围:', unifiedRangePicker.getValue())
+            //        alert('打开控制台查看结果')
+            //    }
+    </script>
+</body>
+
+</html>

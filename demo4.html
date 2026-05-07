@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿ElementPlus Table 索引多选+框选+右键复制</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+    body {
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .table-container {
+      width: 1000px;
+      height: 700px;
+      background: #fff;
+      border: 1px solid #ebeef5;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .table-scroll {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+    .table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .table-scroll::-webkit-scrollbar-thumb { border-radius: 3px; background: #dcdfe6; }
+    .table-scroll::-webkit-scrollbar-track { background: #f5f7fa; }
+
+    .el-table {
+      width: 100%;
+      border-collapse: collapse;
+      empty-cells: show;
+    }
+    .el-table thead th {
+      height: 50px;
+      padding: 0 12px;
+      background: #fafafa;
+      border-bottom: 1px solid #ebeef5;
+      color: #303133;
+      font-weight: 500;
+      font-size: 14px;
+      text-align: left;
+      white-space: nowrap;
+      position: relative;
+      cursor: move;
+    }
+    .el-table th.index-col,
+    .el-table td.index-col {
+      width: 70px !important;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      border-right: 1px solid #ebeef5;
+    }
+    .el-table td.index-col:hover {
+      background: #f0f9ff;
+    }
+    .th-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .sort-btn {
+      border: none; background: transparent; cursor: pointer;
+      color: #909399; font-size: 12px; display: flex; flex-direction: column; line-height: 1;
+    }
+    .sort-btn.active { color: #409eff; }
+    .menu-btn {
+      border: none; background: transparent; cursor: pointer;
+      color: #909399; font-size: 14px;
+    }
+    .menu-btn:hover { color: #409eff; }
+    .dropdown-menu {
+      position: absolute; top: 100%; right: 0; width: 120px;
+      background: #fff; border: 1px solid #ebeef5; border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1); z-index: 999; display: none;
+    }
+    .dropdown-menu.show { display: block; }
+    .dropdown-item {
+      padding: 8px 12px; font-size: 14px; color: #606266; cursor: pointer;
+    }
+    .dropdown-item:hover { background: #f5f7fa; color: #409eff; }
+
+    .el-table tbody tr { height: 50px; }
+    .el-table tbody td {
+      padding: 0 12px; border-bottom: 1px solid #ebeef5;
+      color: #606266; font-size: 14px; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .el-table tbody tr:hover { background-color: #f5f7fa; }
+
+    .el-table td.selected { background: #e6f7ff !important; }
+    .el-table tr.row-selected { background: #f0f9ff !important; }
+
+    .el-table th.dragging { opacity: 0.4; background: #eee; }
+    .el-table th.drag-over { border-left: 2px solid #409eff; }
+
+    .el-table th, .el-table td { width: calc(100% / 8); }
+
+    .context-menu {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ebeef5;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 6px 0;
+      z-index: 9999;
+      display: none;
+    }
+    .context-menu-item {
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #303133;
+      cursor: pointer;
+    }
+    .context-menu-item:hover {
+      background: #f5f7fa;
+      color: #409eff;
+    }
+  </style>
+</head>
+<body>
+<div id="tableRoot"></div>
+
+<div id="contextMenu" class="context-menu">
+  <div class="context-menu-item" id="copySelected">复制选中数据</div>
+</div>
+
+<script>
+const tableData = [
+  { id: 1, orderNo: '105202301', name: '小王', phone: '13800138000', goods: '精品水果套餐', price: '¥299.00', status: '已完成' },
+  { id: 2, orderNo: '20231059', name: '王总', phone: '13900139000', goods: '王牌耳机', price: '¥599.00', status: '待发货' },
+  { id: 3, orderNo: '999999', name: '小飞侠', phone: '13700137000', goods: '无人机套装', price: '¥1299.00', status: '已发货' },
+  { id: 4, orderNo: '102345', name: '张三', phone: '13600136000', goods: '测试商品', price: '¥99.00', status: '已取消' },
+  { id: 5, orderNo: '55667788', name: '李四', phone: '13500135000', goods: '智能手表', price: '¥899.00', status: '已完成' },
+  { id: 6, orderNo: '77889900', name: '赵五', phone: '13400134000', goods: '机械键盘', price: '¥399.00', status: '待付款' },
+  { id: 7, orderNo: '11223344', name: '钱六', phone: '13300133000', goods: '电竞鼠标', price: '¥199.00', status: '已完成' },
+  { id: 8, orderNo: '55661122', name: '孙七', phone: '13200132000', goods: '高清显示器', price: '¥1599.00', status: '待发货' },
+  { id: 9, orderNo: '99887766', name: '周八', phone: '13100131000', goods: '游戏主机', price: '¥4999.00', status: '已完成' },
+  { id: 10, orderNo: '66554433', name: '吴九', phone: '13000130000', goods: '蓝牙耳机', price: '¥299.00', status: '已发货' }
+];
+
+const columns = [
+  { prop: 'index', label: '序号', fixed: true },
+  { prop: 'id', label: 'ID' },
+  { prop: 'orderNo', label: '订单编号' },
+  { prop: 'name', label: '客户名称' },
+  { prop: 'phone', label: '联系方式' },
+  { prop: 'goods', label: '商品名称' },
+  { prop: 'price', label: '订单金额' },
+  { prop: 'status', label: '订单状态' }
+];
+
+let sortState = { prop: '', order: 0 };
+let list = [...tableData];
+let displayColumns = [...columns];
+
+// 单元格框选
+let isSelecting = false;
+let cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+// 多行选中集合
+let selectedRows = new Set();
+
+function renderTable() {
+  const root = document.getElementById('tableRoot');
+  root.innerHTML = `
+  <div class="table-container">
+    <div class="table-scroll">
+      <table class="el-table" id="dataTable">
+        <thead><tr>${renderHeader()}</tr></thead>
+        <tbody>${renderBody()}</tbody>
+      </table>
+    </div>
+  </div>`;
+  initCellSelection();
+  initHeaderDrag();
+  initContextMenu();
+}
+
+function renderHeader() {
+  return displayColumns.map((col, idx) => {
+    const active = sortState.prop === col.prop;
+    const order = sortState.order;
+    const isIndex = col.prop === 'index';
+    return `
+    <th data-index="${idx}" draggable="${isIndex ? 'false' : 'true'}" class="${isIndex ? 'index-col' : ''}">
+      <div class="th-content">
+        <span>${col.label}</span>
+        ${!isIndex ? `
+        <div style="display:flex;gap:4px;">
+          <button class="sort-btn ${active && order === 1 ? 'active' : ''}" onclick="sort('${col.prop}',1)">↑</button>
+          <button class="sort-btn ${active && order === 2 ? 'active' : ''}" onclick="sort('${col.prop}',2)">↓</button>
+          <button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+          <div class="dropdown-menu">
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',1)">冻结列</div>
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',2)">隐藏列</div>
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',3)">筛选</div>
+            <div class="dropdown-item" onclick="menuClick('${col.prop}',4)">重置</div>
+          </div>
+        </div>
+        ` : ''}
+      </div>
+    </th>`;
+  }).join('');
+}
+
+function renderBody() {
+  return list.map((row, rowIdx) => `
+  <tr class="${selectedRows.has(rowIdx) ? 'row-selected' : ''}">
+    <td class="index-col" data-row="${rowIdx}">${rowIdx + 1}</td>
+    ${displayColumns.slice(1).map((col, colIdx) => `
+      <td class="${isCellSelected(rowIdx, colIdx + 1) ? 'selected' : ''}">
+        ${row[col.prop]}
+      </td>
+    `).join('')}
+  </tr>`).join('');
+}
+
+function isCellSelected(rowIdx, colIdx) {
+  if (cellRange.startRow === -1) return false;
+  const minRow = Math.min(cellRange.startRow, cellRange.endRow);
+  const maxRow = Math.max(cellRange.startRow, cellRange.endRow);
+  const minCol = Math.min(cellRange.startCol, cellRange.endCol);
+  const maxCol = Math.max(cellRange.startCol, cellRange.endCol);
+  return rowIdx >= minRow && rowIdx <= maxRow && colIdx >= minCol && colIdx <= maxCol;
+}
+
+window.sort = function (prop, order) {
+  if (prop === 'index') return;
+  sortState = { prop, order };
+  list.sort((a, b) => {
+    if (order === 1) return a[prop] > b[prop] ? 1 : -1;
+    if (order === 2) return a[prop] < b[prop] ? 1 : -1;
+    return 0;
+  });
+  clearAllSelection();
+  renderTable();
+};
+
+window.toggleMenu = function (el) {
+  const menu = el.nextElementSibling;
+  document.querySelectorAll('.dropdown-menu').forEach(m => {
+    if (m !== menu) m.classList.remove('show');
+  });
+  menu.classList.toggle('show');
+};
+window.menuClick = function (prop, type) {
+  const text = ['冻结列', '隐藏列', '筛选', '重置'][type - 1];
+  alert(`操作：【${prop}】→ ${text}`);
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+};
+document.addEventListener('click', e => {
+  if (!e.target.closest('.menu-btn') && !e.target.closest('.dropdown-menu')) {
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+  }
+});
+
+// 框选 + 索引列单击/双击 + Ctrl多选
+function initCellSelection() {
+  const table = document.getElementById('dataTable');
+
+  // 左键框选
+  table.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    const td = e.target.closest('td');
+    if (!td || td.classList.contains('index-col')) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    const tr = td.closest('tr');
+    const rowIdx = Array.from(table.querySelectorAll('tbody tr')).indexOf(tr);
+    const colIdx = Array.from(tr.children).indexOf(td);
+
+    isSelecting = true;
+    selectedRows.clear();
+    cellRange = { startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx };
+    renderTable();
+  });
+
+  table.addEventListener('mousemove', e => {
+    if (!isSelecting) return;
+    const td = e.target.closest('td');
+    if (!td || td.classList.contains('index-col')) return;
+
+    const tr = td.closest('tr');
+    const rowIdx = Array.from(table.querySelectorAll('tbody tr')).indexOf(tr);
+    const colIdx = Array.from(tr.children).indexOf(td);
+
+    cellRange.endRow = rowIdx;
+    cellRange.endCol = colIdx;
+    renderTable();
+  });
+
+  document.addEventListener('mouseup', e => {
+    if (e.button === 0) isSelecting = false;
+  });
+
+  // 索引列：单击 / Ctrl多选 / 双击取消
+  table.addEventListener('click', e => {
+    const indexTd = e.target.closest('td.index-col');
+    if (!indexTd) return;
+
+    const rowIdx = +indexTd.dataset.row;
+    // 按住Ctrl：多选/反选
+    if (e.ctrlKey) {
+      if(selectedRows.has(rowIdx)){
+        selectedRows.delete(rowIdx);
+      }else{
+        selectedRows.add(rowIdx);
+      }
+    } else {
+      // 单选：清空其他
+      selectedRows.clear();
+      selectedRows.add(rowIdx);
+    }
+    // 清空单元格选区
+    cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+    renderTable();
+  });
+
+  // 双击索引列：取消当前行选中
+  table.addEventListener('dblclick', e => {
+    const indexTd = e.target.closest('td.index-col');
+    if (!indexTd) return;
+    const rowIdx = +indexTd.dataset.row;
+    selectedRows.delete(rowIdx);
+    cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+    renderTable();
+  });
+}
+
+function clearAllSelection() {
+  cellRange = { startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+  selectedRows.clear();
+}
+
+let draggedTh = null;
+function initHeaderDrag() {
+  const ths = document.querySelectorAll('#dataTable th:not(.index-col)');
+  ths.forEach(th => {
+    th.addEventListener('dragstart', e => {
+      draggedTh = th;
+      setTimeout(() => th.classList.add('dragging'), 0);
+    });
+    th.addEventListener('dragover', e => {
+      e.preventDefault();
+      th.classList.add('drag-over');
+    });
+    th.addEventListener('dragleave', () => {
+      th.classList.remove('drag-over');
+    });
+    th.addEventListener('drop', e => {
+      e.preventDefault();
+      th.classList.remove('drag-over');
+      if (draggedTh === th) return;
+      const from = +draggedTh.dataset.index;
+      const to = +th.dataset.index;
+      if (from === 0 || to === 0) return;
+      [displayColumns[from], displayColumns[to]] = [displayColumns[to], displayColumns[from]];
+      draggedTh = null;
+      clearAllSelection();
+      renderTable();
+    });
+    th.addEventListener('dragend', () => {
+      ths.forEach(t => t.classList.remove('dragging', 'drag-over'));
+    });
+  });
+}
+
+// 右键菜单+复制
+function initContextMenu() {
+  const table = document.getElementById('dataTable');
+  const menu = document.getElementById('contextMenu');
+
+  table.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const hasCell = cellRange.startRow !== -1;
+    const hasRow = selectedRows.size > 0;
+    if (!hasCell && !hasRow) return;
+
+    menu.style.left = e.pageX + 'px';
+    menu.style.top = e.pageY + 'px';
+    menu.style.display = 'block';
+  });
+
+  document.addEventListener('click', () => {
+    menu.style.display = 'none';
+  });
+
+  document.getElementById('copySelected').addEventListener('click', copySelectedData);
+}
+
+function copySelectedData() {
+  const table = document.getElementById('dataTable');
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+  let copyData;
+
+  // 多行选中
+  if (selectedRows.size > 0) {
+    const arr = [];
+    selectedRows.forEach(idx => {
+      arr.push(list[idx]);
+    });
+    copyData = {
+      type: 'rows',
+      data: arr
+    };
+  }
+  // 单元格框选
+  else if (cellRange.startRow !== -1) {
+    const minRow = Math.min(cellRange.startRow, cellRange.endRow);
+    const maxRow = Math.max(cellRange.startRow, cellRange.endRow);
+    const minCol = Math.min(cellRange.startCol, cellRange.endCol);
+    const maxCol = Math.max(cellRange.startCol, cellRange.endCol);
+
+    const cellMatrix = [];
+    for (let i = minRow; i <= maxRow; i++) {
+      const rowCells = [];
+      for (let j = minCol; j <= maxCol; j++) {
+        rowCells.push(rows[i].cells[j].textContent.trim());
+      }
+      cellMatrix.push(rowCells);
+    }
+
+    copyData = {
+      type: 'cells',
+      rows: Array.from({ length: maxRow - minRow + 1 }, (_, k) => minRow + k),
+      cols: Array.from({ length: maxCol - minCol + 1 }, (_, k) => minCol + k),
+      data: cellMatrix
+    };
+  }
+
+  if (copyData) {
+    navigator.clipboard.writeText(JSON.stringify(copyData, null, 2))
+      .then(() => alert(`复制成功：${copyData.type === 'rows' ? '多行数据' : '单元格选区'}`))
+      .catch(err => alert('复制失败'));
+  }
+  document.getElementById('contextMenu').style.display = 'none';
+}
+
+window.onload = renderTable;
+</script>
+</body>
+</html>

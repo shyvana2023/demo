@@ -1,0 +1,517 @@
+ /* 全局基础样式（仅重置，不参与组件耦合） */
+    /* ============================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --frosted-text-primary: #1e293b;
+      --frosted-text-secondary: #475694;
+      --frosted-text-tertiary: #94a3b8;
+      --frosted-bg-default: rgb(228, 234, 241);
+      --frosted-bg-subtle: rgb(235, 240, 246);
+      --frosted-border-default: rgba(226, 232, 240, 0.8);
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.1);
+      --frosted-cyan-text: #06b2d4;
+      --frosted-cyan-border: rgba(6, 182, 212, 0.4);
+      --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --frosted-radius-md: 10px;
+      --frosted-blur-md: 8px;
+      --warning-color: #f43f5e;
+      /* 只新增变量 */
+    }
+
+    /*
+    注释123
+    */
+
+    /* === Frostd CSS variables (converted from getFrostedCSSVariables) === */
+    :root {
+      --frosted-bg-transparent: rgba(255, 255, 255, 0);
+      --frosted-bg-subtle: rgb(235, 240, 246);
+      --frosted-bg-default: rgb(228, 234, 241);
+      --frosted-bg-emphasis: #ffffff;
+      --frosted-bg-solid: #ffffff;
+
+      --frosted-border-subtle: rgba(226, 232, 240, 0.6);
+      --frosted-border-default: rgba(226, 232, 240, 0.8);
+      --frosted-border-emphasis: rgba(6, 182, 212, 0.4);
+
+      --frosted-highlight-subtle: rgba(255, 255, 255, 0.6);
+      --frosted-highlight-default: rgba(255, 255, 255, 0.85);
+
+      --frosted-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --frosted-shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+      --frosted-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.16);
+
+      --frosted-blur-sm: 4px;
+      --frosted-blur-md: 8px;
+      --frosted-blur-lg: 16px;
+      --frosted-blur-xl: 24px;
+      --frosted-blur-2xl: 40px;
+
+      --frosted-text-primary: #1e293b;
+      --frosted-text-secondary: #475694;
+      --frosted-text-tertiary: #94a3b8;
+
+      --frosted-surface-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4));
+      /*
+      --frosted-surface-bg-gradient: linear-gradient(180deg, rgba(228,234,241,0.6), rgba(235,240,246,0.3));
+      */
+
+      --frosted-surface-bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%);
+      --frosted-radius-sm: 6px;
+      --frosted-radius-md: 10px;
+      --frosted-radius-lg: 14px;
+      --frosted-radius-xl: 20px;
+      --frosted-radius-2xl: 28px;
+      --frosted-radius-full: 9999px;
+
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.15);
+      --frosted-cyan-border: rgba(6, 182, 212, 0.3);
+      --frosted-cyan-text: #06b2d4;
+      --frosted-cyan-glow: 0 0 15px rgba(6, 182, 212, 0.25);
+
+      --frosted-purple-bg: rgba(168, 85, 247, 0.15);
+      --frosted-purple-border: rgba(168, 85, 247, 0.3);
+      --frosted-purple-text: #9333ea;
+      --frosted-purple-glow: 0 0 15px rgba(168, 85, 247, 0.25);
+
+      --frosted-green-bg: rgba(34, 197, 94, 0.15);
+      --frosted-green-border: rgba(34, 197, 94, 0.3);
+      --frosted-green-text: #16a34a;
+      --frosted-green-glow: 0 0 15px rgba(34, 197, 94, 0.25);
+
+      --frosted-orange-bg: rgba(249, 115, 22, 0.15);
+      --frosted-orange-border: rgba(249, 115, 22, 0.3);
+      --frosted-orange-text: #ea580c;
+      --frosted-orange-glow: 0 0 15px rgba(249, 115, 22, 0.25);
+
+      --frosted-red-bg: rgba(239, 68, 68, 0.15);
+      --frosted-red-border: rgba(239, 68, 68, 0.3);
+      --frosted-red-text: #dc2626;
+      --frosted-red-glow: 0 0 15px rgba(239, 68, 68, 0.25);
+    }
+
+    /* Dark theme overrides */
+    [data-theme="dark"] {
+      --frosted-bg-transparent: rgba(0, 0, 0, 0);
+      --frosted-bg-subtle: rgba(15, 23, 42, 0.6);
+      --frosted-bg-default: #0b1220;
+      --frosted-bg-emphasis: rgba(255, 255, 255, 0.03);
+      --frosted-bg-solid: rgba(10, 14, 20, 0.8);
+
+      --frosted-border-subtle: rgba(255, 255, 255, 0.03);
+      --frosted-border-default: rgba(255, 255, 255, 0.06);
+      --frosted-border-emphasis: rgba(6, 182, 212, 0.18);
+
+      --frosted-highlight-subtle: rgba(255, 255, 255, 0.04);
+      --frosted-highlight-default: rgba(255, 255, 255, 0.06);
+
+      --frosted-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+      --frosted-shadow-md: 0 4px 10px rgba(0, 0, 0, 0.6);
+      --frosted-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
+      --frosted-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+      --frosted-blur-sm: 6px;
+      --frosted-blur-md: 10px;
+      --frosted-blur-lg: 20px;
+      --frosted-blur-xl: 28px;
+      --frosted-blur-2xl: 48px;
+
+      --frosted-text-primary: #e6eef9;
+      --frosted-text-secondary: #c9d6ee;
+      --frosted-text-tertiary: #9fb3d1;
+
+      --frosted-surface-bg: linear-gradient(180deg, rgba(20, 30, 45, 0.6), rgba(10, 14, 20, 0.6));
+      /*
+      --frosted-surface-bg-gradient: linear-gradient(180deg, rgba(12,18,28,0.6), rgba(8,10,16,0.6));
+      */
+
+      --frosted-surface-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+
+      --frosted-radius-sm: 6px;
+      --frosted-radius-md: 10px;
+      --frosted-radius-lg: 14px;
+      --frosted-radius-xl: 20px;
+      --frosted-radius-2xl: 28px;
+      --frosted-radius-full: 9999px;
+
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.12);
+      --frosted-cyan-border: rgba(6, 182, 212, 0.28);
+      --frosted-cyan-text: #22d3ee;
+      --frosted-cyan-glow: 0 0 20px rgba(34, 211, 238, 0.18);
+
+      --frosted-purple-bg: rgba(168, 85, 247, 0.12);
+      --frosted-purple-border: rgba(168, 85, 247, 0.28);
+      --frosted-purple-text: #c084fc;
+      --frosted-purple-glow: 0 0 20px rgba(192, 132, 252, 0.12);
+
+      --frosted-green-bg: rgba(34, 197, 94, 0.12);
+      --frosted-green-border: rgba(34, 197, 94, 0.28);
+      --frosted-green-text: #4ade80;
+      --frosted-green-glow: 0 0 18px rgba(74, 222, 128, 0.12);
+
+      --frosted-orange-bg: rgba(249, 115, 22, 0.12);
+      --frosted-orange-border: rgba(249, 115, 22, 0.28);
+      --frosted-orange-text: #fb923c;
+      --frosted-orange-glow: 0 0 16px rgba(251, 146, 60, 0.12);
+
+      --frosted-red-bg: rgba(239, 68, 68, 0.12);
+      --frosted-red-border: rgba(239, 68, 68, 0.28);
+      --frosted-red-text: #f87171;
+      --frosted-red-glow: 0 0 18px rgba(248, 113, 113, 0.12);
+    }
+
+    body {
+      background-color: var(--frosted-surface-bg-gradient);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .main-title {
+      font-size: 24px;
+      color: var(--frosted-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .main-subtitle {
+      font-size: 13px;
+      color: var(--frosted-text-tertiary);
+      margin-bottom: 36px;
+    }
+
+    .item-title {
+      font-size: 16px;
+      color: var(--frosted-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: var(--frosted-text-tertiary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .input-group {
+      margin-bottom: 32px;
+      max-width: 420px;
+    }
+
+    /* ============================================== */
+    /* 组件1：普通文本输入框 独立样式（无耦合） */
+    /* ============================================== */
+    .text-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .text-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-default);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .text-input-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .text-input-wrapper:focus-within .text-input-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .text-input-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    /* ============================================== */
+    /* 组件2：数字输入框 独立样式（无耦合） */
+    /* ============================================== */
+    .number-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .number-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-default);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .number-input-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .number-input-wrapper:focus-within .number-input-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .number-input-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    /* ============================================== */
+    /* 组件3：多行文本域 独立样式（无耦合） */
+    /* ============================================== */
+    .textarea-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .textarea-field {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-default);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      resize: vertical;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+      font-family: inherit;
+    }
+
+    .textarea-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .textarea-wrapper:focus-within .textarea-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .textarea-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    /* ============================================== */
+    /* 组件4：自动补全输入框 独立样式（无耦合） */
+    /* ============================================== */
+    .autocomplete-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .autocomplete-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .autocomplete-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .autocomplete-input-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s, background-color 0.2s;
+      border-radius: 1px;
+    }
+
+    .autocomplete-input-wrapper:focus-within .autocomplete-input-line {
+      width: 100%;
+    }
+
+    /* 错误状态：滑动条变红 */
+    .autocomplete-input-line.error {
+      background-color: var(--warning-color) !important;
+      width: 100%;
+    }
+
+    .autocomplete-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, var(--frosted-bg-subtle) 15%, var(--frosted-bg-subtle) 85%, rgba(0, 0, 0, 0.02) 100%);;
+      backdrop-filter: blur(var(--frosted-blur-md));
+      border: 1px solid var(--frosted-border-default);
+      border-radius: var(--frosted-radius-md);
+      box-shadow: var(--frosted-shadow-md);
+      z-index: 10;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .autocomplete-panel.show {
+      display: block;
+    }
+
+    .autocomplete-item {
+      padding: 8px 14px;
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      cursor: pointer;
+    }
+
+    .autocomplete-item:hover,
+    .autocomplete-item.active {
+      background: var(--frosted-cyan-bg);
+      color: var(--frosted-cyan-text);
+    }
+
+    /* ============================================== */
+    /* 组件5：按钮组 - 3种风格 完全独立解耦 */
+    /* ============================================== */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    /* Plain 朴素按钮 */
+    .btn-plain {
+      padding: 10px 16px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      background: var(--frosted-bg-subtle);
+      color: var(--frosted-text-secondary);
+      border: 1px solid var(--frosted-border-default);
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .btn-plain:hover {
+      opacity: 0.8;
+    }
+
+    /* Speed 速度线按钮 */
+    .btn-speed {
+      position: relative;
+      padding: 10px 16px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      background: var(--frosted-bg-subtle);
+      color: var(--frosted-text-secondary);
+      border: 1px solid var(--frosted-border-default);
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .btn-speed::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      border-radius: 1px;
+      transition: width 0.2s ease;
+    }
+
+    .btn-speed:hover::after {
+      width: 100%;
+    }
+
+    /* Fancy 精致渐变按钮 */
+    .btn-fancy {
+      padding: 10px 16px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      background: linear-gradient(135deg, #06b2d4, #06d4b2);
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: var(--frosted-shadow-md);
+    }
+
+    .btn-fancy:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* —————————————— 以下【只新增】，不修改原有 —————————————— */
+    .error-msg {
+      font-size: 12px;
+      color: var(--warning-color);
+      height: 16px;
+      margin-top: 4px;
+    }
+
+    /* 新增：验证失败边框样式（仅用于无滑动条组件） */
+    .input-error {
+      border-color: var(--warning-color) !important;
+      box-shadow: 0 0 0 1px var(--warning-color) !important;
+    }
+
+    .viewClass {
+      background: var(--frosted-surface-bg-gradient);
+      padding: 40px;
+    }
+
+    

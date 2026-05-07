@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Date Time Picker (Multi Format)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    :root {
+      --frosted-text-primary: #1e293b;
+      --frosted-text-secondary: #475569;
+      --frosted-text-tertiary: #94a3b8;
+      --frosted-bg-default: rgb(228, 234, 241);
+      --frosted-bg-subtle: rgb(235, 240, 246);
+      --frosted-bg-transparent: rgba(255, 255, 255, 0.5);
+      --frosted-border-default: rgba(226, 232, 240, 0.8);
+      --frosted-border-subtle: rgba(226, 232, 240, 0.5);
+      --frosted-border-emphasis: rgba(203, 213, 225, 1);
+      --frosted-cyan-bg: rgba(6, 182, 212, 0.1);
+      --frosted-cyan-text: #06b6d4;
+      --frosted-cyan-border: rgba(6, 182, 212, 0.4);
+      --frosted-purple-text: #9333ea;
+      --frosted-green-text: #10b981;
+      --frosted-orange-text: #f97316;
+      --frosted-red-text: #ef4444;
+      --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --frosted-radius-lg: 16px;
+      --frosted-radius-md: 10px;
+      --frosted-blur-md: 8px;
+    }
+
+    [data-theme="dark"] {
+      --frosted-text-primary: #f8fafc;
+      --frosted-text-secondary: #e2e8f0;
+      --frosted-text-tertiary: #94a3b8;
+      --frosted-bg-default: rgba(15, 23, 42, 0.9);
+      --frosted-bg-subtle: rgba(15, 23, 42, 0.7);
+      --frosted-bg-transparent: rgba(15, 23, 42, 0.5);
+      --frosted-border-default: rgba(51, 65, 85, 0.8);
+      --frosted-border-subtle: rgba(51, 65, 85, 0.5);
+      --frosted-border-emphasis: rgba(71, 85, 105, 1);
+    }
+
+    body {
+      background-color: var(--frosted-bg-default);
+      transition: background-color 0.3s ease;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    h3 {
+      color: var(--frosted-text-primary);
+      font-weight: 600;
+      margin: 24px 0 12px;
+    }
+
+    .date-time-picker {
+      display: inline-block;
+      position: relative;
+      margin: 10px 20px;
+      vertical-align: top;
+    }
+
+    .picker-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .picker-trigger {
+      padding: 10px 14px;
+      border-radius: var(--frosted-radius-md);
+      width: 260px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: none;
+      border-bottom: 1px solid var(--frosted-border-default);
+      outline: none !important;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .time-part {
+      padding: 6px 10px;
+      border-radius: var(--frosted-radius-md);
+      font-size: 14px;
+      width: 70px;
+      cursor: pointer;
+      color: var(--frosted-text-secondary);
+      background: var(--frosted-bg-subtle);
+      border: 1px solid var(--frosted-border-default);
+      outline: none !important;
+      transition: all 0.2s ease;
+    }
+
+    .speed-line-input {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--frosted-cyan-text);
+      transition: width 0.2s ease;
+      border-radius: 1px;
+    }
+
+    .picker-wrapper.active .speed-line-input {
+      width: 100%;
+    }
+
+    .dropdown-panel {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      background: var(--frosted-bg-subtle);
+      backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
+      border: 1px solid var(--frosted-border-default);
+      border-radius: var(--frosted-radius-lg);
+      box-shadow: var(--frosted-shadow-md);
+      z-index: 9999;
+      padding: 16px;
+      width: max-content;
+    }
+
+    .dropdown-panel.hidden {
+      display: none;
+    }
+
+    .time-select-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .time-part:focus {
+      border-color: var(--frosted-cyan-border);
+      background: var(--frosted-cyan-bg);
+      color: var(--frosted-cyan-text);
+    }
+
+    .range-picker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .range-split {
+      color: var(--frosted-text-tertiary);
+    }
+
+    .calendar-display {
+      width: 240px;
+      padding: 0;
+      font-size: 13px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      color: var(--frosted-text-primary);
+    }
+
+    .calendar-week {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--frosted-text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      border-radius: var(--frosted-radius-md);
+      cursor: pointer;
+      color: var(--frosted-text-secondary);
+      transition: all 0.2s ease;
+    }
+
+    .calendar-day:hover {
+      background: var(--frosted-cyan-bg);
+      color: var(--frosted-cyan-text);
+    }
+
+    .calendar-day.active {
+      background: var(--frosted-cyan-text) !important;
+      color: white !important;
+    }
+
+    .calendar-day.in-range {
+      background: var(--frosted-cyan-bg) !important;
+      color: var(--frosted-cyan-text) !important;
+    }
+
+    .calendar-day.other-month {
+      color: var(--frosted-text-tertiary);
+    }
+
+    .calendar-prev, .calendar-next {
+      cursor: pointer;
+      padding: 4px 8px;
+      user-select: none;
+      color: var(--frosted-text-secondary);
+      border-radius: var(--frosted-radius-md);
+      transition: background 0.2s;
+    }
+
+    .calendar-prev:hover, .calendar-next:hover {
+      background: var(--frosted-bg-subtle);
+    }
+
+    .unified-range-input {
+      display: flex;
+      align-items: center;
+      width: 360px !important;
+    }
+
+    .unified-range-input input {
+      flex: 1;
+      border: none;
+      outline: none !important;
+      background: transparent;
+      text-align: center;
+      cursor: pointer;
+      color: var(--frosted-text-secondary);
+    }
+
+    .unified-range-input .split {
+      color: var(--frosted-text-tertiary);
+      padding: 0 6px;
+    }
+
+    .confirm-bar {
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .confirm-bar button {
+      padding: 6px 20px;
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%);
+      color: var(--frosted-cyan-text);
+      border: 1px solid var(--frosted-cyan-border);
+      border-radius: var(--frosted-radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .confirm-bar button:hover {
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.12) 100%);
+    }
+
+    .demo-box {
+      margin: 30px 20px;
+      padding: 18px;
+      background: var(--frosted-bg-subtle);
+      border-radius: var(--frosted-radius-lg);
+      max-width: 700px;
+      border: 1px solid var(--frosted-border-default);
+      backdrop-filter: blur(var(--frosted-blur-md));
+    }
+
+    .demo-box h4 {
+      margin: 0 0 12px;
+      color: var(--frosted-cyan-text);
+      font-weight: 600;
+    }
+
+    .demo-box p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: var(--frosted-text-secondary);
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+<h3>1. Standard: YYYY-MM-DD hh:mm:ss</h3>
+<div id="picker1"></div>
+
+<h3>2. Slash Format: YYYY/MM/DD hh:mm</h3>
+<div id="picker2"></div>
+
+<h3>3. Date Only: YYYY-MM-DD</h3>
+<div id="picker3"></div>
+
+<h3>4. US Format: MM/DD/YYYY</h3>
+<div id="picker4"></div>
+
+<h3>5. Date Range (Date Only)</h3>
+<div id="dateRangePicker"></div>
+
+<h3>6. Time Range (Time Only)</h3>
+<div id="timeRangePicker"></div>
+
+<h3 style="color:var(--frosted-cyan-text)">7. 🔥 Perfect: Unified Date Range Picker</h3>
+<div id="unifiedRangePicker"></div>
+
+<div class="demo-box">
+  <h4>✅ DateTimeObj Live Demo</h4>
+  <p id="demo1">Raw String: </p>
+  <p id="demo2">UTC Time: </p>
+  <p id="demo3">Local Date: </p>
+  <p id="demo4">Local Time: </p>
+  <p id="demo5">Local DateTime: </p>
+  <p id="demo6">HTML Standard: </p>
+  <p id="demo7">Is Weekday: </p>
+  <p id="demo8">Is Weekend: </p>
+  <p id="demo9">Relative Time: </p>
+</div>
+
+<script>
+class DateTimeObj {
+  constructor(date) {
+    if (!date) date = new Date();
+    this._date = new Date(date);
+    this.utcTime = this._date.getTime();
+  }
+
+  static toDateTimeObj(value, format = "auto") {
+    let d;
+    if (format === "auto") {
+      d = new Date(value);
+    } else {
+      d = DateTimeObj.parseByFormat(value, format);
+    }
+    if (isNaN(d.getTime())) throw new Error("Date parse failed");
+    return new DateTimeObj(d);
+  }
+
+  static parseByFormat(str, fmt) {
+    const y = str.substr(fmt.indexOf("YYYY"), 4) || new Date().getFullYear();
+    const M = str.substr(fmt.indexOf("MM"), 2) || 1;
+    const D = str.substr(fmt.indexOf("DD"), 2) || 1;
+    const h = str.substr(fmt.indexOf("hh"), 2) || 0;
+    const m = str.substr(fmt.indexOf("mm"), 2) || 0;
+    const s = str.substr(fmt.indexOf("ss"), 2) || 0;
+    return new Date(y, +M - 1, D, h, m, s);
+  }
+
+  format(fmt = "YYYY-MM-DD hh:mm:ss") {
+    const d = this._date;
+    const YYYY = d.getFullYear();
+    const MM = String(d.getMonth() + 1).padStart(2, "0");
+    const DD = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mm = String(d.getMinutes()).padStart(2, "0");
+    const ss = String(d.getSeconds()).padStart(2, "0");
+    return fmt
+      .replace(/YYYY/g, YYYY)
+      .replace(/MM/g, MM)
+      .replace(/DD/g, DD)
+      .replace(/hh/g, hh)
+      .replace(/mm/g, mm)
+      .replace(/ss/g, ss);
+  }
+
+  get rel() {
+    const now = Date.now();
+    const diff = now - this.utcTime;
+    const second = 1000;
+    const minute = 60 * second;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    const month = 30 * day;
+    const year = 365 * day;
+
+    return {
+      toNow: () => {
+        if (diff < minute) return "just now";
+        if (diff < hour) return `${Math.floor(diff / minute)} min ago`;
+        if (diff < day) return `${Math.floor(diff / hour)} h ago`;
+        if (diff < month) return `${Math.floor(diff / day)} d ago`;
+        if (diff < year) return `${Math.floor(diff / month)} mo ago`;
+        return `${Math.floor(diff / year)} y ago`;
+      }
+    };
+  }
+
+  get isWeekday() {
+    const day = this._date.getDay();
+    return day >= 1 && day <= 5;
+  }
+
+  get isWeekend() {
+    return !this.isWeekday;
+  }
+
+  get htmlDate() {
+    return this.format("YYYY-MM-DD");
+  }
+
+  get localDate() {
+    return this._date.toLocaleDateString();
+  }
+
+  get localTime() {
+    return this._date.toLocaleTimeString();
+  }
+
+  get localDateTime() {
+    return this._date.toLocaleString();
+  }
+}
+
+let activePickerInstance = null;
+let activeWrapper = null;
+
+function closeAnyPanel() {
+  const all = document.querySelectorAll('.dropdown-panel');
+  all.forEach(p => p.classList.add('hidden'));
+  if (activeWrapper) {
+    activeWrapper.classList.remove('active');
+    activeWrapper = null;
+  }
+  activePickerInstance = null;
+}
+
+class UnifiedDateRangePicker {
+  constructor(opt) {
+    this.container = opt.container;
+    this.format = opt.format || 'YYYY-MM-DD';
+    this.onChange = opt.onChange || (() => {});
+    this.start = null;
+    this.end = null;
+    this.viewDate = new Date();
+    this.render();
+    this.bindOutside();
+  }
+
+  fmt(d) {
+    if (!d) return '';
+    const dt = new DateTimeObj(d);
+    return dt.format(this.format);
+  }
+
+  isInRange(date) {
+    if (!this.start || !this.end) return false;
+    const time = date.getTime();
+    const s = this.start.getTime();
+    const e = this.end.getTime();
+    return time > s && time < e;
+  }
+
+  render() {
+    this.container.innerHTML = '';
+    const root = document.createElement('div');
+    root.className = 'date-time-picker';
+    this.root = root;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'picker-wrapper';
+
+    const inputWrap = document.createElement('div');
+    inputWrap.className = 'picker-trigger unified-range-input';
+    
+    const inpStart = document.createElement('input');
+    inpStart.value = this.fmt(this.start);
+    inpStart.readOnly = true;
+    
+    const split = document.createElement('div');
+    split.className = 'split';
+    split.textContent = ' ~ ';
+    
+    const inpEnd = document.createElement('input');
+    inpEnd.value = this.fmt(this.end);
+    inpEnd.readOnly = true;
+    
+    inputWrap.append(inpStart, split, inpEnd);
+    this.inpStart = inpStart;
+    this.inpEnd = inpEnd;
+
+    const line = document.createElement('div');
+    line.className = 'speed-line-input';
+
+    const panel = document.createElement('div');
+    panel.className = 'dropdown-panel hidden';
+    this.panel = panel;
+
+    const cal = document.createElement('div');
+    cal.className = 'calendar-display';
+    this.renderCal(cal);
+    panel.append(cal);
+
+    const bar = document.createElement('div');
+    bar.className = 'confirm-bar';
+    const ok = document.createElement('button');
+    ok.textContent = 'OK';
+    ok.onclick = (e) => {
+      e.stopPropagation();
+      closeAnyPanel();
+      this.emit();
+    };
+    bar.append(ok);
+    panel.append(bar);
+
+    inputWrap.onclick = (e) => {
+      e.stopPropagation();
+      closeAnyPanel();
+      wrap.classList.add('active');
+      activeWrapper = wrap;
+      this.panel.classList.remove('hidden');
+      activePickerInstance = this;
+    };
+
+    panel.onclick = (e) => e.stopPropagation();
+    wrap.append(inputWrap, line);
+    root.append(wrap, panel);
+    this.container.append(root);
+  }
+
+  renderCal(container) {
+    container.innerHTML = '';
+    const y = this.viewDate.getFullYear(), M = this.viewDate.getMonth();
+    const header = document.createElement('div');
+    header.className = 'calendar-header';
+    
+    const prev = document.createElement('span');
+    prev.className = 'calendar-prev';
+    prev.textContent = '<';
+    prev.onclick = (e) => { 
+      e.stopPropagation();
+      this.viewDate.setMonth(this.viewDate.getMonth()-1); 
+      this.renderCal(this.panel.querySelector('.calendar-display'));
+    };
+    
+    const title = document.createElement('span');
+    title.textContent = `${y}-${String(M+1).padStart(2,'0')}`;
+    
+    const next = document.createElement('span');
+    next.className = 'calendar-next';
+    next.textContent = '>';
+    next.onclick = (e) => { 
+      e.stopPropagation();
+      this.viewDate.setMonth(this.viewDate.getMonth()+1); 
+      this.renderCal(this.panel.querySelector('.calendar-display'));
+    };
+    
+    header.append(prev, title, next);
+    
+    const week = document.createElement('div');
+    week.className = 'calendar-week';
+    'Sun Mon Tue Wed Thu Fri Sat'.split(' ').forEach(w => {
+      const s = document.createElement('span');
+      s.textContent = w;
+      week.append(s);
+    });
+    
+    const days = document.createElement('div');
+    days.className = 'calendar-days';
+    this.fillDays(days);
+    container.append(header, week, days);
+  }
+
+  fillDays(container) {
+    const y = this.viewDate.getFullYear(), M = this.viewDate.getMonth();
+    const first = new Date(y, M, 1);
+    const last = new Date(y, M+1, 0);
+    const pad = first.getDay();
+    
+    for(let i=0;i<pad;i++) {
+      const d = document.createElement('div');
+      d.className = 'calendar-day other-month';
+      container.append(d);
+    }
+    
+    for(let day=1;day<=last.getDate();day++) {
+      const d = document.createElement('div');
+      d.className = 'calendar-day';
+      d.textContent = day;
+      
+      const cur = new Date(y,M,day);
+      const isStart = this.start && cur.getTime() === this.start.getTime();
+      const isEnd = this.end && cur.getTime() === this.end.getTime();
+      const inRange = this.isInRange(cur);
+      
+      if (isStart || isEnd) d.classList.add('active');
+      if (inRange) d.classList.add('in-range');
+      
+      d.onclick = (e) => {
+        e.stopPropagation();
+        if (!this.start) {
+          this.start = new Date(y,M,day);
+        } else if (!this.end) {
+          this.end = new Date(y,M,day);
+          if (this.end < this.start) [this.start, this.end] = [this.end, this.start];
+        } else {
+          this.start = new Date(y,M,day);
+          this.end = null;
+        }
+        this.inpStart.value = this.fmt(this.start);
+        this.inpEnd.value = this.fmt(this.end);
+        this.renderCal(this.panel.querySelector('.calendar-display'));
+      };
+      container.append(d);
+    }
+  }
+
+  emit() {
+    this.onChange({ start: this.fmt(this.start), end: this.fmt(this.end) });
+  }
+
+  bindOutside() {
+    document.addEventListener('click', (e) => {
+      if (this.root && !this.root.contains(e.target)) closeAnyPanel();
+    });
+  }
+}
+
+class DateTimePicker {
+  constructor(opt) {
+    this.format = opt.format || 'YYYY-MM-DD hh:mm:ss';
+    this.container = opt.container;
+    this.onChange = opt.onChange || (() => {});
+    this.range = opt.range || false;
+    this.needConfirm = opt.needConfirm || false;
+    this.date1 = new Date();
+    this.date2 = new Date();
+    this.render();
+  }
+
+  fmt(d) {
+    return new DateTimeObj(d).format(this.format);
+  }
+
+  createPicker(date) {
+    const wrap = document.createElement('div');
+    wrap.className = 'date-time-picker';
+
+    const pickerWrap = document.createElement('div');
+    pickerWrap.className = 'picker-wrapper';
+    
+    const input = document.createElement('input');
+    input.className = 'picker-trigger';
+    input.value = this.fmt(date);
+    input.readOnly = true;
+    
+    const line = document.createElement('div');
+    line.className = 'speed-line-input';
+    
+    const panel = document.createElement('div');
+    panel.className = 'dropdown-panel hidden';
+    
+    if (this.format.includes('YYYY')) {
+      const cal = document.createElement('div');
+      cal.className = 'calendar-display';
+      this.renderCal(cal, date, input);
+      panel.append(cal);
+    }
+    
+    const timeBar = document.createElement('div');
+    timeBar.className = 'time-select-bar';
+    if (this.format.includes('hh')) this.addSel(timeBar, 'hour', date, input);
+    if (this.format.includes('mm')) this.addSel(timeBar, 'minute', date, input);
+    if (this.format.includes('ss')) this.addSel(timeBar, 'second', date, input);
+    panel.append(timeBar);
+
+    if (this.needConfirm) {
+      const bar = document.createElement('div');
+      bar.className = 'confirm-bar';
+      const ok = document.createElement('button');
+      ok.textContent = 'OK';
+      ok.onclick = (e) => { e.stopPropagation(); closeAnyPanel(); this.emit(); };
+      bar.append(ok);
+      panel.append(bar);
+    }
+    
+    input.onclick = e => {
+      e.stopPropagation();
+      closeAnyPanel();
+      pickerWrap.classList.add('active');
+      activeWrapper = pickerWrap;
+      panel.classList.remove('hidden');
+    };
+    panel.onclick = e => e.stopPropagation();
+    pickerWrap.append(input, line);
+    wrap.append(pickerWrap, panel);
+    return { wrap, input, panel };
+  }
+
+  addSel(container, type, date, input) {
+    const sel = document.createElement('select');
+    sel.className = 'time-part';
+    const max = type === 'hour' ? 24 : 60;
+    for (let i=0; i<max; i++) {
+      const v = String(i).padStart(2,'0');
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      sel.append(opt);
+    }
+    sel.value = type === 'hour' ? String(date.getHours()).padStart(2,'0') :
+               type === 'minute' ? String(date.getMinutes()).padStart(2,'0') :
+               String(date.getSeconds()).padStart(2,'0');
+    sel.onchange = () => {
+      if (type === 'hour') date.setHours(+sel.value);
+      else if (type === 'minute') date.setMinutes(+sel.value);
+      else date.setSeconds(+sel.value);
+      input.value = this.fmt(date);
+      showDemo(date);
+    };
+    container.append(sel);
+  }
+
+  renderCal(container, date, input) {
+    const now = date;
+    const y = now.getFullYear(), M = now.getMonth();
+    const header = document.createElement('div');
+    header.className = 'calendar-header';
+    
+    const prev = document.createElement('span');
+    prev.className = 'calendar-prev';
+    prev.textContent = '<';
+    prev.onclick = (e) => {
+      e.stopPropagation();
+      date.setMonth(date.getMonth() - 1);
+      this.renderCal(container, date, input);
+    };
+    
+    const title = document.createElement('span');
+    title.textContent = `${y}-${String(M+1).padStart(2,'0')}`;
+    
+    const next = document.createElement('span');
+    next.className = 'calendar-next';
+    next.textContent = '>';
+    next.onclick = (e) => {
+      e.stopPropagation();
+      date.setMonth(date.getMonth() + 1);
+      this.renderCal(container, date, input);
+    };
+    
+    header.append(prev, title, next);
+
+    const week = document.createElement('div');
+    week.className = 'calendar-week';
+    'Sun Mon Tue Wed Thu Fri Sat'.split(' ').forEach(w => {
+      const s = document.createElement('span');
+      s.textContent = w;
+      week.append(s);
+    });
+    
+    const days = document.createElement('div');
+    days.className = 'calendar-days';
+    const first = new Date(y, M, 1);
+    const last = new Date(y, M+1, 0);
+    
+    days.innerHTML = '';
+    for (let i=0; i<first.getDay(); i++) days.append(document.createElement('div'));
+    for (let d=1; d<=last.getDate(); d++) {
+      const el = document.createElement('div');
+      el.className = 'calendar-day';
+      el.textContent = d;
+      if (date.getDate() === d) el.classList.add('active');
+      el.onclick = () => {
+        date.setDate(d);
+        input.value = this.fmt(date);
+        showDemo(date);
+        this.renderCal(container, date, input);
+      };
+      days.append(el);
+    }
+    container.innerHTML = '';
+    container.append(header, week, days);
+  }
+
+  emit() {
+    this.onChange(this.fmt(this.date1));
+  }
+
+  render() {
+    this.container.innerHTML = '';
+    if (this.range) {
+      const root = document.createElement('div');
+      root.className = 'range-picker';
+      const left = this.createPicker(this.date1);
+      const right = this.createPicker(this.date2);
+      const split = document.createElement('span');
+      split.className = 'range-split';
+      split.textContent = '~';
+      root.append(left.wrap, split, right.wrap);
+      this.container.append(root);
+    } else {
+      const p = this.createPicker(this.date1);
+      this.container.append(p.wrap);
+    }
+  }
+}
+
+function showDemo(date) {
+  const dt = new DateTimeObj(date);
+  document.getElementById("demo1").textContent = `Raw String: ${dt.format()}`;
+  document.getElementById("demo2").textContent = `UTC Time: ${dt._date.toISOString()}`;
+  document.getElementById("demo3").textContent = `Local Date: ${dt.localDate}`;
+  document.getElementById("demo4").textContent = `Local Time: ${dt.localTime}`;
+  document.getElementById("demo5").textContent = `Local DateTime: ${dt.localDateTime}`;
+  document.getElementById("demo6").textContent = `HTML Standard: ${dt.htmlDate}`;
+  document.getElementById("demo7").textContent = `Is Weekday: ${dt.isWeekday ? "Yes" : "No"}`;
+  document.getElementById("demo8").textContent = `Is Weekend: ${dt.isWeekend ? "Yes" : "No"}`;
+  document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
+}
+
+new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
+new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
+new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
+new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
+new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
+new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
+
+setInterval(()=>{
+  showDemo(new Date());
+},1000)
+</script>
+</body>
+</html>
