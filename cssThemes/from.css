@@ -221,7 +221,8 @@
       border-bottom: 1px solid var(--frosted-border-default);
       outline: none;
       transition: all 0.2s;
-      backdrop-filter: blur(var(--frosted-blur-md));
+      /*backdrop-filter: blur(var(--frosted-blur-md));*/
+      backdrop-filter: none;
     }
 
     .text-input-line {

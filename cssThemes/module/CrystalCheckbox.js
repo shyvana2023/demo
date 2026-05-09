@@ -17,6 +17,7 @@ class CrystalCheckbox {
     this.containerId = config.containerId;
     this.label = config.label || 'Option';
     this.defaultChecked = !!config.defaultChecked;
+    this.defaultIndeterminate = !!config.defaultIndeterminate;
     this.onChange = config.onChange || function(){};
 
     // DOM 元素
@@ -25,6 +26,7 @@ class CrystalCheckbox {
     this.checkboxLabel = null;
     // 内部状态
     this.checked = this.defaultChecked;
+    this.indeterminate = this.defaultIndeterminate;
   }
 
   /**
@@ -38,9 +40,12 @@ class CrystalCheckbox {
     }
 
     // 🔥 自动渲染完整复选框DOM（100%还原你的原始结构）
+    const cls = [];
+    if (this.checked) cls.push('checked');
+    if (this.indeterminate) cls.push('indeterminate');
     this.container.innerHTML = `
       <div class="crystal-checkbox" id="${this.containerId}_core">
-        <div class="checkbox-box ${this.checked ? 'checked' : ''}">
+        <div class="checkbox-box ${cls.join(' ')}">
           <div class="checkbox-glint"></div>
           <div class="checkbox-bead">
             <div class="bead-inner">
@@ -78,9 +83,14 @@ class CrystalCheckbox {
   _updateUI() {
     if (this.checked) {
       this.checkboxBox.classList.add('checked');
+      this.checkboxBox.classList.remove('indeterminate');
+      this.checkboxLabel.style.color = 'var(--frosted-cyan-text)';
+    } else if (this.indeterminate) {
+      this.checkboxBox.classList.remove('checked');
+      this.checkboxBox.classList.add('indeterminate');
       this.checkboxLabel.style.color = 'var(--frosted-cyan-text)';
     } else {
-      this.checkboxBox.classList.remove('checked');
+      this.checkboxBox.classList.remove('checked', 'indeterminate');
       this.checkboxLabel.style.color = 'var(--frosted-text-secondary)';
     }
   }
@@ -102,8 +112,28 @@ class CrystalCheckbox {
    */
   setChecked(checked) {
     this.checked = !!checked;
+    if (this.checked) this.indeterminate = false;
     this._updateUI();
     this.onChange(this.checked);
+  }
+
+  /**
+   * 设置半选状态
+   * @param {boolean} indeterminate - true 半选 / false 取消
+   */
+  setIndeterminate(indeterminate) {
+    this.indeterminate = !!indeterminate;
+    if (this.indeterminate) this.checked = false;
+    this._updateUI();
+    this.onChange(this.checked);
+  }
+
+  /**
+   * 获取半选状态
+   * @returns {boolean}
+   */
+  getIndeterminate() {
+    return this.indeterminate;
   }
 
   /**
@@ -111,6 +141,7 @@ class CrystalCheckbox {
    */
   toggle() {
     this.checked = !this.checked;
+    this.indeterminate = false;
     this._updateUI();
     this.onChange(this.checked);
   }
@@ -120,6 +151,7 @@ class CrystalCheckbox {
    */
   reset() {
     this.checked = this.defaultChecked;
+    this.indeterminate = this.defaultIndeterminate;
     this._updateUI();
     this.onChange(this.checked);
   }

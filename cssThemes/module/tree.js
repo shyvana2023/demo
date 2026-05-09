@@ -130,14 +130,23 @@ class TreeComponent {
         nodeEl.draggable = true;
       }
 
+      /* ===== 引入水晶多选框样式 ===== */
       if (opt.showCheckbox && !opt.singleSelect) {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.className = 'checkbox';
-        checkbox.dataset.id = node.id;
-        if (isDisabled) checkbox.disabled = true;
-        this.syncCheckboxState(checkbox, node);
-        nodeEl.appendChild(checkbox);
+        const checkboxWrap = document.createElement('div');
+        checkboxWrap.className = 'tree-checkbox-box checkbox-box';
+        checkboxWrap.dataset.id = node.id;
+        if (isDisabled) checkboxWrap.classList.add('disabled');
+        checkboxWrap.innerHTML = `
+          <div class="checkbox-glint"></div>
+          <div class="checkbox-bead">
+            <div class="bead-inner">
+              <div class="bead-highlight"></div>
+              <div class="bead-secondary"></div>
+            </div>
+          </div>
+        `;
+        this.syncCheckboxState(checkboxWrap, node);
+        nodeEl.appendChild(checkboxWrap);
       }
 
       const toggle = document.createElement('span');
@@ -172,32 +181,36 @@ class TreeComponent {
     }
   }
 
+  /* ===== 同步水晶多选框视觉状态（支持半选） ===== */
   syncCheckboxState(checkbox, node) {
     if (node.disabled) {
-      checkbox.checked = false;
-      checkbox.indeterminate = false;
+      checkbox.classList.remove('checked', 'indeterminate');
       return;
     }
     if (!node.children || node.children.length === 0) {
-      checkbox.checked = !!this.checkedMap[node.id];
-      checkbox.indeterminate = false;
+      if (this.checkedMap[node.id]) {
+        checkbox.classList.add('checked');
+        checkbox.classList.remove('indeterminate');
+      } else {
+        checkbox.classList.remove('checked', 'indeterminate');
+      }
     } else {
       const status = this.getChildCheckStatus(node.children);
       if (status.allChecked) {
-        checkbox.checked = true;
-        checkbox.indeterminate = false;
+        checkbox.classList.add('checked');
+        checkbox.classList.remove('indeterminate');
       } else if (status.noneChecked) {
-        checkbox.checked = false;
-        checkbox.indeterminate = false;
+        checkbox.classList.remove('checked', 'indeterminate');
       } else {
-        checkbox.checked = false;
-        checkbox.indeterminate = true;
+        checkbox.classList.remove('checked');
+        checkbox.classList.add('indeterminate');
       }
     }
   }
 
+  /* ===== 批量更新水晶多选框视觉 ===== */
   updateAllCheckboxVisual() {
-    const checkboxes = this.container.querySelectorAll('.checkbox');
+    const checkboxes = this.container.querySelectorAll('.tree-checkbox-box');
     checkboxes.forEach(cb => {
       const id = Number(cb.dataset.id);
       const node = this.findNodeById(this.originData, id);
@@ -228,7 +241,17 @@ class TreeComponent {
         e.stopPropagation();
       }
 
-      if (e.target.classList.contains('checkbox')) return;
+      /* ===== 点击水晶多选框本体 ===== */
+      const checkboxBox = e.target.closest('.tree-checkbox-box');
+      if (checkboxBox) {
+        const id = Number(checkboxBox.dataset.id);
+        const node = this.findNodeById(this.originData, id);
+        if (node?.disabled) return;
+        const isChecked = checkboxBox.classList.contains('checked');
+        const newChecked = !isChecked;
+        this.handleCheckboxChange(id, newChecked);
+        return;
+      }
 
       const nodeEl = e.target.closest('.tree-node');
       if (!nodeEl) return;
@@ -267,28 +290,16 @@ class TreeComponent {
         return;
       }
 
+      /* ===== 点击节点行切换水晶多选框 ===== */
       if (!opt.singleSelect && opt.showCheckbox) {
-        const checkbox = nodeEl.querySelector('.checkbox');
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          this.handleCheckboxChange(id, checkbox.checked);
+        const checkboxBox = nodeEl.querySelector('.tree-checkbox-box');
+        if (checkboxBox) {
+          const isChecked = checkboxBox.classList.contains('checked');
+          const newChecked = !isChecked;
+          this.handleCheckboxChange(id, newChecked);
         }
       }
     });
-
-    if (opt.showCheckbox && !opt.singleSelect) {
-      list.addEventListener('change', (e) => {
-        if (!e.target.classList.contains('checkbox')) return;
-        const id = Number(e.target.dataset.id);
-        const checked = e.target.checked;
-        const node = this.findNodeById(this.originData, id);
-        if (node?.disabled) {
-          e.target.checked = !checked;
-          return;
-        }
-        this.handleCheckboxChange(id, checked);
-      });
-    }
 
     if (opt.searchable && searchInput) {
       searchInput.addEventListener('input', (e) => {
