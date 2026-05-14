@@ -1517,7 +1517,20 @@
 
 
       /* 时间选择器实时演示更新函数 / Live demo updater for datetime picker */
-      function showDemo(date) {
+     
+      // 初始化所有选择器
+      const datetimepicker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
+      const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
+      const datetimepicker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
+      const datetimepicker4 = new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
+      const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+      const datetimetimeRangePicker = new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
+      const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
+
+      /*setInterval(() => {
+        showDemo(new Date());
+      }, 1000);'
+       function showDemo(date) {
         const dt = new DateTimeObj(date);
         document.getElementById("demo1").textContent = `Raw String: ${dt.format()}`;
         document.getElementById("demo2").textContent = `UTC Time: ${dt._date.toISOString()}`;
@@ -1529,18 +1542,7 @@
         document.getElementById("demo8").textContent = `Is Weekend: ${dt.isWeekend ? "Yes" : "No"}`;
         document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
       }
-      // 初始化所有选择器
-      const datetimepicker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
-      const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
-      const datetimepicker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
-      const datetimepicker4 = new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
-      const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
-      const datetimetimeRangePicker = new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
-      const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
-
-      setInterval(() => {
-        showDemo(new Date());
-      }, 1000);
+      */
       /*
         14、树形组件：保持原有样式和交互，外部只需关注数据和事件，完全不受内部实现影响
       */

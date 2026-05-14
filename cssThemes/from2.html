@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Form Input Components | 表单输入组件合集</title>
+    <title>Form Input Components Collection</title>
     <!--  <link rel="stylesheet" href="./from.css">  -->
     <style>
         /* Icon Library CSS */
@@ -2106,7 +2106,7 @@
             border-radius: var(--frosted-radius-md);
             display: grid;
             place-items: center;
-            /* 一行搞定水平+垂直居中 */
+            /* Center both horizontally and vertically in one line */
         }
 
         .icon-nobtnclass {
@@ -4846,7 +4846,7 @@
             }
 
             .row-span-2 {
-                grid-row: span 2 / span 2;
+                grid-row: span 2;
             }
 
             .row-start-1 {
@@ -9134,7 +9134,7 @@
             }
         }
 
-        /* 统一按钮样式 - 带variants标识 */
+        /* Unified button style - with variants flag */
         .frosted-btn-variants {
             position: relative;
             padding: 6px 16px;
@@ -9153,33 +9153,33 @@
             transform: scale(0.95);
         }
 
-        /* 底部光效线条 - 直接渐变显现（无左右动画） */
+        /* Bottom glow line - direct gradient reveal (no left-right animation) */
         .speed-line-variants {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            /* 直接铺满 */
+            /* Fill directly */
             height: 2px;
             opacity: 0;
-            /* 默认隐藏 */
+            /* Hidden by default */
             transition: opacity 0.15s ease-out;
-            /* 只渐变透明度 */
+            /* Only gradient opacity */
             box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
         }
 
-        /* hover 直接淡入显现 */
+        /* Hover directly fades in */
         .frosted-btn-variants:hover .speed-line-variants {
             opacity: 1;
         }
 
-        /* 点击效果 */
+        /* Click effect */
         .frosted-btn-variants:active .speed-line-variants {
             height: 2px;
             transition-duration: 50ms;
         }
 
-        /* 颜色预设 */
+        /* Color presets */
         .speed-line-variants.primary-variants {
             background: linear-gradient(90deg, transparent, rgb(6, 182, 212), transparent);
         }
@@ -9201,33 +9201,33 @@
         }
 
 
-        /* 底部光效线条 - 直接渐变显现（无左右动画） */
+        /* Bottom glow line - direct gradient reveal (no left-right animation) */
         .speed-line-variants {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            /* 直接铺满 */
+            /* Fill directly */
             height: 2px;
             opacity: 0;
-            /* 默认隐藏 */
+            /* Hidden by default */
             transition: opacity 0.15s ease-out;
-            /* 只渐变透明度 */
+            /* Only gradient opacity */
             box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
         }
 
-        /* hover 直接淡入显现 */
+        /* Hover directly fades in */
         .frosted-btn-variants:hover .speed-line-variants {
             opacity: 1;
         }
 
-        /* 点击效果 */
+        /* Click effect */
         .frosted-btn-variants:active .speed-line-variants {
             height: 2px;
             transition-duration: 50ms;
         }
 
-        /* 颜色预设 */
+        /* Color presets */
         .speed-line-variants.primary-variants {
             background: linear-gradient(90deg, transparent, rgb(6, 182, 212), transparent);
         }
@@ -9248,14 +9248,14 @@
             background: linear-gradient(90deg, transparent, rgb(239, 68, 2), transparent);
         }
 
-        /* 带图标的输入框容器 */
+        /* Input box container with icon */
         .text-input-wrapper.has-icon {
             position: relative;
             display: flex;
             align-items: center;
         }
 
-        /* 左侧图标 */
+        /* Left icon */
         .input-icon {
             position: absolute;
             left: 8px;
@@ -9267,7 +9267,7 @@
             z-index: 2;
         }
 
-        /* 给 input 留出左边的图标位置 */
+        /* Reserve left icon space for input */
         .text-input-wrapper.has-icon .text-input-field {
             padding-left: 32px !important;
         }
@@ -9300,80 +9300,86 @@
             height: 2px !important;
         }
     </style>
+    <link rel="stylesheet" href="module/icon.css">
 </head>
 
 <body>
     <div class="viewClass">
 
         <!-- Language Switch Button -->
-        <button class="lang-switch-btn" id="langSwitchBtn" title="Switch Language">CN</button>
+        <!--<button class="lang-switch-btn" id="langSwitchBtn" title="Switch Language">CN</button>-->
         <button id="fmThemeToggle" class="frosted-button frosted-button-cyan lang-switch-btn"
-            style="height:36px;right:100px" data-i18n-key="switchTheme">切换主题 / Switch Theme</button>
+            style="height:36px;right:100px" data-i18n-key="switchTheme">Switch Theme</button>
         <!-- Page Main Title -->
-        <h2 class="main-title" data-bilingual>Form Input Components / 表单输入组件</h2>
-        <div class="main-subtitle" data-bilingual>Unified frosted style | 统一磨砂玻璃风格 · Universal interaction | 通用交互体验
+        <h2 class="main-title" data-bilingual>Form Input Components</h2>
+        <div class="main-subtitle" data-bilingual>Unified frosted style · Universal interaction
         </div>
 
         <div class="frosted-card" style="margin-top: 20px;">
 
             <!-- ======================
-                    纯字体 DOM 展示区域
-                    无任何控件、无表单、无交互元素
+                    Pure font DOM display area
+                    No controls, no forms, no interactive elements
                 ====================== -->
 
             <!-- Main Title Level -->
-            <h1 class="text-h1" data-bilingual>Segoe UI Font Spec / Segoe UI 字体规范展示</h1>
-            <p class="text-desc" data-bilingual>Pure Font Display Template / 无任何控件纯文字展示</p>
+            <h1 class="text-h1" data-bilingual>Segoe UI Font Spec</h1>
+            <p class="text-desc" data-bilingual>Pure Font Display Template</p>
 
             <div class="divider"></div>
 
             <!-- Heading System Display -->
             <section>
-                <h2 class="text-h2" data-bilingual>Heading Levels / 标题字体层级</h2>
-                <h1 class="text-h1" data-bilingual>Primary Heading H1 / 一级主标题 H1</h1>
-                <h2 class="text-h2" data-bilingual>Module Heading H2 / 二级模块标题 H2</h2>
-                <h3 class="text-h3" data-bilingual>Section Heading H3 / 三级区块标题 H3</h3>
-                <h4 class="text-h4" data-bilingual>Small Heading H4 / 四级小标题 H4</h4>
+                <h2 class="text-h2" data-bilingual>Heading Levels</h2>
+                <h1 class="text-h1" data-bilingual>Primary Heading H1</h1>
+                <h2 class="text-h2" data-bilingual>Module Heading H2</h2>
+                <h3 class="text-h3" data-bilingual>Section Heading H3</h3>
+                <h4 class="text-h4" data-bilingual>Small Heading H4</h4>
             </section>
 
             <div class="divider"></div>
 
             <!-- Body Font Display -->
             <section>
-                <h2 class="text-h2" data-bilingual>Body & Auxiliary Text / 正文与辅助文本</h2>
+                <h2 class="text-h2" data-bilingual>Body & Auxiliary Text</h2>
                 <p class="text-body" data-bilingual>Standard body: Segoe UI is the native Windows system font, clear and
-                    readable, ideal for long reading sessions. / 标准正文：Segoe UI 是 Windows 系统原生字体，清晰易读，适合长时间阅读，是界面设计的首选字体。
+                    readable, ideal for long reading sessions. / Standard body: Segoe UI is the native Windows system
+                    font, clear and readable, ideal for long reading sessions.
                 </p>
                 <p class="text-desc" data-bilingual>Description text: used for auxiliary explanations, feature
-                    introductions, and scenario descriptions. / 描述文本：用于辅助说明、功能介绍、场景描述等次级文本内容。</p>
+                    introductions, and scenario descriptions. / Description text: used for auxiliary explanations,
+                    feature introductions, and scenario descriptions.</p>
                 <p class="text-small" data-bilingual>Small text: used for form hints, operation instructions, and
-                    footnotes. / 小号文本：用于表单提示、操作说明、底部备注等轻量化文本。</p>
-                <p class="text-tiny" data-bilingual>Tiny annotation: used for badges, copyright info, and label notes. /
-                    超小注释：用于角标、版权信息、标签备注等最小级文本。</p>
+                    footnotes. / Small text: used for form hints, operation instructions, and footnotes.</p>
+                <p class="text-tiny" data-bilingual>Tiny annotation: used for badges, copyright info, and label notes.
+                    Extra small annotation: used for corner marks, copyright info, and label notes.</p>
             </section>
 
             <div class="divider"></div>
 
             <!-- Font Weight Display -->
             <section>
-                <h2 class="text-h2" data-bilingual>Font Weight & Emphasis / 字重与强调样式</h2>
-                <p class="text-light" data-bilingual>Light Text (300) / 细体文本 Light (300)</p>
-                <p class="text-body" data-bilingual>Regular Text (400) / 常规文本 Regular (400)</p>
-                <p class="text-bold" data-bilingual>Bold Emphasis SemiBold (600) / 加粗强调文本 SemiBold (600)</p>
-                <p class="text-btn" data-bilingual>Interactive Text Medium (500) / 交互文本 Medium (500)</p>
+                <h2 class="text-h2" data-bilingual>Font Weight & Emphasis</h2>
+                <p class="text-light" data-bilingual>Light Text (300)</p>
+                <p class="text-body" data-bilingual>Regular Text (400)</p>
+                <p class="text-bold" data-bilingual>Bold Emphasis SemiBold (600)</p>
+                <p class="text-btn" data-bilingual>Interactive Text Medium (500)</p>
             </section>
 
             <div class="divider"></div>
 
             <!-- Label Text Display -->
             <section>
-                <h2 class="text-h2" data-bilingual>Labels & Identifiers / 标签与标识文本</h2>
+                <h2 class="text-h2" data-bilingual>Labels & Identifiers</h2>
                 <div><span style="color: var(--frosted-cyan-text);">Cyan</span>, <span
                         style="color: var(--frosted-purple-text);">Purple</span>, <span
                         style="color: var(--frosted-green-text);">Green</span>, <span
                         style="color: var(--frosted-orange-text);">Orange</span></div>
             </section>
+            <label for="">
 
+                Regular title font size: 13px, annotation: 11px, body text: 12px
+            </label>
         </div>
 
         <div class="frosted-card" style="margin-top: 20px;max-width: 800px;">
@@ -9381,21 +9387,21 @@
             <!-- Form Component - Text Input -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Text Input / 普通文本输入框</h3>
-                <div class="item-desc" data-bilingual>Single line text entry | 单行文字录入，基础通用输入控件</div>
+                <h3 class="item-title" data-bilingual>Text Input</h3>
+                <div class="item-desc" data-bilingual>Single line text entry, basic general input control</div>
                 <div class="text-input-wrapper">
-                    <input type="text" class="text-input-field" placeholder="Please enter content / 请输入内容"
+                    <input type="text" class="text-input-field" placeholder="Please enter content"
                         data-bilingual-placeholder>
                     <div class="text-input-line"></div>
                 </div>
                 <div class="error-msg" data-key="text"></div> <!-- Error Message Container -->
             </div>
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Search Input / 搜索输入框</h3>
-                <div class="item-desc" data-bilingual>Text input with icon | 左侧带图标的文本输入框</div>
+                <h3 class="item-title" data-bilingual>Search Input</h3>
+                <div class="item-desc" data-bilingual>Text input with left icon</div>
                 <div class="text-input-wrapper has-icon">
                     <span class="icon icon-search  input-icon "></span>
-                    <input type="text" class="text-input-field" placeholder="Search / 搜索" data-bilingual-placeholder>
+                    <input type="text" class="text-input-field" placeholder="Search" data-bilingual-placeholder>
                     <div class="text-input-line"></div>
                 </div>
                 <div class="error-msg" data-key="search"></div>
@@ -9404,11 +9410,12 @@
             <!-- Form Component - Number Input -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Number Input / 数字输入框</h3>
-                <div class="item-desc" data-bilingual>Auto decimal formatting | 失去焦点自动补全两位小数，仅允许数字与小数点</div>
+                <h3 class="item-title" data-bilingual>Number Input</h3>
+                <div class="item-desc" data-bilingual>Auto completes two decimals on blur, only numbers and decimal
+                    point allowed</div>
                 <div class="number-input-wrapper">
                     <input type="number" inputmode="numeric" id="numberInput" class="number-input-field"
-                        placeholder="Enter number | 输入数字自动格式化" data-bilingual-placeholder>
+                        placeholder="Enter number" data-bilingual-placeholder>
                     <div class="number-input-line"></div>
                 </div>
                 <div class="error-msg" data-key="number"></div> <!-- Error Message Container -->
@@ -9418,10 +9425,11 @@
             <!-- Form Component - Textarea -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Textarea / 多行文本域</h3>
-                <div class="item-desc" data-bilingual>Multi-line text editing | 支持换行、拖动缩放，适用于大段文本编辑</div>
+                <h3 class="item-title" data-bilingual>Textarea</h3>
+                <div class="item-desc" data-bilingual>Supports line breaks and drag resize, suitable for long text
+                    editing</div>
                 <div class="textarea-wrapper">
-                    <textarea class="textarea-field" placeholder="Please enter multi-line content / 请输入多行文本内容"
+                    <textarea class="textarea-field" placeholder="Please enter multi-line content"
                         data-bilingual-placeholder></textarea>
                     <div class="textarea-line"></div>
                 </div>
@@ -9432,14 +9440,12 @@
             <!-- Form Component - Auto Complete Input -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Auto Complete Input / 智能补全输入框</h3>
-                <div class="item-desc" data-bilingual>Key binding: Arrow Up, Arrow Down, Enter, Tab | 联动按键：↑上键 / ↓下键 /
-                    Enter回车 /
-                    Tab键</div>
+                <h3 class="item-title" data-bilingual>Auto Complete Input</h3>
+                <div class="item-desc" data-bilingual>Key binding: Arrow Up, Arrow Down, Enter, Tab</div>
                 <div class="autocomplete-wrapper">
                     <div class="autocomplete-input-wrapper">
                         <input id="autoInput" class="autocomplete-input-field"
-                            placeholder="Input keyword for fuzzy matching | 输入关键词模糊匹配" data-bilingual-placeholder>
+                            placeholder="Input keyword for fuzzy matching" data-bilingual-placeholder>
                         <div class="autocomplete-input-line"></div>
                     </div>
                     <div id="autoPanel" class="autocomplete-panel"></div>
@@ -9452,9 +9458,8 @@
             <!-- ============================================== -->
             <div class="input-group">
                 <div class="input-group" style="max-width:360px;">
-                    <h3 class="item-title" data-bilingual>Dropdown / 下拉选择</h3>
-                    <div class="item-desc" data-bilingual>Pure JS dropdown, reuse autocomplete styles |
-                        纯JS实现下拉组件，复用自动补全样式
+                    <h3 class="item-title" data-bilingual>Dropdown</h3>
+                    <div class="item-desc" data-bilingual>Pure JS dropdown component, reuses autocomplete styles
                     </div>
 
                     <div class="autocomplete-wrapper" style="position:relative;">
@@ -9476,8 +9481,8 @@
             <!-- Tooltip -->
             <!-- ============================================== -->
             <div class="input-group" style="max-width: 1000px;">
-                <h3 class="item-title" data-bilingual>Tooltip / 文字提示</h3>
-                <div class="item-desc" data-bilingual>Plain | Speed | Fancy | 朴素型 · 速度线 · 精致渐变</div>
+                <h3 class="item-title" data-bilingual>Tooltip</h3>
+                <div class="item-desc" data-bilingual>Plain · Speed line · Fancy gradient</div>
                 <div class="flex gap-3 items-center" style="display: block;flex-wrap: wrap;">
                     <button class="frosted-button frosted-button-cyan" data-tooltip="This is a cyan button"
                         data-tooltip-dir="top" data-tooltip-type="text">cyan</button>
@@ -9508,8 +9513,8 @@
             <!-- Interactive Component - Buttons -->
             <!-- ============================================== -->
             <div class="input-group" style="max-width: 1000px;">
-                <h3 class="item-title" data-bilingual>Buttons / 按钮组件</h3>
-                <div class="item-desc" data-bilingual>Plain | Speed | Fancy | 朴素型 · 速度线 · 精致渐变</div>
+                <h3 class="item-title" data-bilingual>Buttons</h3>
+                <div class="item-desc" data-bilingual>Plain · Speed line · Fancy gradient</div>
                 <div class="flex gap-3 items-center" style="display: block;flex-wrap: wrap;">
                     <button class="frosted-button frosted-button-cyan">cyan</button>
                     <button class="frosted-button frosted-button-orange">orange</button>
@@ -9527,7 +9532,7 @@
             <!-- Icons -->
             <!-- ============================================== -->
             <div class="input-group" style="max-width: 100%;" id='icons_list2'>
-                <h3 class="item-title" data-bilingual>Icons / 图标</h3>
+                <h3 class="item-title" data-bilingual>Icons</h3>
                 <div class="item-desc" data-bilingual>SVG icons with currentColor - adapts to light/dark theme</div>
                 <div class="frosted-card" style="padding: 20px;">
                     <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 16px;">
@@ -9961,6 +9966,9 @@
                                 class="icon icon-zoom-in"></span></button>
                         <button class="icon-nobtnclass icon-btn hover:bg-primary/10" title="Zoom Out"><span
                                 class="icon icon-zoom-out"></span></button>
+
+
+
                     </div>
                 </div>
             </div>
@@ -9969,15 +9977,12 @@
             <!-- Message feedback with 4 states & 3 positions -->
             <!-- ============================================== -->
             <div class="input-group" style="max-width: 1000px;">
-                <h3 class="item-title" data-bilingual>Feedback / 消息反馈</h3>
-                <div class="item-desc" data-bilingual>Top full-width | Top-Left | Top-Right | Four states | 顶部全宽 · 左上 ·
-                    右上 ·
-                    四种状态
-                </div>
+                <h3 class="item-title" data-bilingual>Feedback</h3>
+                <div class="item-desc" data-bilingual>Top full-width · Top-Left · Top-Right · Four states</div>
                 <div style="display:flex;flex-direction:column;gap:12px;">
                     <div>
                         <div style="font-weight:600;color:var(--frosted-text-primary);font-size:12px;margin-bottom:8px;"
-                            data-bilingual>Top (Full Width) / 顶部全宽</div>
+                            data-bilingual>Top (Full Width)</div>
                         <div class="flex gap-2 flex-wrap">
                             <button class="frosted-button frosted-button-green text-sm"
                                 onclick="FrostedFeedback.show({message:'Operation completed successfully', type:'success', position:'top'})">Success</button>
@@ -9991,7 +9996,7 @@
                     </div>
                     <div>
                         <div style="font-weight:600;color:var(--frosted-text-primary);font-size:12px;margin-bottom:8px;"
-                            data-bilingual>Top-Left / 左上</div>
+                            data-bilingual>Top-Left</div>
                         <div class="flex gap-2 flex-wrap">
                             <button class="frosted-button frosted-button-green text-sm"
                                 onclick="FrostedFeedback.show({message:'Saved successfully', type:'success', position:'topleft'})">Success</button>
@@ -10005,7 +10010,7 @@
                     </div>
                     <div>
                         <div style="font-weight:600;color:var(--frosted-text-primary);font-size:12px;margin-bottom:8px;"
-                            data-bilingual>Top-Right / 右上</div>
+                            data-bilingual>Top-Right</div>
                         <div class="flex gap-2 flex-wrap">
                             <button class="frosted-button frosted-button-green text-sm"
                                 onclick="FrostedFeedback.show({message:'Saved successfully', type:'success', position:'topright'})">Success</button>
@@ -10019,7 +10024,7 @@
                     </div>
                     <div>
                         <div style="font-weight:600;color:var(--frosted-text-primary);font-size:12px;margin-bottom:8px;"
-                            data-bilingual>Auto Demo / 自动演示</div>
+                            data-bilingual>Auto Demo</div>
                         <div class="flex gap-2 flex-wrap">
                             <button class="frosted-button text-sm" onclick="FrostedFeedback.demo()">Play All States
                                 (Top)</button>
@@ -10035,7 +10040,7 @@
             <!-- Interactive Component - Button Variants (Speed Line Effect) -->
             <!-- Button variants with speed line -->
             <!-- ============================================== -->
-            <h3 class="item-title" style="margin-top: 20px;" data-bilingual>button variants / 按钮快速响应</h3>
+            <h3 class="item-title" style="margin-top: 20px;" data-bilingual>button variants</h3>
 
             <div class="flex flex-wrap items-center gap-2" style="display: block;flex-wrap: wrap;">
                 <button class="frosted-btn-variants">
@@ -10093,9 +10098,7 @@
                 <section class="space-y-4" style="margin-top:12px;">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-semibold" style="color: var(--frosted-text-primary)" data-bilingual>
-                            Badges /
-                            Tags |
-                            标签徽章</h2>
+                            Tag Badges</h2>
 
                     </div>
 
@@ -10122,7 +10125,7 @@
 
         <div class="frosted-card space-y-4" style="padding:12px;max-width:360px;margin-top: 20px;">
             <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);" data-bilingual>
-                Loading Spinner / 加载动画
+                Loading Spinner
             </h4>
             <div class="loading-spinner" style="margin-top: 20px;">
                 <div class="dot-group blue">
@@ -10140,10 +10143,10 @@
             </div>
         </div>
         <!--
-            Native Modal: 原生 JS 实现的模态框（继承 frosted 样式）
-            - 放置位置：DOM 底部（此注释及内容即为模态框区域）
-            - 触发：点击 `#openModalBtn`
-            - 关闭：点击右上关闭按钮 / 点击遮罩 / 按 `Esc` / 点击 Cancel
+            Native Modal: Pure JS modal (inherits frosted style)
+            - Placement: DOM bottom (this comment and content is the modal area)
+            - Trigger: click `#openModalBtn`
+            - Close: click top-right close button / click overlay / press `Esc` / click Cancel
             -->
 
         <!-- ============================================== -->
@@ -10153,15 +10156,14 @@
         <!-- Modal Trigger (visible) -->
         <div style="padding:18px;">
             <div class="flex gap-4" id="modalTriggerContainer">
-                <button id="openModalBtn" class="frosted-button frosted-button-cyan" data-bilingual>Open Modal /
-                    打开模态框</button>
+                <button id="openModalBtn" class="frosted-button frosted-button-cyan" data-bilingual>Open Modal</button>
             </div>
         </div>
 
         <!-- Frosted Toggle Component -->
         <div class="frosted-card space-y-4" style="padding:12px;max-width:360px;">
             <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);" data-bilingual>
-                Toggle Switch / 开关
+                Toggle Switch
             </h4>
             <div id="myToggle" style="margin-top: 20px;"></div>
         </div>
@@ -10174,7 +10176,7 @@
             <!-- Checkbox Group -->
             <div class="frosted-card space-y-4" style="width: 40%;margin-right: 20px;">
                 <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);" data-bilingual>Checkboxes
-                    / 复选框
+                    / Checkbox
                 </h4>
                 <div id="checkbox1"></div>
                 <div id="checkbox2" style="margin-top:12px;"></div>
@@ -10182,7 +10184,7 @@
             <!-- Radio Button Group -->
             <div class="frosted-card space-y-4" style="width: 40%;">
                 <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);" data-bilingual>Radio
-                    Buttons / 单选框
+                    Buttons / Radio
                 </h4>
                 <div class="space-y-3">
                     <div id="radio1"></div>
@@ -10200,10 +10202,10 @@
                     <div>
                         <div style="font-weight:600;color:var(--frosted-text-primary);" data-bilingual>Frosted Demo —
                             Pure JS + HTML
-                            / 纯 JS + HTML</div>
+                            / Pure JS + HTML</div>
                         <div style="font-size:13px;color:var(--frosted-text-tertiary)" data-bilingual>React to pure
                             frontend, styles
-                            imported separately / 纯前端实现，样式独立引入</div>
+                            imported separately</div>
                     </div>
 
                 </div>
@@ -10211,7 +10213,7 @@
                     <div style="flex:1;min-width:280px;">
                         <div style="margin-bottom:10px;color:var(--frosted-text-secondary)" data-bilingual>Progress
                             display
-                            (read-only) / 进度展示（只读）</div>
+                            (read-only)</div>
                         <!-- Standalone Progress Bar Container -->
                         <div id="myProgress"></div>
                         <!-- Standalone Slider Container -->
@@ -10226,26 +10228,26 @@
         <!-- Includes name, phone, remarks input, checkbox, radio and submit validation -->
         <!-- ============================================== -->
         <div class="input-group frosted-card notransition" style="margin-top: 40px;">
-            <h3 class="item-title" data-bilingual>Complete Form / 完整表单</h3>
-            <div class="item-desc" data-bilingual>Unified validation | 统一验证，空值边框变红</div>
+            <h3 class="item-title" data-bilingual>Complete Form</h3>
+            <div class="item-desc" data-bilingual>Unified validation </div>
 
             <!-- Form - Name Input -->
             <div class="text-input-wrapper" style="margin-bottom:16px;">
-                <input type="text" id="formName" class="text-input-field" placeholder="请输入姓名 / Enter name"
+                <input type="text" id="formName" class="text-input-field" placeholder="Enter name"
                     data-i18n-placeholder="enterName">
                 <div class="text-input-line"></div>
             </div>
 
             <!-- Form - Phone Input -->
             <div class="number-input-wrapper" style="margin-bottom:16px;">
-                <input type="text" id="formPhone" class="number-input-field" placeholder="请输入手机号 / Enter phone"
+                <input type="text" id="formPhone" class="number-input-field" placeholder="Enter phone"
                     data-i18n-placeholder="enterPhone">
                 <div class="number-input-line"></div>
             </div>
 
             <!-- Form - Remarks Input -->
             <div class="textarea-wrapper" style="margin-bottom:16px;">
-                <textarea id="formDesc" class="textarea-field" placeholder="请输入备注信息 / Enter remarks"
+                <textarea id="formDesc" class="textarea-field" placeholder="Enter remarks"
                     data-i18n-placeholder="enterRemark"></textarea>
                 <div class="textarea-line"></div>
             </div>
@@ -10255,14 +10257,16 @@
             <div id="formCbWrapper" style="margin-bottom:8px;">
                 <div style="display:flex;align-items:center;gap:12px;">
                     <div id="formCbAgree"></div>
-                    <div style="color:var(--frosted-text-secondary)" data-i18n-key="agreeTerms">我已阅读并同意条款</div>
+                    <div style="color:var(--frosted-text-secondary)" data-i18n-key="agreeTerms">I have read and agree to
+                        the terms</div>
                 </div>
             </div>
             <div class="error-msg" id="formCbAgreeError" style="margin-top:8px;height:18px"></div>
 
             <!-- Form - Radio (Example: Gender selection, required) -->
 
-            <div style="margin-bottom:8px;color:var(--frosted-text-secondary)" data-i18n-key="selectGender">请选择性别</div>
+            <div style="margin-bottom:8px;color:var(--frosted-text-secondary)" data-i18n-key="selectGender">Please
+                select gender</div>
             <div id="formRadioWrapper" style="margin-bottom:8px;">
                 <div style="display:flex;gap:16px;align-items:center;">
                     <div id="formRadioA"></div>
@@ -10272,8 +10276,8 @@
             <div class="error-msg" id="formRadioError" style="margin-top:8px;height:18px"></div>
 
             <!-- Form - Submit Button -->
-            <button class="frosted-button frosted-button-cyan" id="formSubmitBtn"
-                data-i18n-key="submitForm">提交表单</button>
+            <button class="frosted-button frosted-button-cyan" id="formSubmitBtn" data-i18n-key="submitForm">Submit
+                Form</button>
         </div>
 
         <!-- ============================================== -->
@@ -10281,21 +10285,21 @@
         <!-- ============================================== -->
         <div class=" frosted-card"
             style="padding:12px;margin-top:40px;width: 800px;    overflow: visible;    z-index: 3;">
-            <h3 data-bilingual>DateTime Picker / 日期时间选择器</h3>
+            <h3 data-bilingual>DateTime Picker</h3>
             <div id="dateTimePicker"></div>
-            <h3 data-bilingual>1. Standard: YYYY-MM-DD hh:mm:ss / 标准格式</h3>
+            <h3 data-bilingual>1. Standard: YYYY-MM-DD hh:mm:ss</h3>
             <div id="picker1"></div>
-            <h3 data-bilingual>2. Slash Format: YYYY/MM/DD hh:mm / 斜杠格式</h3>
+            <h3 data-bilingual>2. Slash Format: YYYY/MM/DD hh:mm</h3>
             <div id="picker2"></div>
-            <h3 data-bilingual>3. Date Only: YYYY-MM-DD / 仅日期</h3>
+            <h3 data-bilingual>3. Date Only: YYYY-MM-DD</h3>
             <div id="picker3"></div>
-            <h3 data-bilingual>4. US Format: MM/DD/YYYY / 美国格式</h3>
+            <h3 data-bilingual>4. US Format: MM/DD/YYYY</h3>
             <div id="picker4"></div>
-            <h3 data-bilingual>5. Date Range (Date Only) / 日期范围</h3>
+            <h3 data-bilingual>5. Date Range (Date Only)</h3>
             <div id="dateRangePicker"></div>
-            <h3 data-bilingual>6. Time Range (Time Only) / 时间范围</h3>
+            <h3 data-bilingual>6. Time Range (Time Only)</h3>
             <div id="timeRangePicker"></div>
-            <h3 style="color:var(--frosted-cyan-text)" data-bilingual>7. 🔥 Perfect: Unified Date Range Picker / 统一日期范围
+            <h3 style="color:var(--frosted-cyan-text)" data-bilingual>7. 🔥 Perfect: Unified Date Range Picker
             </h3>
             <div id="unifiedRangePicker"></div>
 
@@ -10307,12 +10311,12 @@
             <!-- Tree Component - Dropdown Tree + Static Tree -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 data-bilingual>Dropdown Tree / 下拉树形选择器</h3>
+                <h3 data-bilingual>Dropdown Tree</h3>
                 <div id="dropdownTree" class="tree-dropdown"></div>
-                <h3 data-bilingual>Static Tree / 静态树形展示</h3>
+                <h3 data-bilingual>Static Tree</h3>
                 <div id="staticTree" class="tree-static"></div>
                 <button id="getValueBtn" class="frosted-button frosted-button-cyan" style="margin-top:20px;"
-                    data-i18n-key="getValue">获取选中值 / Get Value</button>
+                    data-i18n-key="getValue">Get Value</button>
             </div>
         </div>
         <!-- ============================================== -->
@@ -10320,12 +10324,13 @@
         <!-- Left/Right panel data transfer, supports click to select and batch move -->
         <!-- ============================================== -->
         <div class="frosted-card input-group" style="max-width: 720px;margin-top: 20px;">
-            <h3 class="item-title" data-bilingual>Transfer / 穿梭框</h3>
-            <div class="item-desc" data-bilingual>Click items to select, then use buttons to move | 点击选项选中，再用按钮穿梭</div>
+            <h3 class="item-title" data-bilingual>Transfer</h3>
+            <div class="item-desc" data-bilingual>Click items to select, then use buttons to move</div>
             <div id="frostedTransfer"></div>
         </div>
         <div class="frosted-card" style="background: var(--frosted-bg-subtle);">
-            <h4 class="text-sm font-semibold mb-4" style="color: var(--frosted-text-primary);">🔮 磨砂水晶珠 Status Dot 技术规格
+            <h4 class="text-sm font-semibold mb-4" style="color: var(--frosted-text-primary);">🔮 Frosted Crystal Status
+                Dot Spec
             </h4>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                 <div class="p-3 rounded-lg" style="background: var(--frosted-bg-transparent);">
@@ -10502,16 +10507,36 @@
                 </div>
             </div>
         </section>
+
+
+        <!--Download-->
+        <div class=" frosted-card" style="margin-top: 20px;width: 600px;height:600px">
+            <h3 class="item-title" data-bilingual>File Download</h3>
+            <div class="item-desc" data-bilingual>No Interface Test</div>
+            <div id="dwomFileDemo1"></div>
+            <button id="dwdemobtn" class="icon-nobtnclass icon-btn hover:bg-primary/10" title="Download"><span
+                    class="icon icon-download"></span></button>
+
+            <div id="dwomFileDemo2"></div>
+            <button id="dwdemobtn2" class="icon-nobtnclass icon-btn hover:bg-primary/10" title="Download"><span
+                    class="icon icon-download"></span></button>
+            <button id="clearCache" class="icon-nobtnclass icon-btn hover:bg-primary/10" title="Close"><span
+                    class="icon icon-close"></span></button>
+        </div>
+        <!--Skeleton-->
+         <div class=" frosted-card" style="margin-top: 20px;width: 600px;height:600px">
+
+         </div>
     </div>
     <!--Auto Complete  <script src="./module/autoComplete.js"></script>-->
     <script>
         /**
-         * 自动补全功能封装
-         * @param {Object} config - 配置参数（外部唯一传入的入口）
-         * @param {Array} config.options - 自动补全数据源（暴露的核心数据）
-         * @param {String} config.inputSelector - 输入框的选择器/id/class（暴露的DOM入口）
-         * @param {String} config.panelSelector - 下拉面板的选择器/id/class（暴露的DOM入口）
-         * @param {Function} config.onChange - 新增：选中值触发回调 (value)=>{}
+         * Autocomplete feature wrapper
+         * @param {Object} config - Configuration parameters (external entry point)
+         * @param {Array} config.options - Autocomplete data source (exposed core data)
+         * @param {String} config.inputSelector - Input selector/id/class (exposed DOM entry)
+         * @param {String} config.panelSelector - Dropdown panel selector/id/class (exposed DOM entry)
+         * @param {Function} config.onChange - New: trigger callback on selection (value)=>{}
          */
         function initAutocomplete(config) {
             // Destructure externally passed config, set fallback defaults
@@ -10519,7 +10544,7 @@
                 options = [],
                 inputSelector = '.autocomplete-input-field',
                 panelSelector = '.autocomplete-panel',
-                onChange = () => { } // 新增：选中回调，默认空函数
+                onChange = () => { } // New: selection callback, default empty function
             } = config || {};
 
             // Get DOM elements
@@ -10529,7 +10554,7 @@
 
             // Validation: prevent errors when DOM does not exist
             if (!input || !panel) {
-                console.error('自动补全初始化失败：未找到输入框/下拉面板');
+                console.error('Autocomplete init failed: input/panel not found');
                 return;
             }
 
@@ -10561,7 +10586,7 @@
                     div.onclick = () => {
                         input.value = item;
                         panel.classList.remove('show');
-                        onChange(item); // 🔥 选中时触发回调，返回选中的值
+                        onChange(item); // 🔥 Trigger callback on selection, return selected value
                     };
                     panel.appendChild(div);
                 });
@@ -10579,17 +10604,17 @@
     <script>
 
         /**
-         * 隔离式自定义下拉框（修复onChange重复触发）
-         * 无全局污染 | 不影响其他下拉 | 样式100%兼容
+         * Isolated custom dropdown (fixes onChange duplicate trigger)
+         * No global pollution | Does not affect other dropdowns | 100% style compatible
          */
         class AutocompleteDropdown {
             /**
-             * 配置参数（外部唯一入口）
+             * Configuration parameters (external entry point)
              * @param {Object} config
-             * @param {string} config.containerId - 【必填】容器唯一ID（隔离核心）
-             * @param {Array} config.options - 【必填】下拉数据 [{label: '显示名', value: '值'}, ...]
-             * @param {string|number} config.defaultValue - 【可选】初始选中值
-             * @param {Function} config.onChange - 选中值触发回调 (value, label)=>{}
+             * @param {string} config.containerId - [Required] container unique ID (isolation core)
+             * @param {Array} config.options - [Required] dropdown data [{label: 'display name', value: 'value'}, ...]
+             * @param {string|number} config.defaultValue - [Optional] default selected value
+             * @param {Function} config.onChange - Trigger callback on selection (value, label)=>{}
              */
             constructor(config) {
                 this.containerId = config.containerId;
@@ -10608,7 +10633,7 @@
             init() {
                 this.container = document.getElementById(this.containerId);
                 if (!this.container) {
-                    console.error('下拉框初始化失败：未找到容器 ' + this.containerId);
+                    console.error('Dropdown init failed: container not found ' + this.containerId);
                     return;
                 }
 
@@ -10619,7 +10644,7 @@
                 <input 
                     id="${this.inputId}" 
                     class="autocomplete-input-field" 
-                    placeholder="请选择一个选项" 
+                    placeholder="Please select an option" 
                     readonly
                 >
                 <div class="autocomplete-input-line"></div>
@@ -10642,7 +10667,7 @@
                 this.setValue(this.defaultValue);
             }
 
-            /** 渲染下拉选项 */
+            /** Render dropdown options */
             _renderItems() {
                 this.panelEl.innerHTML = '';
                 this.options.forEach(item => {
@@ -10663,7 +10688,7 @@
                 });
             }
 
-            /** 绑定事件 */
+            /** Bind events */
             _bindEvents(toggleEl) {
                 toggleEl.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -10677,7 +10702,7 @@
                 });
             }
 
-            /** 隐藏面板 */
+            /** Hide panel */
             _hidePanel() {
                 this.panelEl.style.display = 'none';
             }
@@ -10695,7 +10720,7 @@
                 if (target) {
                     this.inputEl.value = target.label;
                     this.inputEl.dataset.value = target.value;
-                    this.onChange(target.value, target.label); // 🔥 唯一触发点
+                    this.onChange(target.value, target.label); // 🔥 Unique trigger point
                 } else {
                     this.inputEl.value = '';
                     this.inputEl.dataset.value = '';
@@ -10709,17 +10734,17 @@
     <!--Toggle  <script src="./module/FrostedToggle.js"></script>-->
     <script>
         /**
-         * 磨砂开关组件封装
-         * 页面仅需一个空 div#id 自动生成完整DOM
-         * 暴露：getState / setState / onChange 回调
+         * Frosted toggle component wrapper
+         * Page only needs an empty div#id to auto-generate full DOM
+         * Exposes: getState / setState / onChange callback
          */
         class FrostedToggle {
             /**
-             * 配置参数
+             * Configuration parameters
              * @param {Object} config
-             * @param {string} config.containerId - 容器唯一ID（必填）
-             * @param {boolean} config.defaultState - 默认状态 false=OFF / true=ON
-             * @param {Function} config.onChange - 状态切换回调 (isOn)=>{}
+             * @param {string} config.containerId - Container unique ID (required)
+             * @param {boolean} config.defaultState - Default state false=OFF / true=ON
+             * @param {Function} config.onChange - State toggle callback (isOn)=>{}
              */
             constructor(config) {
                 this.containerId = config.containerId;
@@ -10737,7 +10762,7 @@
             init() {
                 this.container = document.getElementById(this.containerId);
                 if (!this.container) {
-                    console.error('FrostedToggle：未找到容器 ' + this.containerId);
+                    console.error('FrostedToggle: container not found ' + this.containerId);
                     return;
                 }
 
@@ -10782,7 +10807,7 @@
             toggle() {
                 this.isOn = !this.isOn;
                 this.update();
-                this.onChange(this.isOn); // 触发回调
+                this.onChange(this.isOn); // Trigger callback
             }
 
             // Update UI state
@@ -10821,18 +10846,18 @@
 
     <script>
         /**
-             * 水晶风格复选框封装
-             * 页面仅需一个空 div#id 自动渲染完整DOM
-             * 暴露全量操作接口 + 状态监听
+             * Crystal style checkbox wrapper
+             * Page only needs an empty div#id to auto-render full DOM
+             * Exposes full operation interface + state listener
              */
         class CrystalCheckbox {
             /**
-             * 配置参数
-             * @param {Object} config - 配置
-             * @param {string} config.containerId - 容器唯一ID（必填）
-             * @param {string} config.label - 复选框文字（默认：Option）
-             * @param {boolean} config.defaultChecked - 默认是否选中（默认 false）
-             * @param {Function} config.onChange - 状态变化回调 (checked: boolean)=>{}
+             * Configuration parameters
+             * @param {Object} config - Configuration
+             * @param {string} config.containerId - Container unique ID (required)
+             * @param {string} config.label - Checkbox text (default: Option)
+             * @param {boolean} config.defaultChecked - Default checked (default false)
+             * @param {Function} config.onChange - State change callback (checked: boolean)=>{}
              */
             constructor(config) {
                 // External config
@@ -10852,12 +10877,12 @@
             }
 
             /**
-             * 初始化：自动渲染DOM + 绑定事件
+             * Init: auto-render DOM + bind events
              */
             init() {
                 this.container = document.getElementById(this.containerId);
                 if (!this.container) {
-                    console.error('CrystalCheckbox：未找到容器 ->', this.containerId);
+                    console.error('CrystalCheckbox: container not found ->', this.containerId);
                     return;
                 }
 
@@ -10891,7 +10916,7 @@
             }
 
             /**
-             * 私有：绑定点击事件
+             * Private: bind click events
              */
             _bindEvent() {
                 this.container.addEventListener('click', () => {
@@ -10900,7 +10925,7 @@
             }
 
             /**
-             * 私有：更新UI样式（核心渲染逻辑）
+             * Private: update UI styles (core render logic)
              */
             _updateUI() {
                 if (this.checked) {
@@ -10921,7 +10946,7 @@
             // 🔥 Expose [Full Operation Interface]
             // ==============================================
             /**
-             * 获取选中状态
+             * Get checked state
              * @returns {boolean}
              */
             getChecked() {
@@ -10929,8 +10954,8 @@
             }
 
             /**
-             * 设置选中状态
-             * @param {boolean} checked - true 选中 / false 取消
+             * Set checked state
+             * @param {boolean} checked - true checked / false unchecked
              */
             setChecked(checked) {
                 this.checked = !!checked;
@@ -10940,8 +10965,8 @@
             }
 
             /**
-             * 设置半选状态
-             * @param {boolean} indeterminate - true 半选 / false 取消
+             * Set indeterminate state
+             * @param {boolean} indeterminate - true indeterminate / false clear
              */
             setIndeterminate(indeterminate) {
                 this.indeterminate = !!indeterminate;
@@ -10951,7 +10976,7 @@
             }
 
             /**
-             * 获取半选状态
+             * Get indeterminate state
              * @returns {boolean}
              */
             getIndeterminate() {
@@ -10959,7 +10984,7 @@
             }
 
             /**
-             * 切换状态（选中 ↔ 取消）
+             * Toggle state (checked ↔ unchecked)
              */
             toggle() {
                 this.checked = !this.checked;
@@ -10969,7 +10994,7 @@
             }
 
             /**
-             * 重置为默认状态
+             * Reset to default state
              */
             reset() {
                 this.checked = this.defaultChecked;
@@ -10979,8 +11004,8 @@
             }
 
             /**
-             * 修改显示文字
-             * @param {string} text - 新文字
+             * Modify display text
+             * @param {string} text - New text
              */
             setLabel(text) {
                 this.label = text;
@@ -10996,18 +11021,18 @@
 
     <script>
         /**
-         * 水晶风格单选框组封装
-         * 页面仅需空 div#id 自动渲染完整DOM
-         * 支持单选互斥 + 全量操作接口 + 状态监听
+         * Crystal style radio group wrapper
+         * Page only needs empty div#id to auto-render full DOM
+         * Supports radio mutual exclusion + full operation interface + state listener
          */
         class CrystalRadioGroup {
             /**
-             * 配置参数
-             * @param {Object} config - 配置
-             * @param {Array} config.containerIds - 单选框容器ID数组（必填）
-             * @param {Array} config.labels - 对应显示文字数组（可选）
-             * @param {string} config.defaultSelected - 默认选中的容器ID（可选）
-             * @param {Function} config.onChange - 选中变化回调 (selectedId: string)=>{}
+             * Configuration parameters
+             * @param {Object} config - Configuration
+             * @param {Array} config.containerIds - Radio container ID array (required)
+             * @param {Array} config.labels - Corresponding display text array (optional)
+             * @param {string} config.defaultSelected - Default selected container ID (optional)
+             * @param {Function} config.onChange - Selection change callback (selectedId: string)=>{}
              */
             constructor(config) {
                 // External config
@@ -11022,11 +11047,11 @@
             }
 
             /**
-             * 初始化：渲染所有DOM + 绑定事件
+             * Init: render all DOM + bind events
              */
             init() {
                 if (!this.containerIds.length) {
-                    console.error('CrystalRadioGroup：未传入单选框容器ID');
+                    console.error('CrystalRadioGroup: no radio container ID passed');
                     return;
                 }
 
@@ -11042,7 +11067,7 @@
             }
 
             /**
-             * 私有：渲染单个单选框DOM
+             * Private: render single radio DOM
              */
             _renderSingleRadio(containerId, label) {
                 const container = document.getElementById(containerId);
@@ -11074,7 +11099,7 @@
             }
 
             /**
-             * 私有：绑定单选组互斥事件
+             * Private: bind radio group mutual exclusion events
              */
             _bindGroupEvents() {
                 this.radioInstances.forEach(item => {
@@ -11085,7 +11110,7 @@
             }
 
             /**
-             * 私有：更新全组UI样式
+             * Private: update full group UI styles
              */
             _updateAllUI() {
                 this.radioInstances.forEach(item => {
@@ -11104,7 +11129,7 @@
             // 🔥 Expose [Full Operation Interface]
             // ==============================================
             /**
-             * 获取当前选中的ID
+             * Get currently selected ID
              * @returns {string}
              */
             getSelected() {
@@ -11112,8 +11137,8 @@
             }
 
             /**
-             * 设置选中项
-             * @param {string} selectedId - 要选中的容器ID
+             * Set selected item
+             * @param {string} selectedId - Container ID to select
              */
             setSelected(selectedId) {
                 if (!this.radioInstances.some(item => item.id === selectedId)) return;
@@ -11123,16 +11148,16 @@
             }
 
             /**
-             * 重置为初始默认状态
+             * Reset to initial default state
              */
             reset() {
                 this.setSelected(this.defaultSelected);
             }
 
             /**
-             * 修改指定单选框的显示文字
-             * @param {string} id - 容器ID
-             * @param {string} text - 新文字
+             * Modify specified radio display text
+             * @param {string} id - Container ID
+             * @param {string} text - New text
              */
             setLabel(id, text) {
                 const item = this.radioInstances.find(i => i.id === id);
@@ -11265,7 +11290,7 @@
                 this.bindOutside();
             }
 
-            // Unified range → returns { start, end }
+            // 统一范围 → 返回 { start, end }
             getValue() {
                 return {
                     start: this.fmt(this.start),
@@ -11464,7 +11489,6 @@
                 this.render();
             }
 
-            // ✅ Smart getValue: single value returns string, range returns object
             getValue() {
                 if (this.range) {
                     return {
@@ -11542,102 +11566,27 @@
             }
 
             addSel(container, type, date, input) {
-                const self = this;
+                const sel = document.createElement('select');
+                sel.className = 'time-part';
                 const max = type === 'hour' ? 24 : 60;
-                const currentVal = type === 'hour' ? String(date.getHours()).padStart(2, '0') :
-                    type === 'minute' ? String(date.getMinutes()).padStart(2, '0') :
-                        String(date.getSeconds()).padStart(2, '0');
-
-                // Custom dropdown wrapper
-                const dropdownWrap = document.createElement('div');
-                dropdownWrap.className = 'time-dropdown-wrap';
-                dropdownWrap.style.cssText = 'position:relative;display:inline-flex;flex-direction:column;';
-
-                // Display button
-                const trigger = document.createElement('div');
-                trigger.className = 'time-dropdown-trigger';
-                trigger.style.cssText = `
-                    display:inline-flex;align-items:center;gap:4px;
-                    padding:6px 10px;min-width:56px;
-                    background:var(--frosted-bg-default);
-                    border:1px solid var(--frosted-border-default);
-                    border-radius:var(--frosted-radius-md);
-                    cursor:pointer;font-size:12px;
-                    color:var(--frosted-text-secondary);
-                    transition:all 0.2s;
-                `;
-                trigger.innerHTML = `<span>${currentVal}</span><span style="opacity:0.5;font-size:12px;">▼</span>`;
-
-                // Options panel
-                const panel = document.createElement('div');
-                panel.className = 'time-dropdown-panel';
-                panel.style.cssText = `
-                    position:absolute;top:100%;left:50%;transform:translateX(-50%);
-                    margin-top:4px;min-width:60px;max-height:180px;overflow-y:auto;
-                    background:var(--frosted-bg-emphasis);
-                    border:1px solid var(--frosted-border-default);
-                    border-radius:var(--frosted-radius-md);
-                    box-shadow:var(--frosted-shadow-lg);
-                    backdrop-filter:blur(var(--frosted-blur-md));
-                    z-index:100;display:none;
-                `;
-
-                // Generate options
                 for (let i = 0; i < max; i++) {
                     const v = String(i).padStart(2, '0');
-                    const opt = document.createElement('div');
-                    opt.className = 'time-dropdown-option';
-                    opt.style.cssText = `
-                        padding:6px 12px;cursor:pointer;font-size:12px;
-                        color:var(--frosted-text-secondary);
-                        transition:all 0.15s;text-align:center;
-                    `;
+                    const opt = document.createElement('option');
+                    opt.value = v;
                     opt.textContent = v;
-                    if (v === currentVal) {
-                        opt.style.background = 'var(--frosted-cyan-bg)';
-                        opt.style.color = 'var(--frosted-cyan-text)';
-                    }
-                    opt.addEventListener('mouseenter', () => {
-                        opt.style.background = 'var(--frosted-cyan-bg)';
-                        opt.style.color = 'var(--frosted-cyan-text)';
-                    });
-                    opt.addEventListener('mouseleave', () => {
-                        if (v !== currentVal) {
-                            opt.style.background = 'transparent';
-                            opt.style.color = 'var(--frosted-text-secondary)';
-                        }
-                    });
-                    opt.addEventListener('click', () => {
-                        if (type === 'hour') date.setHours(+v);
-                        else if (type === 'minute') date.setMinutes(+v);
-                        else date.setSeconds(+v);
-                        input.value = self.fmt(date);
-                        showDemo(date);
-                        dropdownWrap.querySelector('.time-dropdown-trigger span:first-child').textContent = v;
-                        panel.style.display = 'none';
-                    });
-                    panel.append(opt);
+                    sel.append(opt);
                 }
-
-                // Toggle panel
-                trigger.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    document.querySelectorAll('.time-dropdown-panel').forEach(p => {
-                        if (p !== panel) p.style.display = 'none';
-                    });
-                    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-                });
-
-                dropdownWrap.append(trigger, panel);
-                container.append(dropdownWrap);
-
-                // Close panel when clicking outside
-                document.addEventListener('click', function closeDropdown(e) {
-                    if (!dropdownWrap.contains(e.target)) {
-                        panel.style.display = 'none';
-                        document.removeEventListener('click', closeDropdown);
-                    }
-                });
+                sel.value = type === 'hour' ? String(date.getHours()).padStart(2, '0') :
+                    type === 'minute' ? String(date.getMinutes()).padStart(2, '0') :
+                        String(date.getSeconds()).padStart(2, '0');
+                sel.onchange = () => {
+                    if (type === 'hour') date.setHours(+sel.value);
+                    else if (type === 'minute') date.setMinutes(+sel.value);
+                    else date.setSeconds(+sel.value);
+                    input.value = this.fmt(date);
+                    //showDemo(date);
+                };
+                container.append(sel);
             }
 
             renderCal(container, date, input) {
@@ -11692,7 +11641,7 @@
                     el.onclick = () => {
                         date.setDate(d);
                         input.value = this.fmt(date);
-                        showDemo(date);
+                        //showDemo(date);
                         this.renderCal(container, date, input);
                     };
                     days.append(el);
@@ -11737,7 +11686,7 @@
         //  document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
         //}
         //
-        //// Instantiate
+        //// 实例化
         //const picker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
         //const picker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
         //const picker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
@@ -11755,8 +11704,8 @@
     <script>
         /**
  * ==============================
- * 1. 独立进度条组件（纯展示）
- * 支持：自定义min/max范围 + 自定义单位 + 自定义宽度(px/%) + 动态修改配置
+ * 1. Independent progress bar component (display only)
+ * Supports: custom min/max range + custom unit + custom width(px/%) + dynamic config modification
  * ==============================
  */
         class CrystalProgress {
@@ -11783,7 +11732,7 @@
             init() {
                 this.container = document.getElementById(this.containerId);
                 if (!this.container) {
-                    console.error("CrystalProgress：未找到容器 ->", this.containerId);
+                    console.error("CrystalProgress: container not found ->", this.containerId);
                     return;
                 }
                 // Render DOM: width dynamic binding supports px/%
@@ -11805,12 +11754,12 @@
             // ==============================================
             // Private utility methods
             // ==============================================
-            /** 数值限制在范围内 */
+            /** Limit value within range */
             _clamp(v) {
                 const val = Number(v) || 0;
                 return Math.max(this.min, Math.min(this.max, val));
             }
-            /** 计算进度条百分比宽度（适配自定义范围） */
+            /** Calculate progress bar percentage width (adapts to custom range) */
             _getPercent() {
                 if (this.max === this.min) return 0;
                 return ((this.value - this.min) / (this.max - this.min)) * 100;
@@ -11819,37 +11768,37 @@
             // ==============================================
             // Original interface + new extension interfaces
             // ==============================================
-            /** 设置值 */
+            /** Set value */
             setValue(v) {
                 this.value = this._clamp(v);
                 this._updateUI();
                 this.onChange(this.value);
             }
-            /** 获取当前值 */
+            /** Get current value */
             getValue() {
                 return this.value;
             }
-            /** 重置默认值 */
+            /** Reset default value */
             reset() {
                 this.setValue(this.defaultValue);
             }
-            /** 修改默认值 */
+            /** Modify default value */
             setDefaultValue(v) {
                 this.defaultValue = this._clamp(v);
             }
-            /** 强制刷新UI */
+            /** Force refresh UI */
             forceUpdate() {
                 this._updateUI();
             }
-            /** 获取填充DOM */
+            /** Get fill DOM */
             getFillEl() {
                 return this.progressFill;
             }
-            /** 获取标签DOM */
+            /** Get label DOM */
             getLabelEl() {
                 return this.progressLabel;
             }
-            /** 获取容器DOM */
+            /** Get container DOM */
             getContainerEl() {
                 return this.container;
             }
@@ -11894,8 +11843,8 @@
 
         /**
          * ==============================
-         * 2. 极简独立滑块组件（滑块+右侧值）
-         * 支持：自定义min/max范围 + 自定义单位 + 自定义宽度(px/%) + 全接口暴露
+         * 2. Minimal independent slider component (slider + right-side value)
+         * Supports: custom min/max range + custom unit + custom width(px/%) + full interface exposure
          * ==============================
          */
         class CrystalSlider {
@@ -11925,7 +11874,7 @@
             init() {
                 this.container = document.getElementById(this.containerId);
                 if (!this.container) {
-                    console.error("CrystalSlider：未找到容器 ->", this.containerId);
+                    console.error("CrystalSlider: container not found ->", this.containerId);
                     return;
                 }
                 // Render DOM: width dynamic binding supports px/%
@@ -12021,9 +11970,9 @@
 
     <script>
         /**
-* 独立树形组件 - 纯JS封装
-* 调用：new TreeComponent(selector, data, options)
-* 取值：tree.getValue()
+* Independent tree component - pure JS wrapper
+* Call: new TreeComponent(selector, data, options)
+* Get value: tree.getValue()
 */
         class TreeComponent {
             constructor(selector, data, options = {}) {
@@ -12152,7 +12101,7 @@
                         nodeEl.draggable = true;
                     }
 
-                    /* ===== 引入水晶多选框样式 ===== */
+                    /* ===== Import crystal checkbox styles ===== */
                     if (opt.showCheckbox && !opt.singleSelect) {
                         const checkboxWrap = document.createElement('div');
                         checkboxWrap.className = 'tree-checkbox-box checkbox-box';
@@ -12203,7 +12152,7 @@
                 }
             }
 
-            /* ===== 同步水晶多选框视觉状态（支持半选） ===== */
+            /* ===== Sync crystal checkbox visual state (supports indeterminate) ===== */
             syncCheckboxState(checkbox, node) {
                 if (node.disabled) {
                     checkbox.classList.remove('checked', 'indeterminate');
@@ -12230,7 +12179,7 @@
                 }
             }
 
-            /* ===== 批量更新水晶多选框视觉 ===== */
+            /* ===== Batch update crystal checkbox visuals ===== */
             updateAllCheckboxVisual() {
                 const checkboxes = this.container.querySelectorAll('.tree-checkbox-box');
                 checkboxes.forEach(cb => {
@@ -12263,7 +12212,7 @@
                         e.stopPropagation();
                     }
 
-                    /* ===== 点击水晶多选框本体 ===== */
+                    /* ===== Click crystal checkbox body ===== */
                     const checkboxBox = e.target.closest('.tree-checkbox-box');
                     if (checkboxBox) {
                         const id = Number(checkboxBox.dataset.id);
@@ -12312,7 +12261,7 @@
                         return;
                     }
 
-                    /* ===== 点击节点行切换水晶多选框 ===== */
+                    /* ===== Click node row to toggle crystal checkbox ===== */
                     if (!opt.singleSelect && opt.showCheckbox) {
                         const checkboxBox = nodeEl.querySelector('.tree-checkbox-box');
                         if (checkboxBox) {
@@ -12740,7 +12689,7 @@
                     inner = document.createElement("div");
                     inner.className = "ft-tooltip-popover";
                     inner.innerHTML = `
-              <div class="ft-popover-title">${title || "提示"}</div>
+              <div class="ft-popover-title">${title || "Tip"}</div>
               <div class="ft-popover-body">${content}</div>
               <div class="ft-popover-footer">
                 <button class="frosted-button text-sm" style="height:32px;padding:0 12px;" data-tooltip-close>close</button>
@@ -12827,8 +12776,8 @@
 
         /*
         FrostedFeedback.show({
-          message: "保存成功",
-          content: "你的数据已同步至服务器",
+          message: "Save successful",
+          content: "Your data has been synced to server",
           type: "success",
           duration: 3000
         });
@@ -13105,7 +13054,7 @@
                         // Now supports passing content!
                         FrostedFeedback.show({
                             message: msgs[i],
-                            content: contents[i], // 👈 新增 content 参数
+                            content: contents[i], // 👈 New content parameter
                             type: type,
                             position: "top",
                             duration: 4000,
@@ -13119,8 +13068,8 @@
 
     <script>
         /*
-        双语标签解析辅助函数（组件初始化前定义）
-        根据 localStorage 或默认英文解析 "中文 / English" 格式
+        Bilingual label parsing helper (defined before component init)
+        Parse "Chinese / English" format based on localStorage or default English
         */
         const _currentLang = localStorage.getItem('formLang') || 'en';
         function _parseBilingualLabel(text) {
@@ -13136,7 +13085,7 @@
         }
 
         /*
-        切换主题逻辑（独立，直接调用）
+        Theme toggle logic (independent, call directly)
         */
         (function () {
             const toggleBtn = document.getElementById('fmThemeToggle');
@@ -13147,11 +13096,11 @@
             });
         })();
         /*
-        1、input 原生不需要额外包装
+        1. Native input does not need extra wrapper
         */
 
         /*
-        2、数字框 基本格式判定
+        2. Number input basic format validation
         */
         // Number input: auto keep two decimal places on blur
         document.querySelector('.number-input-field').addEventListener('blur', function () {
@@ -13167,12 +13116,12 @@
         });
 
         /*
-          3、文本域无需特殊处理，保持原生行为
+          3. Textarea does not need special handling, keep native behavior
         */
         // Textarea logic (standalone)
         document.querySelector('.textarea-field').addEventListener('input', function () { });
         /*
-          4、 自动补全输入框的核心逻辑：模糊匹配、键盘导航、选项选择等，保持原生输入行为，增强交互体验
+          4. Autocomplete core logic: fuzzy matching, keyboard navigation, option selection, etc. Keep native input behavior, enhance interaction
         */
         // Auto-complete logic (completely independent)
         const autoCompleteoptions = [
@@ -13183,32 +13132,32 @@
             'Cyan', 'Blue', 'Green', 'Red', 'Yellow', 'Purple', 'Pink', 'Gray', 'Black', 'White'
         ];
         initAutocomplete({
-            options: autoCompleteoptions,          // 暴露的数据源
-            inputSelector: '#autoInput',// 暴露的输入框id
-            panelSelector: '#autoPanel', // 暴露的面板id
+            options: autoCompleteoptions,          // Exposed data source
+            inputSelector: '#autoInput',// Exposed input id
+            panelSelector: '#autoPanel', // Exposed panel id
             onChange: function (value) {
-                console.log('自动补全选中：', value);
+                console.log('Autocomplete selected:', value);
                 // Write your business logic here
                 // Example: send request, form assignment, linked components, etc.
             }
         });
         /*
-          5、下拉框：纯 JS 实现，样式沿用自动补全输入框，保持原生输入行为，增强交互体验
+          5. Dropdown: pure JS implementation, inherits autocomplete styles, keep native input behavior, enhance interaction
         */
         // ==============================================
         // External only needs to configure 3 core parameters:
         // 1. Container ID  2. Dropdown data  3. Initial value
         // ==============================================
         const dropdown = new AutocompleteDropdown({
-            containerId: 'myselectDropdown',    // 🔥 外部传入DOM ID
-            options: [                   // 🔥 外部传入下拉数据
+            containerId: 'myselectDropdown',    // 🔥 External DOM ID
+            options: [                   // 🔥 External dropdown data
                 { label: 'Option A', value: 'A' },
                 { label: 'Option B', value: 'B' },
                 { label: 'Option C', value: 'C' },
                 { label: 'Option D', value: 'D' }
             ],
-            defaultValue: 'B',            // 🔥 外部传入初始选中值
-            onChange: (item) => {             // 🔥 外部传入选项变化回调
+            defaultValue: 'B',            // 🔥 External default selected value
+            onChange: (item) => {             // 🔥 External option change callback
                 console.log('Selected:', item);
             }
         });
@@ -13220,25 +13169,25 @@
         // Exposed core interfaces (direct call)
         // ==============================================
         // Get value
-        console.log('当前值：', dropdown.getValue());
+        console.log('Current value:', dropdown.getValue());
 
         // Set value
         // dropdown.setValue('C');
 
         /*
-          6、按钮组件：保持原有样式和交互，外部只需关注点击事件，完全不受内部实现影响
+          6. Button component: keep original styles and interaction, external only needs to care about click events, completely unaffected by internal implementation
         */
 
         /*
-          7、开关
+          7. Toggle
         */
         // Init toggle
         const toggle = new FrostedToggle({
-            containerId: 'myToggle',  // 容器ID
-            defaultState: false,       // 默认关闭
+            containerId: 'myToggle',  // Container ID
+            defaultState: false,       // Default off
             // Toggle callback (triggered on state change)
             onChange: (isOn) => {
-                console.log('开关状态：', isOn ? '开启' : '关闭');
+                console.log('Toggle state:', isOn ? 'On' : 'Off');
             }
         });
         toggle.init();
@@ -13251,21 +13200,21 @@
         // Set state
         // toggle.setState(true);
         /*
-          8、tag标签：保持原有样式和交互，外部只需关注数据和事件，完全不受内部实现影响
+          8. Tag label: keep original styles and interaction, external only needs to care about data and events
         */
 
         /*
-          9、复选框
+          9. Checkbox
         */
         // ==============================================
         // Init checkbox 1: unchecked + listen changes
         // ==============================================
         const cb1 = new CrystalCheckbox({
             containerId: 'checkbox1',
-            label: _parseBilingualLabel('我同意条款 / I agree to the terms'),
+            label: _parseBilingualLabel('I agree to the terms'),
             defaultChecked: false,
             onChange: (checked) => {
-                console.log('复选框1状态：', checked);
+                console.log('Checkbox 1 state:', checked);
             }
         });
         cb1.init();
@@ -13275,7 +13224,7 @@
         // ==============================================
         const cb2 = new CrystalCheckbox({
             containerId: 'checkbox2',
-            label: _parseBilingualLabel('记住密码 / Remember password'),
+            label: _parseBilingualLabel('Remember password'),
             defaultChecked: true
         });
         cb2.init();
@@ -13283,7 +13232,7 @@
         // ======== Form Internal Checkbox (form only) ========
         const formCbAgree = new CrystalCheckbox({
             containerId: 'formCbAgree',
-            label: _parseBilingualLabel('同意条款（必选）/ Agree (required)'),
+            label: _parseBilingualLabel('Agree (required)'),
             defaultChecked: false,
             onChange: (checked) => {
                 // Clear error message
@@ -13302,18 +13251,18 @@
         // cb1.setLabel('New text'); // Modify text
         // cb1.reset();           // Reset default
         /*
-          10、单选框
+          10. Radio
         */
         // ==============================================
         // Init radio group
         // ==============================================
         const radioGroup = new CrystalRadioGroup({
-            containerIds: ['radio1', 'radio2'], // 单选框容器ID数组
-            labels: ['Option 1', 'Option 2'].map(_parseBilingualLabel),       // 对应显示文字
-            defaultSelected: 'radio2',         // 默认选中ID
+            containerIds: ['radio1', 'radio2'], // Radio container ID array
+            labels: ['Option 1', 'Option 2'].map(_parseBilingualLabel),       // Corresponding display text
+            defaultSelected: 'radio2',         // Default selected ID
             // Selection change callback
             onChange: (selectedId) => {
-                console.log('当前选中：', selectedId);
+                console.log('Currently selected:', selectedId);
             }
         });
         radioGroup.init();
@@ -13321,7 +13270,7 @@
         // ======== Form Internal Radio Group (form only) ========
         const formRadioGroup = new CrystalRadioGroup({
             containerIds: ['formRadioA', 'formRadioB'],
-            labels: ['男 / Male', '女 / Female'].map(_parseBilingualLabel),
+            labels: ['Male', 'Female'].map(_parseBilingualLabel),
             defaultSelected: null,
             onChange: (selectedId) => {
                 const err = document.getElementById('formRadioError');
@@ -13339,7 +13288,7 @@
         // radioGroup.reset(); // Reset default
 
         /*
-          11、进入条与滑块：保持原有样式和交互，外部只需关注数据和事件，完全不受内部实现影响
+          11. Progress bar and slider: keep original styles and interaction
         */
         // ==============================================
         // Init standalone progress bar
@@ -13361,7 +13310,7 @@
             width: '80%',
             min: 1,
             max: 10,
-            unit: '个',
+            unit: 'pcs',
             defaultValue: 5,
             onChange: (val) => progress.setValue(val * 10)
         });
@@ -13401,9 +13350,9 @@
         // slider.setMax(15);   // Change max value
         // slider.setUnit('px'); // Change unit
         /*
-          12、Complete Form / 完整表单 用于演示
+          12. Complete Form for demo
         */
-        /* 模块1：获取表单元素（独立） */
+        /* Module 1: Get form elements (independent) */
         const formName = document.getElementById('formName');
         const formPhone = document.getElementById('formPhone');
         const formDesc = document.getElementById('formDesc');
@@ -13412,7 +13361,7 @@
         const formNameLine = formName.nextElementSibling;
         const formPhoneLine = formPhone.nextElementSibling;
         const formDescLine = formDesc.nextElementSibling;
-        /* 模块2：输入时清除红色错误（独立） */
+        /* Module 2: Clear red error on input (independent) */
         function clearInputError(el, line) {
             el.classList.remove('input-error');
             if (line) line.classList.remove('error');
@@ -13420,7 +13369,7 @@
         formName.addEventListener('input', () => clearInputError(formName, formNameLine));
         formPhone.addEventListener('input', () => clearInputError(formPhone, formPhoneLine));
         formDesc.addEventListener('input', () => clearInputError(formDesc, formDescLine));
-        /* 模块3：表单验证主函数（独立） / Form validation main function */
+        /* Module 3: Form validation main function */
         function validateForm() {
             let isValid = true;
 
@@ -13446,7 +13395,7 @@
             try {
                 if (typeof formCbAgree !== 'undefined' && !formCbAgree.getChecked()) {
                     const err = document.getElementById('formCbAgreeError');
-                    if (err) err.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '请同意条款' : 'Please agree to the terms';
+                    if (err) err.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Please agree to the terms' : 'Please agree to the terms';
                     isValid = false;
                 }
             } catch (e) { /* ignore if not initialized */ }
@@ -13455,29 +13404,29 @@
             try {
                 if (typeof formRadioGroup !== 'undefined' && !formRadioGroup.getSelected()) {
                     const err = document.getElementById('formRadioError');
-                    if (err) err.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '请选择性别' : 'Please select gender';
+                    if (err) err.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Please select gender' : 'Please select gender';
                     isValid = false;
                 }
             } catch (e) { /* ignore if not initialized */ }
 
             return isValid;
         }
-        /* 模块4：提交按钮点击事件（独立） */
+        /* Module 4: Submit button click event (independent) */
         formSubmitBtn.addEventListener('click', () => {
             const pass = validateForm();
             if (pass) {
-                alert((typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '表单提交成功！' : 'Form submitted successfully!');
+                alert((typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Form submitted successfully!' : 'Form submitted successfully!');
                 console.log('Form submitted successfully!');
             } else {
-                console.log((typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '请完善所有必填项！' : 'Please fill in all required fields!');
+                console.log((typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Please fill in all required fields!' : 'Please fill in all required fields!');
             }
         });
         /*
-          13、时间控件：保持原有样式和交互，外部只需关注数据和事件，完全不受内部实现影响
+          13. Time controls: keep original styles and interaction
         */
 
 
-        /* 时间选择器实时演示更新函数 / Live demo updater for datetime picker */
+        /* Live demo updater for datetime picker 
         function showDemo(date) {
             const dt = new DateTimeObj(date);
             document.getElementById("demo1").textContent = `Raw String: ${dt.format()}`;
@@ -13489,7 +13438,7 @@
             document.getElementById("demo7").textContent = `Is Weekday: ${dt.isWeekday ? "Yes" : "No"}`;
             document.getElementById("demo8").textContent = `Is Weekend: ${dt.isWeekend ? "Yes" : "No"}`;
             document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
-        }
+        }*/
         // Init all selectors
         const datetimepicker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
         const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
@@ -13503,10 +13452,10 @@
         //     showDemo(new Date());
         // }, 1000);
         /*
-          14、树形组件：保持原有样式和交互，外部只需关注数据和事件，完全不受内部实现影响
+          14. Tree component: keep original styles and interaction
         */
         // 1. Your data
-        /* 树形组件数据配置 / Tree component data config */
+        /* Tree component data config */
         const treeData = [
             {
                 id: 1, label: 'Front-end', icon: '📦', children: [
@@ -13538,12 +13487,12 @@
 
         // 3. Bind get-value button event / Bind get-value button
         document.getElementById('getValueBtn').onclick = () => {
-            const msg = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '选中节点：' : 'Selected nodes: ';
+            const msg = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Selected nodes:' : 'Selected nodes: ';
             alert(msg + JSON.stringify(tree2.getCheckedNodes(), null, 2));
         };
 
         /*
-        15.Tooltip 逻辑完全独立，外部无需关心实现细节，直接调用初始化即可
+        15. Tooltip logic is fully independent, external does not need to care about implementation details
         */
         const frostedTooltip = new FrostedTooltip();
         frostedTooltip.init();
@@ -13583,8 +13532,8 @@
             // Default state
             let currentOptions = {
                 mode: 'alert', // 'alert' | 'custom'
-                title: 'Confirmation / 确认操作',
-                message: 'Are you sure you want to proceed? / 确定要继续吗？',
+                title: 'Confirmation',
+                message: 'Are you sure you want to proceed?',
                 width: '400px',
                 height: '',
                 closeOnOverlay: true,
@@ -13631,7 +13580,7 @@
                     const cancel = document.createElement('button');
                     cancel.className = 'frosted-button text-sm';
                     cancel.style.height = '36px';
-                    cancel.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '取消' : 'Cancel';
+                    cancel.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Cancel' : 'Cancel';
                     cancel.addEventListener('click', (e) => {
                         e.preventDefault();
                         if (typeof opts.onCancel === 'function') opts.onCancel();
@@ -13641,7 +13590,7 @@
                     const confirm = document.createElement('button');
                     confirm.className = 'frosted-button frosted-button-cyan text-sm';
                     confirm.style.height = '36px';
-                    confirm.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? '确认' : 'Confirm';
+                    confirm.textContent = (typeof I18n !== 'undefined' && I18n.currentLang === 'zh') ? 'Confirm' : 'Confirm';
                     confirm.addEventListener('click', (e) => {
                         e.preventDefault();
                         if (typeof opts.onConfirm === 'function') opts.onConfirm();
@@ -13752,55 +13701,55 @@
 
         /**
          * 
-         * 模态框使用示例（可删除或修改）：
-         * nativeModalApi.open(options) // 直接打开模态框
-              nativeModalApi.close() // 关闭当前模态框
-              nativeModalApi.createTrigger(cfg) // 创建并插入一个触发按钮（可选 editable/draggable）
-              options 示例（提示框 / alert 模式）
+         * Modal usage example (can delete or modify):
+         * nativeModalApi.open(options) // Directly open modal
+              nativeModalApi.close() // Close current modal
+              nativeModalApi.createTrigger(cfg) // Create and insert a trigger button (optional editable/draggable)
+              options example (alert mode)
               nativeModalApi.open({
-              mode: 'alert', // 'alert'（提示）或 'custom'（自定义）
-              title: '确认操作', // 标题（alert 模式）
-              message: '确定要继续吗？', // 文本（alert 模式）
-              width: '420px', // 宽度（CSS 值）
-              height: '', // 高度（可选，CSS 值）
-              closeOnOverlay: true, // 点击遮罩是否关闭
-              onConfirm: () => { // 点击 Confirm 回调（在关闭前调用）
-              console.log('用户确认');
+              mode: 'alert', // 'alert' (Tip) or 'custom' (custom)
+              title: 'Confirm Operation', // title (alert mode)
+              message: 'Are you sure you want to proceed?', // message (alert mode)
+              width: '420px', // width (CSS value)
+              height: '', // height (optional, CSS value)
+              closeOnOverlay: true, // whether to close on overlay click
+              onConfirm: () => { // click Confirm callback (called before close)
+              console.log('User confirmed');
               },
-              onCancel: () => { // 点击 Cancel 回调
-              console.log('用户取消');
+              onCancel: () => { // click Cancel callback
+              console.log('User cancelled');
               }
               });
   
-              options 示例（自定义内容 / custom 模式）
+              options example (custom mode)
               nativeModalApi.open({
               mode: 'custom',
-              customHtml: '<div><h3>自定义表单</h3><p>任意 HTML</p></div>', // 或传入 HTMLElement
+              customHtml: '<div><h3>Custom form</h3><p>Any HTML</p></div>', // or pass HTMLElement
               width: '680px',
               closeOnOverlay: false
               });
   
-              通过 createTrigger 创建可配置触发按钮（将按钮插入到指定容器或 body）
+              Create configurable trigger button via createTrigger (insert into specified container or body)
               const btn = nativeModalApi.createTrigger({
-              containerSelector: '#modalTriggerContainer', // 插入位置（可选）
-              label: '打开模态', // 按钮文字
-              editable: true, // 双击可编辑文字
-              draggable: false, // 是否可拖动（absolute）
+              containerSelector: '#modalTriggerContainer', // Insertion position (optional)
+              label: 'Open modal', // Button text
+              editable: true, // Double-click to edit text
+              draggable: false, // Draggable (absolute)
               className: 'frosted-button frosted-button-cyan',
-              style: { marginTop: '12px' }, // 内联样式对象
-              openOptions: { // 点击时传递给 open 的 options
+              style: { marginTop: '12px' }, // Inline style object
+              openOptions: { // Options passed to open on click
               mode: 'alert',
-              title: '删除确认',
-              message: '确认删除该项？',
+              title: 'Delete confirmation',
+              message: 'Confirm delete this item?',
               width: '480px',
-              onConfirm: () => { console.log('删除'); }
+              onConfirm: () => { console.log('Delete'); }
               }
               });
   
-              程序化关闭（任何地方调用）
+              Programmatic close (call from anywhere)
               nativeModalApi.close();
   
-              注意事项
+              Notes
         */
     </script>
 
@@ -13817,14 +13766,14 @@
             dict: {
                 zh: {
                     switchLang: 'English',
-                    submitForm: '提交表单',
-                    enterName: '请输入姓名',
-                    enterPhone: '请输入手机号',
-                    enterRemark: '请输入备注信息',
-                    agreeTerms: '我已阅读并同意条款',
-                    selectGender: '请选择性别',
-                    switchTheme: '切换主题',
-                    getValue: '获取选中值',
+                    submitForm: 'Submit Form',
+                    enterName: 'Enter name',
+                    enterPhone: 'Enter phone',
+                    enterRemark: 'Enter remarks',
+                    agreeTerms: 'I have read and agree to the terms',
+                    selectGender: 'Please select gender',
+                    switchTheme: 'Switch Theme',
+                    getValue: 'Get Value',
                 },
                 en: {
                     switchLang: 'CN',
@@ -13843,7 +13792,7 @@
                 return (this.dict[this.currentLang] && this.dict[this.currentLang][key]) || key;
             },
 
-            /* 切换语言 / Toggle language */
+            /* Toggle language */
             toggle() {
                 this.setLang(this.currentLang === 'zh' ? 'en' : 'zh');
             },
@@ -13855,13 +13804,13 @@
                 this.updateBtnLabel();
             },
 
-            /* 更新切换按钮文字 / Update switch button label */
+            /* Update switch button label */
             updateBtnLabel() {
                 const btn = document.getElementById('langSwitchBtn');
                 if (btn) btn.textContent = this.t('switchLang');
             },
 
-            /* 解析双语文本：提取 "X / Y" 或 "X | Y" 中的对应部分 */
+            /* Parse bilingual text: extract corresponding part from "X / Y" or "X | Y" */
             parseBilingual(text, lang) {
                 if (!text) return text;
                 // Priority match "Chinese / English" or "English / Chinese" format
@@ -13891,7 +13840,7 @@
                 return text;
             },
 
-            /* 更新页面所有双语文本 / Update all bilingual texts on page */
+            /* Update all bilingual texts on page */
             updatePage() {
                 const lang = this.currentLang;
 
@@ -13966,12 +13915,216 @@
                 { label: 'Angular', value: 'angular' },
                 { label: 'Node.js', value: 'node' }
             ],
-            titles: ['可选 / Available', '已选 / Selected'],
+            titles: ['Available', 'Selected'],
             onChange: (data) => {
                 console.log('Transfer changed:', data);
             }
         });
         transfer.init();
+    </script>
+    <script src="./module/downFile.js"></script>
+    <script>
+        // Mock Word document string data
+        function mockWordData() {
+            return "This is a mock Word document content.\n".repeat(300);
+        }
+
+        // Mock Excel CSV table data
+        function mockExcelCsvData() {
+            return "Name,Age,Score\nAlice,22,98\nBob,23,95\nCharlie,21,92\n".repeat(50);
+        }
+        const dwomFileDemo1 = new CrystalProgress({
+            containerId: 'dwomFileDemo1',
+            width: '500px',
+            min: 1,
+            max: 100,
+            unit: '%',
+            defaultValue: 1
+        });
+        dwomFileDemo1.init();
+        document.getElementById("dwdemobtn").addEventListener('click', async () => {
+            Misc.Browser.downloadFile(
+                'report.pdf',
+                mockExcelCsvData(),
+                null,
+                (percent) => {
+                    console.log('Progress:', percent + '%');
+                    dwomFileDemo1.setValue(percent)
+                }
+            );
+        })
+        //progress.setValue(val * 10)
+        const dwomFileDemo2 = new CrystalProgress({
+            containerId: 'dwomFileDemo2',
+            width: '500px',
+            min: 1,
+            max: 100,
+            unit: '%',
+            defaultValue: 1
+        });
+        dwomFileDemo2.init();
+
+        // Resume download cache key
+        const STREAM_CACHE_KEY = "demo_stream_download_cache";
+
+        // Save cache
+        function saveStreamCache(cache) {
+            localStorage.setItem(STREAM_CACHE_KEY, JSON.stringify(cache));
+        }
+
+        // Get cache
+        function getStreamCache() {
+            const str = localStorage.getItem(STREAM_CACHE_KEY);
+            return str ? JSON.parse(str) : null;
+        }
+
+        // Clear cache
+        function clearStreamCache() {
+            localStorage.removeItem(STREAM_CACHE_KEY);
+        }
+
+        document.getElementById("clearCache").addEventListener('click', async () => {
+            clearStreamCache()
+        })
+
+        const lastCache = getStreamCache();
+
+        // Progress update handler
+        const onProgress = (p) => {
+            console.log('Stream download progress:', p + '%');
+            if (window.dwomFileDemo2) {
+                dwomFileDemo2.setValue(p);
+            }
+            // Save progress to cache in real time
+            let cache = getStreamCache();
+            if (cache) {
+                cache.progress = p;
+                saveStreamCache(cache);
+            }
+        };
+
+        if (lastCache) {
+            onProgress(lastCache.progress);
+        }
+
+        document.getElementById("dwdemobtn2").addEventListener('click', async () => {
+            console.log('Start streaming resume download');
+
+            // Simulate 5 chunks, network interruption in the middle
+            const chunkList = [
+                'Chunk line 1 content\n',
+                'Chunk line 2 content\n',
+                'Chunk line 3 content\n',
+                'Chunk line 4 content\n',
+                'Chunk line 5 content\n'
+            ];
+
+            let stream, startIndex;
+            // Flag for simulating network disconnection
+            let isNetworkBreak = false;
+
+            // Resume from unfinished download
+            if (lastCache) {
+                console.log('Detected unfinished download, resuming progress:', lastCache.progress, '%');
+                // Refresh progress bar
+                onProgress(lastCache.progress);
+
+                stream = Misc.Browser.downloadStream(lastCache.filename, null, null, onProgress);
+                stream.setExpectedSize(lastCache.expectedSize);
+
+                // Restore downloaded chunks
+                lastCache.chunks.forEach(item => stream.write(item));
+                startIndex = lastCache.lastIndex + 1;
+            } else {
+                // New download
+                stream = Misc.Browser.downloadStream('Mock_Large_File.txt', null, null, onProgress);
+                const expectSize = 1024 * 100;
+                stream.setExpectedSize(expectSize);
+
+                // Initialize cache
+                saveStreamCache({
+                    filename: 'Mock_Large_File.txt',
+                    expectedSize: expectSize,
+                    chunks: [],
+                    lastIndex: -1,
+                    progress: 0,
+                    isFinish: false
+                });
+
+                startIndex = 0;
+            }
+
+            // Download chunks one by one
+            for (let i = startIndex; i < chunkList.length; i++) {
+                // Write current chunk
+                stream.write(chunkList[i]);
+
+                // Update cache: save chunk and index
+                let cache = getStreamCache();
+                cache.chunks.push(chunkList[i]);
+                cache.lastIndex = i;
+
+                // Calculate real-time progress
+                const totalChunks = chunkList.length;
+                const currentChunkIndex = i + 1;
+                const realTimeProgress = Math.round((currentChunkIndex / totalChunks) * 100);
+
+                // Update UI and cache
+                cache.progress = realTimeProgress;
+                onProgress(realTimeProgress);
+
+                saveStreamCache(cache);
+
+                // Simulate network disconnection at 3rd chunk
+                if (i === 2) {
+                    console.log('Simulation: Network interrupted, progress saved:', realTimeProgress + '%');
+                    FrostedFeedback.show({
+                        message: 'Simulation: Network interrupted',
+                        type: 'error',
+                        position: 'topleft',
+                        content: 'Progress saved: ' + realTimeProgress + '%'
+                    });
+                    return;
+                }
+
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 400));
+            }
+
+            // All chunks downloaded
+            stream.close();
+            let cache = getStreamCache();
+            cache.isFinish = true;
+            saveStreamCache(cache);
+            clearStreamCache();
+            console.log('Download completed');
+        });
+        /*
+     
+         // 1. Download PDF with progress
+         Misc.Browser.downloadFile(
+             'report.pdf',
+             pdfBlob,
+             null,
+             (percent) => {
+                 console.log('Progress:', percent + '%');
+                
+             }
+         );
+      // 2. Download Excel with progress
+         Misc.Browser.downloadFile('data.xlsx', excelData, null, (p) => {
+             console.log('Excel progress', p);
+         });
+ 
+         // 3. Manual stream with progress
+         const stream = Misc.Browser.downloadStream('large-file.docx', null, null, (p) => {
+             console.log('Stream progress', p);
+         });
+         stream.setExpectedSize(1024 * 1024 * 5); // 5MB
+         stream.write(chunk1);
+         stream.write(chunk2);
+         stream.close();
+         */
     </script>
 </body>
 

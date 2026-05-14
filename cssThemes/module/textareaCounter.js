@@ -6,10 +6,10 @@
       if(wrapper.querySelector('.textarea-counter')) return;
       const max = parseInt(ta.getAttribute('maxlength') || ta.dataset.max || '200', 10);
 
-      // 强制最大长度，阻止继续输入（包含粘贴场景）
+      // Force max length to prevent further input (including paste scenarios)
       try { ta.maxLength = max; } catch (e) { ta.setAttribute('maxlength', max); }
 
-      // 如果已有内容超出，截断
+      // Truncate if existing content exceeds limit
       if(ta.value && ta.value.length > max) ta.value = ta.value.slice(0, max);
 
       const counter = document.createElement('div');
@@ -22,7 +22,7 @@
       update();
       wrapper.appendChild(counter);
 
-      // 使用 input 事件更新计数并在粘贴或程序赋值后做二次截断保护
+      // Use input event to update count and provide secondary truncation protection after paste or programmatic assignment
       ta.addEventListener('input', ()=>{
         if(ta.value.length > max) ta.value = ta.value.slice(0, max);
         update();

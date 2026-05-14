@@ -1,20 +1,20 @@
 /**
  * ==============================
- * 1. 独立进度条组件（纯展示）
- * 支持：自定义min/max范围 + 自定义单位 + 自定义宽度(px/%) + 动态修改配置
+ * 1. Independent Progress Bar Component (Display Only)
+ * Supports: Custom min/max range + Custom unit + Custom width (px/%) + Dynamic config modification
  * ==============================
  */
 class CrystalProgress {
   constructor(config) {
     this.containerId = config.containerId;
-    // 🔥 新增：自定义宽度 默认100% 支持px/%
+    // 🔥 New: Custom width, default 100%, supports px/%
     this.width = config.width || '100%';
-    // 自定义范围 默认0-100
+    // Custom range, default 0-100
     this.min = Number(config.min) || 0;
     this.max = Number(config.max) || 100;
-    // 自定义单位 默认%
+    // Custom unit, default %
     this.unit = config.unit !== undefined ? config.unit : '%';
-    // 默认值（范围校验）
+    // Default value (range validation)
     this.defaultValue = this._clamp(Number(config.defaultValue) || 40);
     this.onChange = config.onChange || function () {};
 
@@ -28,10 +28,10 @@ class CrystalProgress {
   init() {
     this.container = document.getElementById(this.containerId);
     if (!this.container) {
-      console.error("CrystalProgress：未找到容器 ->", this.containerId);
+      console.error("CrystalProgress: Container not found ->", this.containerId);
       return;
     }
-    // 渲染DOM：宽度动态绑定 支持px/%
+    // Render DOM: dynamic width binding, supports px/%
     this.container.innerHTML = `
     <div style="display:flex;flex-direction: row;align-items: center;gap:8px;width:${this.width};">
       <div class="frosted-progress-track frosted-progress" style="width:100%;height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
@@ -48,58 +48,58 @@ class CrystalProgress {
   }
 
   // ==============================================
-  // 私有工具方法
+  // Private Utility Methods
   // ==============================================
-  /** 数值限制在范围内 */
+  /** Clamp value within range */
   _clamp(v) {
     const val = Number(v) || 0;
     return Math.max(this.min, Math.min(this.max, val));
   }
-  /** 计算进度条百分比宽度（适配自定义范围） */
+  /** Calculate progress percentage width (adapts to custom range) */
   _getPercent() {
     if (this.max === this.min) return 0;
     return ((this.value - this.min) / (this.max - this.min)) * 100;
   }
 
   // ==============================================
-  // 原有接口 + 新增拓展接口
+  // Original APIs + New Extended APIs
   // ==============================================
-  /** 设置值 */
+  /** Set value */
   setValue(v) {
     this.value = this._clamp(v);
     this._updateUI();
     this.onChange(this.value);
   }
-  /** 获取当前值 */
+  /** Get current value */
   getValue() {
     return this.value;
   }
-  /** 重置默认值 */
+  /** Reset to default value */
   reset() {
     this.setValue(this.defaultValue);
   }
-  /** 修改默认值 */
+  /** Modify default value */
   setDefaultValue(v) {
     this.defaultValue = this._clamp(v);
   }
-  /** 强制刷新UI */
+  /** Force UI refresh */
   forceUpdate() {
     this._updateUI();
   }
-  /** 获取填充DOM */
+  /** Get fill DOM element */
   getFillEl() {
     return this.progressFill;
   }
-  /** 获取标签DOM */
+  /** Get label DOM element */
   getLabelEl() {
     return this.progressLabel;
   }
-  /** 获取容器DOM */
+  /** Get container DOM element */
   getContainerEl() {
     return this.container;
   }
 
-  // 动态修改范围/单位
+  // Dynamically modify range/unit
   setMin(min) {
     this.min = Number(min) || 0;
     this.setValue(this.value);
@@ -119,10 +119,10 @@ class CrystalProgress {
     return this.unit;
   }
 
-  // 🔥 新增：动态修改宽度
+  // 🔥 New: Dynamically modify width
   setWidth(width) {
     this.width = width || '100%';
-    // 更新DOM宽度
+    // Update DOM width
     const wrapper = this.container.querySelector('div:first-child');
     if (wrapper) wrapper.style.width = this.width;
   }
@@ -130,7 +130,7 @@ class CrystalProgress {
     return this.width;
   }
 
-  // 私有更新UI
+  // Private UI update
   _updateUI() {
     if (this.progressFill) this.progressFill.style.width = this._getPercent() + "%";
     if (this.progressLabel) this.progressLabel.textContent = this.value + this.unit;
@@ -139,25 +139,25 @@ class CrystalProgress {
 
 /**
  * ==============================
- * 2. 极简独立滑块组件（滑块+右侧值）
- * 支持：自定义min/max范围 + 自定义单位 + 自定义宽度(px/%) + 全接口暴露
+ * 2. Minimal Independent Slider Component (Slider + Value on Right)
+ * Supports: Custom min/max range + Custom unit + Custom width (px/%) + Full API exposure
  * ==============================
  */
 class CrystalSlider {
   constructor(config) {
     this.containerId = config.containerId;
-    // 🔥 新增：自定义宽度 默认240px 支持px/%
+    // 🔥 New: Custom width, default 240px, supports px/%
     this.width = config.width || '240px';
-    // 自定义范围 默认0-100
+    // Custom range, default 0-100
     this.min = Number(config.min) || 0;
     this.max = Number(config.max) || 100;
-    // 自定义单位 默认%
+    // Custom unit, default %
     this.unit = config.unit !== undefined ? config.unit : '%';
-    // 默认值（范围校验）
+    // Default value (range validation)
     this.defaultValue = this._clamp(Number(config.defaultValue) || 40);
     this.onChange = config.onChange || function () {};
 
-    // 同步锁/状态
+    // Sync lock / state
     this.syncLock = false;
     this.value = this.defaultValue;
 
@@ -170,10 +170,10 @@ class CrystalSlider {
   init() {
     this.container = document.getElementById(this.containerId);
     if (!this.container) {
-      console.error("CrystalSlider：未找到容器 ->", this.containerId);
+      console.error("CrystalSlider: Container not found ->", this.containerId);
       return;
     }
-    // 渲染DOM：宽度动态绑定 支持px/%
+    // Render DOM: dynamic width binding, supports px/%
     this.container.innerHTML = `
       <div style="display:flex;align-items:center;gap:12px;width:${this.width};">
         <input type="range" min="${this.min}" max="${this.max}" value="${this.defaultValue}" 
@@ -187,7 +187,7 @@ class CrystalSlider {
     this.setValue(this.defaultValue);
   }
 
-  // 绑定拖动事件
+  // Bind drag events
   _bindEvents() {
     this.sliderEl?.addEventListener("input", (e) => {
       if (this.syncLock) return;
@@ -196,7 +196,7 @@ class CrystalSlider {
   }
 
   // ==============================================
-  // 私有工具方法
+  // Private Utility Methods
   // ==============================================
   _clamp(v) {
     const val = Number(v) || 0;
@@ -204,7 +204,7 @@ class CrystalSlider {
   }
 
   // ==============================================
-  // 原有接口 + 新增拓展接口
+  // Original APIs + New Extended APIs
   // ==============================================
   setValue(v) {
     this.syncLock = true;
@@ -223,7 +223,7 @@ class CrystalSlider {
   getSyncLock() { return this.syncLock; }
   setSyncLock(lock) { this.syncLock = !!lock; }
 
-  // 动态修改范围/单位
+  // Dynamically modify range/unit
   setMin(min) {
     this.min = Number(min) || 0;
     this.sliderEl.min = this.min;
@@ -241,10 +241,10 @@ class CrystalSlider {
   getRange() { return { min: this.min, max: this.max }; }
   getUnit() { return this.unit; }
 
-  // 🔥 新增：动态修改宽度
+  // 🔥 New: Dynamically modify width
   setWidth(width) {
     this.width = width || '240px';
-    // 更新DOM宽度
+    // Update DOM width
     const wrapper = this.container.querySelector('div:first-child');
     if (wrapper) wrapper.style.width = this.width;
   }
@@ -258,6 +258,6 @@ class CrystalSlider {
   }
 }
 
-// 全局暴露
+// Global exposure
 window.CrystalProgress = CrystalProgress;
 window.CrystalSlider = CrystalSlider;

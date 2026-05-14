@@ -1,57 +1,57 @@
 /**
- * 水晶风格单选框组封装
- * 页面仅需空 div#id 自动渲染完整DOM
- * 支持单选互斥 + 全量操作接口 + 状态监听
+ * Crystal Style Radio Group Encapsulation
+ * Only requires an empty div#id on the page to auto-render complete DOM
+ * Supports mutual exclusion + full operation interfaces + state monitoring
  */
 class CrystalRadioGroup {
   /**
-   * 配置参数
-   * @param {Object} config - 配置
-   * @param {Array} config.containerIds - 单选框容器ID数组（必填）
-   * @param {Array} config.labels - 对应显示文字数组（可选）
-   * @param {string} config.defaultSelected - 默认选中的容器ID（可选）
-   * @param {Function} config.onChange - 选中变化回调 (selectedId: string)=>{}
+   * Configuration
+   * @param {Object} config - Configuration
+   * @param {Array} config.containerIds - Array of radio container IDs (required)
+   * @param {Array} config.labels - Array of corresponding display texts (optional)
+   * @param {string} config.defaultSelected - Default selected container ID (optional)
+   * @param {Function} config.onChange - Callback on selection change (selectedId: string)=>{}
    */
   constructor(config) {
-    // 外部配置
+    // External configuration
     this.containerIds = config.containerIds || [];
     this.labels = config.labels || this.containerIds.map(() => 'Option');
     this.defaultSelected = config.defaultSelected || '';
     this.onChange = config.onChange || function () {};
 
-    // 实例存储
+    // Instance storage
     this.radioInstances = [];
     this.currentSelected = this.defaultSelected;
   }
 
   /**
-   * 初始化：渲染所有DOM + 绑定事件
+   * Initialize: render all DOM + bind events
    */
   init() {
     if (!this.containerIds.length) {
-      console.error('CrystalRadioGroup：未传入单选框容器ID');
+      console.error('CrystalRadioGroup: No radio container IDs provided');
       return;
     }
 
-    // 遍历渲染所有单选框
+    // Iterate and render all radios
     this.containerIds.forEach((id, index) => {
       this._renderSingleRadio(id, this.labels[index]);
     });
 
-    // 绑定组事件
+    // Bind group events
     this._bindGroupEvents();
-    // 初始化默认选中
+    // Initialize default selection
     this.setSelected(this.defaultSelected);
   }
 
   /**
-   * 私有：渲染单个单选框DOM
+   * Private: render single radio DOM
    */
   _renderSingleRadio(containerId, label) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    // 自动渲染原始DOM结构
+    // Auto-render raw DOM structure
     container.innerHTML = `
       <div class="crystal-radio" id="${containerId}_core">
         <div class="radio-box">
@@ -67,7 +67,7 @@ class CrystalRadioGroup {
       </div>
     `;
 
-    // 存储DOM元素
+    // Store DOM elements
     this.radioInstances.push({
       id: containerId,
       container,
@@ -77,7 +77,7 @@ class CrystalRadioGroup {
   }
 
   /**
-   * 私有：绑定单选组互斥事件
+   * Private: bind radio group mutual exclusion events
    */
   _bindGroupEvents() {
     this.radioInstances.forEach(item => {
@@ -88,7 +88,7 @@ class CrystalRadioGroup {
   }
 
   /**
-   * 私有：更新全组UI样式
+   * Private: update UI styles for the entire group
    */
   _updateAllUI() {
     this.radioInstances.forEach(item => {
@@ -104,10 +104,10 @@ class CrystalRadioGroup {
   }
 
   // ==============================================
-  // 🔥 对外暴露【全量操作接口】
+  // 🔥 Exposed Public Interfaces
   // ==============================================
   /**
-   * 获取当前选中的ID
+   * Get currently selected ID
    * @returns {string}
    */
   getSelected() {
@@ -115,8 +115,8 @@ class CrystalRadioGroup {
   }
 
   /**
-   * 设置选中项
-   * @param {string} selectedId - 要选中的容器ID
+   * Set selected item
+   * @param {string} selectedId - Container ID to select
    */
   setSelected(selectedId) {
     if (!this.radioInstances.some(item => item.id === selectedId)) return;
@@ -126,16 +126,16 @@ class CrystalRadioGroup {
   }
 
   /**
-   * 重置为初始默认状态
+   * Reset to initial default state
    */
   reset() {
     this.setSelected(this.defaultSelected);
   }
 
   /**
-   * 修改指定单选框的显示文字
-   * @param {string} id - 容器ID
-   * @param {string} text - 新文字
+   * Modify display text for a specific radio
+   * @param {string} id - Container ID
+   * @param {string} text - New text
    */
   setLabel(id, text) {
     const item = this.radioInstances.find(i => i.id === id);
@@ -143,5 +143,5 @@ class CrystalRadioGroup {
   }
 }
 
-// 全局暴露
+// Global exposure
 window.CrystalRadioGroup = CrystalRadioGroup;

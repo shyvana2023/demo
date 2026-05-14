@@ -1,21 +1,21 @@
 /**
  * Frosted Glass CSS Styles - Crystal Glass Edition
  * =================================================
- * 水晶玻璃质感样式表 - 全套组件 3D 水晶效果
+ * Crystal Glass Texture Stylesheet - Full Component 3D Crystal Effect
  * 
- * 设计特点:
- * - 晶莹剔透的质感
- * - 3D 深度和体积感
- * - 光泽反射效果
- * - 明暗双模式适配
+ * Design Features:
+ * - Crystal clear texture
+ * - 3D depth & volume
+ * - Gloss reflection effects
+ * - Light & Dark mode support
  * 
- * 浏览器兼容性:
+ * Browser Compatibility:
  * - Chrome/Edge 76+
  * - Firefox 103+
  * - Safari 9+
  */
 
-/* 主题变量定义 */
+/* Theme Variable Definitions */
 :root {
   /* Light Theme */
   --frosted-text-primary: #1e293b;
@@ -34,57 +34,57 @@
   --frosted-orange-text: #f97316;
   --frosted-red-text: #ef4444;
 
-  /* 模糊半径 */
-  --frosted-blur-sm: 4px;
-  --frosted-blur-md: 8px;
-  --frosted-blur-lg: 12px;
-  --frosted-blur-xl: 16px;
+/* Blur Radius */
+--frosted-blur-sm: 4px;
+--frosted-blur-md: 8px;
+--frosted-blur-lg: 12px;
+--frosted-blur-xl: 16px;
 
-  /* 圆角 */
-  --frosted-radius-sm: 6px;
-  --frosted-radius-md: 10px;
-  --frosted-radius-lg: 16px;
-  --frosted-radius-xl: 20px;
-  --frosted-radius-full: 999px;
+/* Border Radius */
+--frosted-radius-sm: 6px;
+--frosted-radius-md: 10px;
+--frosted-radius-lg: 16px;
+--frosted-radius-xl: 20px;
+--frosted-radius-full: 999px;
 
-  /* 背景 */
-  --frosted-bg-emphasis: rgba(255, 255, 255, 0.85);
+/* Background */
+--frosted-bg-emphasis: rgba(255, 255, 255, 0.85);
 
-  /* 高光 */
-  --frosted-highlight-default: rgba(255, 255, 255, 0.6);
-  --frosted-highlight-subtle: rgba(255, 255, 255, 0.4);
+/* Highlight */
+--frosted-highlight-default: rgba(255, 255, 255, 0.6);
+--frosted-highlight-subtle: rgba(255, 255, 255, 0.4);
 
-  /* 阴影 */
-  --frosted-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
-  --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
-  --frosted-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
-  --frosted-shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.15);
+/* Shadow */
+--frosted-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
+--frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+--frosted-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+--frosted-shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.15);
 
-  /* 青色主题 */
-  --frosted-cyan-border: rgba(6, 182, 212, 0.4);
-  --frosted-cyan-glow: 0 0 16px rgba(6, 182, 212, 0.3);
+/* Cyan Theme */
+--frosted-cyan-border: rgba(6, 182, 212, 0.4);
+--frosted-cyan-glow: 0 0 16px rgba(6, 182, 212, 0.3);
 
-  /* 紫色 */
-  --frosted-purple-bg: rgba(168, 85, 247, 0.1);
-  --frosted-purple-border: rgba(168, 85, 247, 0.4);
-  --frosted-purple-glow: 0 0 16px rgba(168, 85, 247, 0.3);
+/* Purple */
+--frosted-purple-bg: rgba(168, 85, 247, 0.1);
+--frosted-purple-border: rgba(168, 85, 247, 0.4);
+--frosted-purple-glow: 0 0 16px rgba(168, 85, 247, 0.3);
 
-  /* 绿色 */
-  --frosted-green-bg: rgba(34, 197, 94, 0.1);
-  --frosted-green-border: rgba(34, 197, 94, 0.4);
-  --frosted-green-glow: 0 0 16px rgba(34, 197, 94, 0.3);
+/* Green */
+--frosted-green-bg: rgba(34, 197, 94, 0.1);
+--frosted-green-border: rgba(34, 197, 94, 0.4);
+--frosted-green-glow: 0 0 16px rgba(34, 197, 94, 0.3);
 
-  /* 橙色 */
-  --frosted-orange-bg: rgba(249, 115, 22, 0.1);
-  --frosted-orange-border: rgba(249, 115, 22, 0.4);
-  --frosted-orange-glow: 0 0 16px rgba(249, 115, 22, 0.3);
+/* Orange */
+--frosted-orange-bg: rgba(249, 115, 22, 0.1);
+--frosted-orange-border: rgba(249, 115, 22, 0.4);
+--frosted-orange-glow: 0 0 16px rgba(249, 115, 22, 0.3);
 
-  /* 红色 */
-  --frosted-red-bg: rgba(239, 68, 68, 0.1);
-  --frosted-red-border: rgba(239, 68, 68, 0.4);
-  --frosted-red-glow: 0 0 16px rgba(239, 68, 68, 0.3);
+/* Red */
+--frosted-red-bg: rgba(239, 68, 68, 0.1);
+--frosted-red-border: rgba(239, 68, 68, 0.4);
+--frosted-red-glow: 0 0 16px rgba(239, 68, 68, 0.3);
 
-  /* 背景渐变 */
+/* Background Gradient */
   --frosted-surface-bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%);
 }
 
@@ -124,7 +124,7 @@
 }
 
 /* ============================================
-   1. 基础水晶玻璃效果
+   1. Basic Crystal Glass Effect
    ============================================ */
 
 .frosted-glass {
@@ -132,21 +132,21 @@
   backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
   -webkit-backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
   border: 1px solid var(--frosted-border-default);
-  /* 水晶立体效果 */
+  /* Crystal 3D Effect */
   box-shadow:
-    /* 顶部高光 - 模拟光线照射 */
+    /* Top Highlight - Simulate Light Reflection */
     0 1px 0 0 var(--frosted-highlight-default) inset,
-    /* 底部内阴影 - 增加厚度 */
+    /* Bottom Inner Shadow - Add Depth */
     0 -2px 6px rgba(0, 0, 0, 0.04) inset,
-    /* 左侧微光 */
+    /* Left Light Glow */
     1px 0 0 rgba(255, 255, 255, 0.2) inset,
-    /* 右侧微暗 */
+    /* Right Dark Shade */
     -1px 0 0 rgba(0, 0, 0, 0.02) inset,
-    /* 外部投影 */
+    /* Outer Shadow */
     var(--frosted-shadow-md);
 }
 
-/* 光泽层 */
+/* Gloss Overlay */
 .frosted-glass::before {
   content: '';
   position: absolute;
@@ -186,7 +186,7 @@
 }
 
 /* ============================================
-   2. 边框高光效果
+   2. Border Highlight Effect
    ============================================ */
 
 .frosted-highlight {
@@ -210,7 +210,7 @@
 }
 
 /* ============================================
-   3. 发光效果
+   3. Glow Effect
    ============================================ */
 
 .frosted-glow-cyan {
@@ -252,9 +252,8 @@
     var(--frosted-shadow-md),
     var(--frosted-red-glow);
 }
-
 /* ============================================
-   4. 变体背景色
+   4. Variant Background Colors
    ============================================ */
 
 .frosted-variant-cyan {
@@ -288,7 +287,7 @@
 }
 
 /* ============================================
-   5. 按钮样式 - Crystal Button
+   5. Button Styles - Crystal Button
    ============================================ */
 .frosted-button {
   position: relative;
@@ -310,24 +309,24 @@
       rgba(0, 0, 0, 0.02) 100%);
   backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
   -webkit-backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
-  /* 3D 水晶效果 */
-  box-shadow:
-    /* 顶部高光 */
-    0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
-    /* 底部内阴影 - 厚度 */
-    0 -2px 4px rgba(0, 0, 0, 0.05) inset,
-    /* 左侧微光 */
-    1px 0 0 rgba(255, 255, 255, 0.3) inset,
-    /* 右侧微暗 */
-    -1px 0 0 rgba(0, 0, 0, 0.03) inset,
-    /* 外部浮起阴影 */
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+ /* 3D Crystal Effect */
+box-shadow:
+  /* Top Highlight */
+  0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+  /* Bottom Inner Shadow - Depth */
+  0 -2px 4px rgba(0, 0, 0, 0.05) inset,
+  /* Left Light Glow */
+  1px 0 0 rgba(255, 255, 255, 0.3) inset,
+  /* Right Dark Shade */
+  -1px 0 0 rgba(0, 0, 0, 0.03) inset,
+  /* Outer Floating Shadow */
+  0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -2px rgba(0, 0, 0, 0.1);
   color: var(--frosted-text-primary);
   overflow: hidden;
 }
 
-/* 光泽反射层 */
+/* Gloss Reflection Layer */
 .frosted-button::before {
   content: '';
   position: absolute;
@@ -353,7 +352,6 @@
     0 -2px 4px rgba(0, 0, 0, 0.05) inset,
     1px 0 0 rgba(255, 255, 255, 0.4) inset,
     -1px 0 0 rgba(0, 0, 0, 0.03) inset,
-    /* 更大的阴影 */
     0 8px 16px -4px rgba(0, 0, 0, 0.15),
     0 4px 8px -2px rgba(0, 0, 0, 0.1);
 }
@@ -373,7 +371,7 @@
   box-shadow: none;
 }
 
-/* 变体按钮 - 彩色水晶 */
+/* Variant Buttons - Colored Crystal */
 .frosted-button-cyan {
   background: linear-gradient(180deg,
       rgba(255, 255, 255, 0.2) 0%,
@@ -460,7 +458,7 @@
 }
 
 /* ============================================
-   6. 卡片样式 - Crystal Card
+   6. Card Styles - Crystal Card
    ============================================ */
 
 .frosted-card {
@@ -508,7 +506,7 @@
     var(--frosted-shadow-lg);
 }
 
-/* 彩色卡片 */
+/* Colored Cards */
 .frosted-card-cyan {
   background: linear-gradient(180deg,
       rgba(255, 255, 255, 0.15) 0%,
@@ -546,7 +544,7 @@
 }
 
 /* ============================================
-   7. Badge/Tag 样式 - Crystal Pill
+   7. Badge/Tag Styles - Crystal Pill
    ============================================ */
 
 .frosted-badge {
@@ -637,7 +635,7 @@
 }
 
 /* ============================================
-   8. 输入框样式 - Crystal Input
+   8. Input Styles - Crystal Input
    ============================================ */
 
 .frosted-input {
@@ -680,7 +678,7 @@
 }
 
 /* ============================================
-   9. 模态框/弹窗样式 - Crystal Modal
+   9. Modal/Popup Styles - Crystal Modal
    ============================================ */
 
 .frosted-modal-overlay {
@@ -732,7 +730,7 @@
 }
 
 /* ============================================
-   10. 表格样式
+   10. Table Styles
    ============================================ */
 
 .frosted-table {
@@ -778,7 +776,7 @@
 }
 
 /* ============================================
-   11. Tab 样式 - Crystal Tab
+   11. Tab Styles - Crystal Tab
    ============================================ */
 
 .frosted-tabs {
@@ -829,15 +827,15 @@
   color: var(--frosted-text-primary);
   border: 1px solid var(--frosted-border-default);
   box-shadow:
-    /* 顶部高光 */
-    0 1px 0 0 rgba(255, 255, 255, 0.8) inset,
-    /* 底部内阴影 */
-    0 -2px 4px rgba(0, 0, 0, 0.06) inset,
-    /* 左侧微光 */
-    1px 0 0 rgba(255, 255, 255, 0.4) inset,
-    /* 右侧微暗 */
-    -1px 0 0 rgba(0, 0, 0, 0.02) inset,
-    /* 外部浮起阴影 */
+ /* Top Highlight */
+0 1px 0 0 rgba(255, 255, 255, 0.8) inset,
+/* Bottom Inner Shadow */
+0 -2px 4px rgba(0, 0, 0, 0.06) inset,
+/* Left Light Glow */
+1px 0 0 rgba(255, 255, 255, 0.4) inset,
+/* Right Dark Shade */
+-1px 0 0 rgba(0, 0, 0, 0.02) inset,
+/* Outer Floating Shadow */
     0 2px 4px rgba(0, 0, 0, 0.08),
     0 1px 2px rgba(0, 0, 0, 0.04);
 }
@@ -856,7 +854,7 @@
 }
 
 /* ============================================
-   12. 开关/切换样式 - Crystal Toggle
+   12. Toggle/Switch Styles - Crystal Toggle
    ============================================ */
 
 .frosted-toggle {
@@ -864,7 +862,7 @@
   width: 52px;
   height: 28px;
   border-radius: 14px;
-  /* 柱子光泽度渐变 */
+  /* Track Gloss Gradient */
   background: linear-gradient(180deg,
       rgba(255, 255, 255, 0.15) 0%,
       var(--frosted-bg-subtle) 20%,
@@ -876,16 +874,16 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow:
-    /* 内部上方高光 */
+    /* Inner Top Highlight */
     0 1px 0 0 rgba(255, 255, 255, 0.5) inset,
-    /* 内部下方阴影 */
+    /* Inner Bottom Shadow */
     0 -1px 3px rgba(0, 0, 0, 0.1) inset,
-    /* 外部底部阴影 */
+    /* Outer Bottom Shadow */
     0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-/* 轨道光泽层 */
+/* Track Gloss Layer */
 .frosted-toggle::before {
   content: '';
   position: absolute;
@@ -921,7 +919,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  /* 水晶珠子效果 */
+/* Crystal Bead Effect */
   background: radial-gradient(circle at 30% 30%,
       rgba(255, 255, 255, 0.95) 0%,
       var(--frosted-bg-emphasis) 35%,
@@ -933,7 +931,7 @@
   overflow: hidden;
 }
 
-/* 珠子高光 */
+/* Bead Highlight */
 .frosted-toggle-knob::before {
   content: '';
   position: absolute;
@@ -948,7 +946,7 @@
   filter: blur(0.5px);
 }
 
-/* 珠子次高光 */
+/* Bead Secondary Highlight */
 .frosted-toggle-knob::after {
   content: '';
   position: absolute;
@@ -974,7 +972,7 @@
 }
 
 /* ============================================
-   13. 进度条样式
+   13. Progress Bar Styles
    ============================================ */
 
 .frosted-progress {
@@ -1005,7 +1003,7 @@
   overflow: hidden;
 }
 
-/* 进度条光泽 */
+/* Progress Bar Gloss */
 .frosted-progress-fill::before {
   content: '';
   position: absolute;
@@ -1019,7 +1017,7 @@
 }
 
 /* ============================================
-   14. 列表样式 - Crystal List
+   14. List Styles - Crystal List
    ============================================ */
 
 .frosted-list {
@@ -1086,7 +1084,7 @@
 }
 
 /* ============================================
-   15. 下拉菜单样式 - Crystal Dropdown
+   15. Dropdown Styles - Crystal Dropdown
    ============================================ */
 
 .frosted-dropdown {
@@ -1167,7 +1165,7 @@
 }
 
 /* ============================================
-   16. 图标样式 - Crystal Icon
+   16. Icon Styles - Crystal Icon
    ============================================ */
 
 .frosted-icon {
@@ -1235,9 +1233,8 @@
     0 -1px 3px rgba(0, 0, 0, 0.05) inset,
     0 0 12px rgba(6, 182, 212, 0.3);
 }
-
 /* ============================================
-   17. 响应式适配
+   17. Responsive Adaptation
    ============================================ */
 
 @media (max-width: 768px) {
@@ -1252,7 +1249,7 @@
 }
 
 /* ============================================
-   18. 动画效果
+   18. Animation Effects
    ============================================ */
 
 @keyframes frosted-fade-in {
@@ -1302,9 +1299,8 @@
 .frosted-animate-pulse {
   animation: frosted-pulse-glow 2s ease-in-out infinite;
 }
-
 /* ============================================
-   19. 无障碍支持
+   19. Accessibility Support
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1327,7 +1323,7 @@
   }
 }
 
-/* 焦点样式 */
+/* Focus Styles */
 .frosted-button:focus-visible,
 .frosted-input:focus-visible,
 .frosted-tab:focus-visible {
@@ -1336,7 +1332,7 @@
 }
 
 /* ============================================
-   20. 打印样式
+   20. Print Styles
    ============================================ */
 
 @media print {
@@ -1354,7 +1350,7 @@
   }
 }
 
-/* 速度输入框样式 */
+/* Speed Input Styles */
 .speed-input {
   width: 100%;
   height: 40px;
@@ -1377,30 +1373,8 @@
   color: var(--frosted-text-tertiary);
 }
 
-/*暂时不确定*/
-/*
-.speed-line-input {
-  position: absolute;
-  bottom: 0;
-  left: 12px;
-  right: 12px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--frosted-cyan-text);
-  width: 0%;
-  opacity: 0;
-  transition: all 0.2s ease-out;
-  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
-  pointer-events: none;
-}
-
-.speed-input:focus+.speed-line-input,
-.speed-input:not(:placeholder-shown)+.speed-line-input {
-  width: calc(100% - 24px);
-  opacity: 1;
-}
-*/
-/* 速度选择框样式 */
+ 
+/* Speed Select Box Styles */
 .speed-select {
   width: 100%;
   height: 40px;
@@ -1500,7 +1474,7 @@
   box-shadow: 0 0 6px rgba(6, 182, 212, 0.5);
 }
 
-/*选择框*/
+/* Select Box */
 .bead-highlight {
   position: absolute;
   top: 2px;
@@ -1517,7 +1491,7 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* 水晶复选框和单选框样式 */
+/* Crystal Checkbox & Radio Styles */
 .crystal-checkbox,
 .crystal-radio {
   display: flex;
@@ -1549,7 +1523,7 @@
   box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.5) inset, 0 -1px 3px rgba(0, 0, 0, 0.12) inset, 0 2px 8px rgba(6, 182, 212, 0.35), 0 0 16px rgba(6, 182, 212, 0.25);
 }
 
-/* ===== 半选状态（indeterminate）=====*/
+/* ===== Indeterminate State ===== */
 .checkbox-box.indeterminate {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(6, 182, 212, 0.35) 20%, rgba(6, 182, 212, 0.35) 80%, rgba(8, 145, 178, 0.55) 100%);
   border: 1px solid rgba(6, 182, 212, 0.5);
@@ -1658,7 +1632,7 @@
 }
 
 /* ============================================
-   21. 日期时间选择器样式（已融合统一）
+   21. DateTime Picker Styles (Unified Integrated)
    ============================================ */
 .date-time-picker {
   display: inline-block;
@@ -1898,7 +1872,7 @@
 }
 
 /**
-树形组件样式
+Tree Component Styles
 */
 
 .tree-dropdown {

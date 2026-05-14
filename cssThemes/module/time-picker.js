@@ -314,8 +314,7 @@ class DateTimePicker {
     this.date2 = new Date();
     this.render();
   }
-
-  // ✅ 智能取值：单值返回字符串，范围返回对象
+ 
   getValue() {
     if (this.range) {
       return {

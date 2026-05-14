@@ -1,45 +1,45 @@
 /**
- * 水晶风格复选框封装
- * 页面仅需一个空 div#id 自动渲染完整DOM
- * 暴露全量操作接口 + 状态监听
+ * Crystal Style Checkbox Encapsulation
+ * Only requires an empty div#id on the page to auto-render complete DOM
+ * Exposes full operation interfaces + state monitoring
  */
 class CrystalCheckbox {
   /**
-   * 配置参数
-   * @param {Object} config - 配置
-   * @param {string} config.containerId - 容器唯一ID（必填）
-   * @param {string} config.label - 复选框文字（默认：Option）
-   * @param {boolean} config.defaultChecked - 默认是否选中（默认 false）
-   * @param {Function} config.onChange - 状态变化回调 (checked: boolean)=>{}
+   * Configuration
+   * @param {Object} config - Configuration
+   * @param {string} config.containerId - Unique container ID (required)
+   * @param {string} config.label - Checkbox text (default: Option)
+   * @param {boolean} config.defaultChecked - Default checked state (default: false)
+   * @param {Function} config.onChange - Callback on state change (checked: boolean)=>{}
    */
   constructor(config) {
-    // 外部配置
+    // External configuration
     this.containerId = config.containerId;
     this.label = config.label || 'Option';
     this.defaultChecked = !!config.defaultChecked;
     this.defaultIndeterminate = !!config.defaultIndeterminate;
     this.onChange = config.onChange || function(){};
 
-    // DOM 元素
+    // DOM Elements
     this.container = null;
     this.checkboxBox = null;
     this.checkboxLabel = null;
-    // 内部状态
+    // Internal state
     this.checked = this.defaultChecked;
     this.indeterminate = this.defaultIndeterminate;
   }
 
   /**
-   * 初始化：自动渲染DOM + 绑定事件
+   * Initialize: auto-render DOM + bind events
    */
   init() {
     this.container = document.getElementById(this.containerId);
     if (!this.container) {
-      console.error('CrystalCheckbox：未找到容器 ->', this.containerId);
+      console.error('CrystalCheckbox: Container not found ->', this.containerId);
       return;
     }
 
-    // 🔥 自动渲染完整复选框DOM（100%还原你的原始结构）
+    // 🔥 Auto-generate complete checkbox DOM (100% restore original structure)
     const cls = [];
     if (this.checked) cls.push('checked');
     if (this.indeterminate) cls.push('indeterminate');
@@ -58,18 +58,18 @@ class CrystalCheckbox {
       </div>
     `;
 
-    // 获取DOM
+    // Get DOM elements
     const core = document.getElementById(`${this.containerId}_core`);
     this.checkboxBox = core.querySelector('.checkbox-box');
     this.checkboxLabel = core.querySelector('.checkbox-label');
 
-    // 绑定事件 + 初始化UI
+    // Bind events + initialize UI
     this._bindEvent();
     this._updateUI();
   }
 
   /**
-   * 私有：绑定点击事件
+   * Private: bind click event
    */
   _bindEvent() {
     this.container.addEventListener('click', () => {
@@ -78,7 +78,7 @@ class CrystalCheckbox {
   }
 
   /**
-   * 私有：更新UI样式（核心渲染逻辑）
+   * Private: update UI styles (core rendering logic)
    */
   _updateUI() {
     if (this.checked) {
@@ -96,10 +96,10 @@ class CrystalCheckbox {
   }
 
   // ==============================================
-  // 🔥 对外暴露【全量操作接口】
+  // 🔥 Exposed Public Interfaces
   // ==============================================
   /**
-   * 获取选中状态
+   * Get checked state
    * @returns {boolean}
    */
   getChecked() {
@@ -107,8 +107,8 @@ class CrystalCheckbox {
   }
 
   /**
-   * 设置选中状态
-   * @param {boolean} checked - true 选中 / false 取消
+   * Set checked state
+   * @param {boolean} checked - true checked / false unchecked
    */
   setChecked(checked) {
     this.checked = !!checked;
@@ -118,8 +118,8 @@ class CrystalCheckbox {
   }
 
   /**
-   * 设置半选状态
-   * @param {boolean} indeterminate - true 半选 / false 取消
+   * Set indeterminate state
+   * @param {boolean} indeterminate - true indeterminate / false normal
    */
   setIndeterminate(indeterminate) {
     this.indeterminate = !!indeterminate;
@@ -129,7 +129,7 @@ class CrystalCheckbox {
   }
 
   /**
-   * 获取半选状态
+   * Get indeterminate state
    * @returns {boolean}
    */
   getIndeterminate() {
@@ -137,7 +137,7 @@ class CrystalCheckbox {
   }
 
   /**
-   * 切换状态（选中 ↔ 取消）
+   * Toggle state (checked ↔ unchecked)
    */
   toggle() {
     this.checked = !this.checked;
@@ -147,7 +147,7 @@ class CrystalCheckbox {
   }
 
   /**
-   * 重置为默认状态
+   * Reset to default state
    */
   reset() {
     this.checked = this.defaultChecked;
@@ -157,8 +157,8 @@ class CrystalCheckbox {
   }
 
   /**
-   * 修改显示文字
-   * @param {string} text - 新文字
+   * Modify display text
+   * @param {string} text - New text
    */
   setLabel(text) {
     this.label = text;
@@ -166,5 +166,5 @@ class CrystalCheckbox {
   }
 }
 
-// 全局暴露，页面直接调用
+// Global exposure for direct page usage
 window.CrystalCheckbox = CrystalCheckbox;

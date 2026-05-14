@@ -1,7 +1,7 @@
 /**
- * 独立树形组件 - 纯JS封装
- * 调用：new TreeComponent(selector, data, options)
- * 取值：tree.getValue()
+ * Standalone Tree Component - Pure JS Encapsulation
+ * Call: new TreeComponent(selector, data, options)
+ * Get Value: tree.getValue()
  */
 class TreeComponent {
   constructor(selector, data, options = {}) {
@@ -34,7 +34,7 @@ class TreeComponent {
     this.render();
   }
 
-  // 统一取值方法 ✅
+  // Unified Value Getter ✅
   getValue() {
     return this.getCheckedNodes();
   }
@@ -130,7 +130,7 @@ class TreeComponent {
         nodeEl.draggable = true;
       }
 
-      /* ===== 引入水晶多选框样式 ===== */
+      /* ===== Import Crystal Checkbox Style ===== */
       if (opt.showCheckbox && !opt.singleSelect) {
         const checkboxWrap = document.createElement('div');
         checkboxWrap.className = 'tree-checkbox-box checkbox-box';
@@ -181,7 +181,7 @@ class TreeComponent {
     }
   }
 
-  /* ===== 同步水晶多选框视觉状态（支持半选） ===== */
+  /* ===== Sync Crystal Checkbox Visual State (Supports Indeterminate) ===== */
   syncCheckboxState(checkbox, node) {
     if (node.disabled) {
       checkbox.classList.remove('checked', 'indeterminate');
@@ -208,7 +208,7 @@ class TreeComponent {
     }
   }
 
-  /* ===== 批量更新水晶多选框视觉 ===== */
+  /* ===== Batch Update Crystal Checkbox Visuals ===== */
   updateAllCheckboxVisual() {
     const checkboxes = this.container.querySelectorAll('.tree-checkbox-box');
     checkboxes.forEach(cb => {
@@ -241,7 +241,7 @@ class TreeComponent {
         e.stopPropagation();
       }
 
-      /* ===== 点击水晶多选框本体 ===== */
+      /* ===== Click Crystal Checkbox Element ===== */
       const checkboxBox = e.target.closest('.tree-checkbox-box');
       if (checkboxBox) {
         const id = Number(checkboxBox.dataset.id);
@@ -290,7 +290,7 @@ class TreeComponent {
         return;
       }
 
-      /* ===== 点击节点行切换水晶多选框 ===== */
+      /* ===== Toggle Crystal Checkbox by Clicking Node Row ===== */
       if (!opt.singleSelect && opt.showCheckbox) {
         const checkboxBox = nodeEl.querySelector('.tree-checkbox-box');
         if (checkboxBox) {
@@ -605,7 +605,7 @@ class TreeComponent {
   }
 }
 
-// 全局关闭下拉面板（封装进JS）
+// Global Close Dropdown Panel (Encapsulated in JS)
 document.addEventListener('click', (e) => {
   document.querySelectorAll('.tree-dropdown').forEach(dropdown => {
     if (!dropdown.contains(e.target)) {
@@ -615,7 +615,7 @@ document.addEventListener('click', (e) => {
   });
 });
 
-// 图标初始化
+// Icon Initialization
 if (window.lucide) {
   lucide.createIcons();
 }

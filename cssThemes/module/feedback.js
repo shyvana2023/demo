@@ -10,7 +10,7 @@ class FrostedFeedback {
     return this.containers[position];
   }
 
-  // 支持：message(标题) + content(详情内容)
+  // Supports: message (title) + content (detail text)
   static show({
     message,
     type = "info",
@@ -26,7 +26,7 @@ class FrostedFeedback {
     const icons = { success: "✓", info: "ℹ", warning: "⚠", error: "✕" };
     const iconHtml = `<span style="font-size:16px;font-weight:700;flex-shrink:0;">${icons[type] || "ℹ"}</span>`;
 
-    // 标题 + 内容 结构
+    // Title + Content structure
     let contentHtml = "";
     if (content) {
       contentHtml = `
@@ -79,10 +79,10 @@ class FrostedFeedback {
     ];
     states.forEach((type, i) => {
       setTimeout(() => {
-        // 现在支持传 content 了！
+        // Content parameter is now supported!
         FrostedFeedback.show({
           message: msgs[i],
-          content: contents[i], // 👈 新增 content 参数
+          content: contents[i],
           type: type,
           position: "top",
           duration: 4000,

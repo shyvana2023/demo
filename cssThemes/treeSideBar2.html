@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>独立左侧导航</title>
+    <title>Independent Navigation Menu</title>
 
-    <!-- 独立导航 CSS -->
+    <!-- Independent Navigation Menu CSS -->
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./frosted-glass.css">
     <link rel="stylesheet" href="./module/icon.css">
     <link rel="stylesheet" href="./from.css">
     <style>
-        /* 基础重置 */
+        /* Base Reset */
         * {
             margin: 0;
             padding: 0;
@@ -33,7 +33,7 @@
             height: 100%;
         }
 
-        /* 主题变量定义 - 合并完整版 */
+        /* Theme Variable Definition - Merged Complete Version */
         :root {
             /* Light Theme */
             --frosted-text-primary: #1e293b;
@@ -52,60 +52,60 @@
             --frosted-orange-text: #f97316;
             --frosted-red-text: ef4444;
 
-            /* 模糊半径 */
+            /* Blur Radius */
             --frosted-blur-sm: 4px;
             --frosted-blur-md: 8px;
             --frosted-blur-lg: 12px;
             --frosted-blur-xl: 16px;
 
-            /* 圆角 */
+            /* Border Radius */
             --frosted-radius-sm: 6px;
             --frosted-radius-md: 10px;
             --frosted-radius-lg: 16px;
             --frosted-radius-xl: 20px;
             --frosted-radius-full: 999px;
 
-            /* 背景 */
+            /* background */
             --frosted-bg-emphasis: rgba(255, 255, 255, 0.85);
 
-            /* 高光 */
+            /* highlight */
             --frosted-highlight-default: rgba(255, 255, 255, 0.6);
             --frosted-highlight-subtle: rgba(255, 255, 255, 0.4);
 
-            /* 阴影 */
+            /* shadow */
             --frosted-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
             --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
             --frosted-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
             --frosted-shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.15);
 
-            /* 青色主题 */
+            /* cyanTheme */
             --frosted-cyan-border: rgba(6, 182, 212, 0.4);
             --frosted-cyan-glow: 0 0 16px rgba(6, 182, 212, 0.3);
 
-            /* 紫色 */
+            /* purpleTheme */
             --frosted-purple-bg: rgba(168, 85, 247, 0.1);
             --frosted-purple-border: rgba(168, 85, 247, 0.4);
             --frosted-purple-glow: 0 0 16px rgba(168, 85, 247, 0.3);
 
-            /* 绿色 */
+            /* greenTheme */
             --frosted-green-bg: rgba(34, 197, 94, 0.1);
             --frosted-green-border: rgba(34, 197, 94, 0.4);
             --frosted-green-glow: 0 0 16px rgba(34, 197, 94, 0.3);
 
-            /* 橙色 */
+            /*  orangeTheme */
             --frosted-orange-bg: rgba(249, 115, 22, 0.1);
             --frosted-orange-border: rgba(249, 115, 22, 0.4);
             --frosted-orange-glow: 0 0 16px rgba(249, 115, 22, 0.3);
 
-            /* 红色 */
+            /* redTheme */
             --frosted-red-bg: rgba(239, 68, 68, 0.1);
             --frosted-red-border: rgba(239, 68, 68, 0.4);
             --frosted-red-glow: 0 0 16px rgba(239, 68, 68, 0.3);
 
-            /* 背景渐变 */
+            /* Background Gradient */
             --frosted-surface-bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
 
-            /* 图标色 */
+            /* Icon Color */
             --frosted-icon-color: rgba(15, 23, 42, 0.9);
             ;
         }
@@ -136,7 +136,7 @@
             --frosted-bg-emphasis: rgba(17, 24, 39, 0.85);
         }
 
-        /* 磨砂卡片基础 */
+        /* Frosted Card Base */
         .frosted-card {
             margin: 20px 10px;
             position: relative;
@@ -198,7 +198,7 @@
                 var(--frosted-shadow-md) !important;
         }
 
-        /* 彩色卡片 */
+        /* Colorful Card */
         .frosted-card-cyan {
             background: linear-gradient(180deg,
                     rgba(255, 255, 255, 0.15) 0%,
@@ -235,7 +235,7 @@
             border-color: var(--frosted-orange-border);
         }
 
-        /* 按钮 */
+        /* button */
         .frosted-button {
             display: inline-flex;
             align-items: center;
@@ -279,7 +279,7 @@
             border-color: rgba(147, 51, 234, 0.4);
         }
 
-        /* 图标按钮 */
+        /* Icon Button */
         .frosted-icon {
             display: flex;
             align-items: center;
@@ -306,7 +306,7 @@
             border-color: rgba(6, 182, 212, 0.2);
         }
 
-        /* 徽章 */
+        /* Badge */
         .frosted-badge {
             padding: 4px 8px;
             border-radius: 12px;
@@ -346,7 +346,7 @@
             background: rgba(239, 68, 68, 0.1);
         }
 
-        /* 输入框 */
+        /* input */
         .frosted-input {
             display: flex;
             align-items: center;
@@ -356,7 +356,7 @@
             padding: 0 12px;
         }
 
-        /* 左侧导航搜索框 */
+        /* Left Navigation Search Box */
         .sidebar-search-box {
             position: relative;
             height: 36px;
@@ -408,7 +408,7 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
-        /* 速度输入框 */
+        /* speedinput */
         .speed-input {
             width: 100%;
             height: 40px;
@@ -452,7 +452,7 @@
             opacity: 1;
         }
 
-        /* 速度选择框 */
+        /* speedselect */
         .speed-select {
             width: 100%;
             height: 40px;
@@ -552,7 +552,7 @@
             box-shadow: 0 0 6px rgba(6, 182, 212, 0.5);
         }
 
-        /* 复选框 / 单选框 */
+        /* checkbox / radio */
         .crystal-checkbox,
         .crystal-radio {
             display: flex;
@@ -679,7 +679,7 @@
             color: var(--frosted-cyan-text);
         }
 
-        /* 布局 */
+        /* Layout */
         .section {
             margin-bottom: 32px;
         }
@@ -895,7 +895,7 @@
             flex-wrap: nowrap;
         }
 
-        /* 侧边栏 */
+        /* Sidebar */
         .sidebarView {
             display: flex;
             height: calc(100vh - 48px);
@@ -982,13 +982,13 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            /* 靠左贴紧 */
+            /* Align to left and fit tightly */
             width: 100%;
-            /* 占满父级宽度 */
+            /* Occupy full width of parent element */
             flex-shrink: 0;
-            /* 禁止容器整体收缩 */
+            /* Prevent the container from shrinking overall */
             overflow-y: auto;
-            /* 内容超出时滚动，避免高度溢出 */
+            /* Scroll when content exceeds, avoid height overflow */
         }
 
         #sidebarList {
@@ -996,7 +996,7 @@
             padding: 0 20px;
         }
 
-        /* 全局滚动条 */
+        /* Global Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -1039,22 +1039,22 @@
             user-select: none;
             position: relative;
 
-            /* 子项内部内容垂直居中（可选） */
+            /* Vertically center child item content (optional) */
 
             width: 100%;
-            /* 占满容器宽度（贴紧） */
+            /* Occupy full container width (fit tightly) */
             padding: 0;
-            /* 清除内边距（贴紧） */
+            /* Clear padding (fit tightly) */
             margin: 0;
-            /* 清除外边距（贴紧） */
+            /* Clear margin (fit tightly) */
             flex-shrink: 0;
-            /* 关键：禁止节点高度收缩！ */
+            /* Critical: Prevent node height shrinkage! */
             min-height: 40px;
-            /* 给节点设置最小高度，避免缩成一条线 */
+            /* Set minimum height for node to avoid collapsing into a line */
             display: flex;
             flex-direction: row;
             align-items: center;
-            /* 子菜单垂直排列 */
+            /* Vertical alignment for submenu items */
         }
 
         .sidebar-item i {
@@ -1159,17 +1159,16 @@
         .leftsidebar {
             display: flex;
             flex-direction: column;
-            /* 垂直排列 */
+            /* Arrange items vertically */
             padding: 0 !important;
-            /* 清除容器内边距 */
+            /* Clear container padding */
             margin: 0 !important;
-            /* 清除容器外边距 */
+            /* Clear container margin */
             align-items: center;
-            /* 子项靠左贴紧（关键） */
+            /* Align child items to the left (critical) */
             width: 100%;
             margin-top: 20px;
             padding-right: 20px;
-
         }
 
         .leftsidebar>img {
@@ -1200,7 +1199,7 @@
             border-color: rgba(239, 68, 68, 0.3);
         }
 
-        /* Tabs 标签页 */
+        /* Tabs view */
         .tab-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
@@ -1375,7 +1374,7 @@
             height: 28px !important;
         }
 
-        /* 三卡片拖拽布局 */
+        /* Three-Card Drag Layout */
         .panel-container {
             display: flex;
             align-items: stretch;
@@ -1622,7 +1621,7 @@
             border-radius: 0;
         }
 
-        /* 物料列表 */
+        /* Material List */
         .material-list-item {
             padding: 6px 12px;
             cursor: pointer;
@@ -1718,7 +1717,7 @@
             min-width: 180px;
         }
 
-        /* 响应式 */
+        /* Responsive  */
         @media (min-width: 768px) {
             .md\:flex {
                 display: flex;
@@ -1778,26 +1777,22 @@
             border-radius: 50%;
         }
     </style>
-
-</head>
-
-<body>
     <style>
-        /* 默认 / 明亮模式 */
+        /* Default / Light Mode */
         .frosted-icon-herder>svg,
         svg.frosted-icon-herder {
             width: 16px;
             height: 16px;
             fill: #1e293b;
-            /* 实心颜色 */
+            /* Solid fill color */
             stroke: #1e293b;
-            /* 线条颜色（不需要可删除） */
+            /* Stroke color (remove if not needed) */
         }
 
-        /* 暗黑模式 */
+        /* Dark Mode */
         [data-theme="dark"] .frosted-icon-herder>svg {
             fill: #f8fafc;
-            /* 暗黑图标颜色 */
+            /* Dark mode icon color */
             stroke: #f8fafc;
         }
 
@@ -1823,12 +1818,16 @@
             z-index: 10;
         }
     </style>
+</head>
+
+<body>
+
     <div class=" frosted-highlight rounded-2xl p-4 headerClass">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-2" style="position: relative; display: flex; align-items: center;">
                     <div>
-                        <!-- 下拉框（修复嵌套结构）   <span class="icon icon-menu treesidebaricon" ></span>-->
+                        <!-- Dropdown (Fix Nested Structure)   <span class="icon icon-menu treesidebaricon" ></span>-->
                         <div class="dropdown-menu" id="moreDropdown">
                             <div class="dropdown-item">Nvidia</div>
                             <div class="dropdown-item">AMD</div>
@@ -1875,7 +1874,7 @@
         </div>
     </div>
     <div class="sidebarView">
-        <!-- 独立左侧导航 -->
+        <!-- Independent Left Navigation -->
         <div class="sidebar-container frosted-card frosted-card-Turn-off-animation sidebar-container-left"
             id="leftsidebarView">
             <div style="height: calc(100% - 40px);">
@@ -1898,7 +1897,7 @@
                     </button>
 
                 </div>
-                <!-- 左侧导航搜索框 -->
+                <!-- Left Navigation Search Box -->
                 <div class="sidebar-nav-content" style="height: calc(100% - 28px)">
                     <div class="sidebar-search-box text-input-wrapper">
                         <span class="icon icon-search treesidebaricon search-icon"></span>
@@ -1922,25 +1921,17 @@
         </div>
         <div class="contentView noCardtransition" style="padding: 0;z-index: 1;">
             <!--<iframe src="./inputdemo.html" frameborder="0"></iframe>-->
-
-
-
-            <!-- 标签栏（按钮式） -->
+            <!-- Tab Bar (Button Style) -->
             <div class="tabs-bar" id="tabsBar">
 
             </div>
 
-            <!-- 中间的页面容器 -->
+            <!-- Middle Page Container -->
             <div class="tabs-content" id="tabsContent"></div>
-
-
-
-
-
         </div>
     </div>
     <script>
-        // 树形导航数据
+        // Tree Navigation Data
         const navTreeData = [
             {
                 id: "product", label: "Product", icon: "icon-file",
@@ -2008,46 +1999,46 @@
 
         let activeId = null;
 
-        // 渲染树形导航（支持模糊搜索，命中父菜单自动展开）
+        // Render Tree Navigation (Supports fuzzy search, auto-expand parent menu when matched)
         function renderSidebar(searchKey = "") {
             const list = document.getElementById("sidebarList");
             list.innerHTML = "";
-            // 模糊搜索：转小写，不区分大小写
+            // Fuzzy search: convert to lowercase, case-insensitive
             const key = searchKey.toLowerCase().trim();
 
             navTreeData.forEach(group => {
-                // 判断当前分组是否命中搜索（父菜单/子菜单包含关键词）
+                // Check if current group matches the search (parent/child menu contains keyword)
                 const groupMatch = group.label.toLowerCase().includes(key);
                 const hasChildMatch = group.children.some(item => item.label.toLowerCase().includes(key));
                 const isMatch = groupMatch || hasChildMatch;
 
-                // 无搜索关键词 或 匹配到数据，才渲染
+                // Only render if no search keyword or data is matched
                 if (!key || isMatch) {
-                    // 父菜单
+                    // Parent Menu
                     const parent = document.createElement("div");
                     parent.className = "sidebar-item";
                     parent.style.justifyContent = "space-between";
                     parent.innerHTML = `
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <span class="icon ${group.icon} treesidebaricon"></span>
-                        <span>${group.label}</span>
-                    </div>
-                    <span class="expand-icon">
-                        <span class="icon icon-add icon-plus"></span>
-                        <span class="icon icon-minus"></span>
-                    </span>
-                    `;
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="icon ${group.icon} treesidebaricon"></span>
+                <span>${group.label}</span>
+            </div>
+            <span class="expand-icon">
+                <span class="icon icon-add icon-plus"></span>
+                <span class="icon icon-minus"></span>
+            </span>
+            `;
 
-                    // 子菜单容器（带过渡）
+                    // Child Menu Container (with transition)
                     const childWrap = document.createElement("div");
                     childWrap.className = "nav-children";
 
-                    // 过滤子菜单（搜索时只显示匹配项）
+                    // Filter child menus (show only matched items when searching)
                     const filteredChildren = key
                         ? group.children.filter(item => item.label.toLowerCase().includes(key))
                         : group.children;
 
-                    // 渲染子菜单
+                    // Render Child Menus
                     filteredChildren.forEach(item => {
                         const li = document.createElement("div");
                         li.className = "sidebar-item";
@@ -2060,13 +2051,13 @@
                         childWrap.appendChild(li);
                     });
 
-                    // ✅ 核心：搜索命中时，父菜单默认展开
+                    // Core: Auto-expand parent menu when search is matched
                     if (key && isMatch) {
                         childWrap.classList.add("open");
                         parent.classList.add("open");
                     }
 
-                    // 点击展开/收起
+                    // Click to expand/collapse
                     parent.onclick = () => {
                         childWrap.classList.toggle("open");
                         parent.classList.toggle("open");
@@ -2077,7 +2068,8 @@
                 }
             });
         }
-        // 激活高亮
+
+        // Activate Highlight
         function setActive(id) {
             activeId = id;
             document.querySelectorAll(".sidebar-item").forEach(el => {
@@ -2085,32 +2077,31 @@
             });
         }
 
-        // 点击跳转
+        // Click to Navigate
         function onMenuClick(item) {
-            console.log("跳转：", item.label);
+            console.log("Navigate:", item.label);
             openTabFromMenu({
                 id: item.id,
                 title: item.label,
-                content: `<h2>${item.label}</h2><p>这里是 ${item.label} 的内容区域。</p>`
+                content: `<h2>${item.label}</h2><p>This is the content area for ${item.label}.</p>`
             })
         }
 
-        // 初始化渲染
+        // Initial Render
         renderSidebar();
 
-        // 绑定左侧导航搜索事件
+        // Bind Left Navigation Search Event
         const searchInput = document.getElementById("sidebarSearch");
         searchInput.addEventListener("input", (e) => {
             renderSidebar(e.target.value);
         });
 
-        // 绑定左侧导航折叠/展开事件
+        // Bind Left Navigation Collapse/Expand Event
         const closeLeftsidebarBtn = document.getElementById("closeLeftsidebar");
         const sidebarContainer = document.querySelector(".sidebar-container");
         const sidebarNavContent = document.querySelector(".sidebar-nav-content");
         const sidebarFooter = document.querySelector(".sidebar-footer");
         let isSidebarAnimating = false;
-
 
         if (closeLeftsidebarBtn && sidebarContainer) {
             closeLeftsidebarBtn.addEventListener("click", () => {
@@ -2118,7 +2109,7 @@
                 isSidebarAnimating = true;
 
                 if (sidebarContainer.classList.contains("collapsed")) {
-                    // ===== 展开：先展开宽度，完全展开后再显示内容 =====
+                    // ===== Expand: First expand the width, then show content after fully expanded =====
                     sidebarContainer.classList.remove("collapsed");
 
                     const onExpandEnd = (e) => {
@@ -2140,7 +2131,7 @@
                     sidebarContainer.addEventListener("transitionend", onExpandEnd);
                     closeLeftsidebarBtn.querySelector("span").classList.replace("icon-arrow-right-bold", "icon-arrow-left-bold");
                 } else {
-                    // ===== 折叠：先隐藏内容，再缩小宽度 =====
+                    // ===== Collapse: Hide content first, then shrink width =====
                     if (sidebarNavContent) sidebarNavContent.style.opacity = "0";
                     if (sidebarFooter) sidebarFooter.style.opacity = "0";
 
@@ -2170,8 +2161,8 @@
             });
         }
     </script>
-    <!--tabs标签页-->
-    <!--下拉框-->
+    <!-- Tabs -->
+    <!-- Dropdown -->
     <script src="./module/CustomDropdown.js"></script>
     <script>
         const TabComponent = (function () {
@@ -2185,7 +2176,7 @@
             let tabsBar = null;
             let onTabChangeCallback = null;
 
-            // 本地存储
+            // Local Storage
             function loadCache() {
                 try {
                     const data = localStorage.getItem(STORAGE_KEY);
@@ -2198,16 +2189,16 @@
             }
 
             // ======================
-            // ✅ 保存：顺序 + 全部数据
+            // ✅ Save: Order + All Data
             // ======================
             function saveCache() {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    tabList: tabList,    // 保存完整数组（顺序+数据）
+                    tabList: tabList,    // Save full array (order + data)
                     activeTabId: activeTabId
                 }));
             }
 
-            // 合并用户传入的 tabList
+            // Merge user-provided tabList
             function mergeUserList(userList) {
                 if (tabList.length > 0) return;
                 tabList = userList.map(tab => ({
@@ -2222,7 +2213,7 @@
                 activeTabId = tabList[0]?.id;
             }
 
-            // 保存状态
+            // Save State
             function saveCurrentState() {
                 const tab = tabList.find(t => t.id === activeTabId);
                 if (!tab) return;
@@ -2243,27 +2234,27 @@
                 saveCache();
             }
 
-            // 渲染标签栏
+            // Render Tab Bar
             function renderTabBar() {
                 if (!tabsBar) return;
                 tabsBar.innerHTML = "";
 
-                // 左侧容器：tabs
+                // Left Container: Tabs
                 const leftWrap = document.createElement("div");
                 leftWrap.className = "tabs-left";
 
-                // 右侧容器：按钮
+                // Right Container: Buttons
                 const rightWrap = document.createElement("div");
                 rightWrap.className = "tabs-right";
 
-                // 清除缓存按钮
+                // Clear Cache Button
                 const clearBtn = document.createElement("button");
                 clearBtn.innerHTML = `<span class="icon icon-error"></span> Clear Cache`;
                 clearBtn.className = "frosted-button frosted-highlight mb-8 closeAllbutton sm-closeAllbutton";
                 clearBtn.onclick = () => TabComponent.clearAllTabsCache();
                 rightWrap.appendChild(clearBtn);
 
-                // 新增按钮 1（自行绑定事件）
+                // Custom Button 1 (Bind event as needed)
                 const btn1 = document.createElement("button");
                 btn1.innerHTML = `<span class="icon icon-arrow-up-bold"></span>`;
                 btn1.className = "icon-nobtnclass icon-btn hover:bg-primary/10";
@@ -2271,13 +2262,13 @@
                 btn1.onclick = () => TabComponent.closeHeaderbtn();
                 rightWrap.appendChild(btn1);
 
-                // 新增按钮 2（自行绑定事件）
+                // Custom Button 2 (Bind event as needed)
                 const btn2 = document.createElement("button");
                 btn2.innerHTML = `<span class="icon icon-refresh"></span>`;
                 btn2.className = "icon-nobtnclass icon-btn hover:bg-primary/10";
                 rightWrap.appendChild(btn2);
 
-                // 渲染 tabs 到左侧
+                // Render tabs to left container
                 tabList.forEach((tab, index) => {
                     const item = document.createElement("div");
                     item.className = `tab-item ${tab.id === activeTabId ? "active" : ""}`;
@@ -2286,7 +2277,7 @@
                     item.style.transition = "transform 0.5s ease";
 
                     const closeBtn = tabList.length > 1
-                        ? `<span class="tab-close"><img class="closeSideBarClass" src="./images/close.png" alt="关闭"></span>`
+                        ? `<span class="tab-close"><span class="icon icon-close"></span></span>`
                         : "";
 
                     item.innerHTML = `<span>${tab.title}</span>${closeBtn}`;
@@ -2297,7 +2288,7 @@
                 tabsBar.appendChild(rightWrap);
             }
 
-            // 绑定事件
+            // Bind Events
             function bindEvents() {
                 tabsBar.onclick = (e) => {
                     const item = e.target.closest(".tab-item");
@@ -2364,7 +2355,7 @@
                 dropIndex = null;
             }
 
-            // 切换 Tab
+            //  Switch Tab
             function switchToTab(id) {
                 saveCurrentState();
                 activeTabId = id;
@@ -2389,7 +2380,7 @@
                 onTabChangeCallback?.(current);
             }
 
-            // 打开新Tab（给左侧菜单用）
+            // // Open New Tab (For Left Menu)
             function openTab(newTab) {
                 const exist = tabList.find(t => t.id === newTab.id);
                 if (exist) {
@@ -2410,36 +2401,38 @@
 
 
             // ======================
-            // ✅ 新增：一键清空所有Tabs缓存+重置
+            // ✅ New: One-click Clear All Tabs Cache + Reset
             // ======================
             function clearAllTabsCache() {
+                if (!confirm('Are you sure you want to clear all tab cache?')) return;
 
-                if (!confirm('确定要清空所有标签缓存吗？')) return;
-
-                // 1. 仅清除Tabs缓存，不破坏其他本地存储
+                // 1. Only clear tab cache without affecting other local storage
                 localStorage.removeItem(STORAGE_KEY);
                 sessionStorage.clear();
 
-                // 2. 【修复】手动重置为默认标签，不调用mergeUserList（避免自动覆盖缓存）
+                // 2. [Fix] Manually reset to default tabs without calling mergeUserList
+                // (to avoid automatic cache override)
                 tabList = myTabList.map(tab => ({
                     ...tab,
                     cache: { data: {}, tabScroll: 0, tableScrollX: 0, tableScrollY: 0 }
                 }));
                 activeTabId = tabList[0]?.id;
 
-                // 3. 保存并重新渲染
+                // 3. Save and re-render
                 saveCache();
                 renderTabBar();
                 triggerChange();
             }
+
             // ======================
-            // ✅ 新增：手动保存当前Tab方法
+            // ✅ New: Manually Save Current Tab
             // ======================
             function saveCurrentTabManually() {
-                saveCurrentState(); // 复用原生保存逻辑，保存表单/滚动/表格所有数据
-                console.log('✅ 当前激活Tab已手动保存缓存');
+                saveCurrentState(); // Reuse native logic to save form/scroll/table data
+                console.log('✅ Current active tab has been manually saved to cache');
             }
-            // 暴露方法
+
+            // Expose Methods
             function initTabs(selector, userTabList, callback) {
                 tabsBar = document.querySelector(selector);
                 onTabChangeCallback = callback;
@@ -2451,203 +2444,143 @@
             }
 
             function closeHeaderbtn() {
-                // 绑定顶部导航栏折叠/展开事件
+                // Bind Header Collapse/Expand Event
                 const closeHeaderBtn = document.getElementById("closeHerderBtn");
                 const headerEl = document.querySelector(".headerClass");
                 const sidebarViewEl = document.querySelector(".sidebarView");
                 const leftsidebarViewEl = document.getElementById("leftsidebarView");
                 const contentViewEl = document.querySelector(".contentView");
-                // 获取按钮内的SVG图标元素（假设SVG是按钮的子元素）
-                const svgIcon = closeHeaderBtn?.querySelector("span");//这里根据引用的svg形式用i或者svg或者span等标签进行选择
 
-                // 提前缓存元素，避免重复DOM查询
+                // Get SVG icon inside button
+                const svgIcon = closeHeaderBtn?.querySelector("span");
+
+                // Cache elements to avoid repeated DOM queries
                 if (!closeHeaderBtn || !headerEl || !sidebarViewEl || !svgIcon || !leftsidebarViewEl || !contentViewEl) {
-                    return; // 元素不存在时直接退出，避免报错
+                    return; // Exit if elements don't exist to avoid errors
                 }
 
-
-
-                // 1. 切换隐藏类
+                // 1. Toggle hidden class
                 headerEl.classList.toggle("hidden-header");
                 const isHidden = headerEl.classList.contains("hidden-header");
 
-                // 2. 统一设置过渡（提前声明，避免过渡生效不及时）
+                // 2. Set transition uniformly
                 [leftsidebarViewEl, contentViewEl, sidebarViewEl].forEach(el => {
-                    el.style.transition = "all 0.3s ease"; // 只声明一次过渡
+                    el.style.transition = "all 0.3s ease";
                 });
 
                 if (isHidden) {
-                    // ========== 新增：检测contentViewEl的宽度（含边框/内边距） ==========
-                    // 获取contentViewEl的实际渲染宽度（包含padding/border）
+                    // Get actual rendered width of contentViewEl
                     const contentViewWidth = document.querySelector('#leftsidebarBtns').offsetWidth;
-                    // 获取contentViewEl的计算样式（用于精准计算）
-                    const contentViewStyle = window.getComputedStyle(contentViewEl);
-                    // 可选：获取不含padding的宽度（根据需求选择）
                     const contentViewClientWidth = contentViewEl.clientWidth;
 
-                    console.log("contentViewEl 宽度(含border/padding)：", contentViewWidth);
-                    console.log("contentViewEl 宽度(不含border/padding)：", contentViewClientWidth);
-                    // 隐藏导航栏：先位移+透明度隐藏（过渡），延迟后再display:none（避免布局抖动）
+                    console.log("contentViewEl width (with border/padding):", contentViewWidth);
+                    console.log("contentViewEl width (without border/padding):", contentViewClientWidth);
+
+                    // Hide sidebar with transition
                     leftsidebarViewEl.style.cssText = `
-            margin-left: -`+ contentViewWidth + `px;
-            opacity: 0; /* 先透明，再隐藏 */
-            pointer-events: none; /* 提前禁用交互，避免点击穿透 */
-            transition: all 0.3s ease; /* 平滑过渡 */
+            margin-left: -${contentViewWidth}px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
         `;
 
-                    // ========== 优化：基于检测到的宽度计算向左移动后的宽度 ==========
+                    // Expand content to full width
                     contentViewEl.style.cssText = `
-            width: 100vw; /* 全屏宽度 */
-            margin-left: 0 !important; /* 强制消除左侧空白，向左移动到最左 */
-            transform: translateX(0); /* 确保向左移动到位 */
-            transition: all 0.3s ease; /* 平滑过渡 */
+            width: 100vw;
+            margin-left: 0 !important;
+            transform: translateX(0);
+            transition: all 0.3s ease;
         `;
 
                     sidebarViewEl.style.cssText = `
             margin-top: -48px;
             height: 100vh;
             width: 100vw;
-            transition: all 0.3s ease; /* 平滑过渡 */
+            transition: all 0.3s ease;
         `;
                     svgIcon.style.transform = "rotate(180deg)";
 
-                    // 延迟300ms（过渡完成后）再设置display:none，避免布局瞬间变化
+                    // Hide completely after transition
                     setTimeout(() => {
                         leftsidebarViewEl.style.display = "none";
                     }, 300);
 
                 } else {
-                    // 显示导航栏：先恢复display，再过渡位移/透明度
+                    // Show sidebar
                     leftsidebarViewEl.style.display = "block";
-                    // 强制触发重排（避免过渡不生效）
-                    void leftsidebarViewEl.offsetWidth;
+                    void leftsidebarViewEl.offsetWidth; // Force reflow
 
                     leftsidebarViewEl.style.cssText = `
             margin-left: 0;
             opacity: 1;
             pointer-events: auto;
-            transition: all 0.3s ease; /* 平滑过渡 */
+            transition: all 0.3s ease;
         `;
 
-                    // ========== 优化：基于检测到的宽度恢复位置 ==========
+                    // Restore content width
                     contentViewEl.style.cssText = `
-            width: calc(100vw - 40px); /* 恢复原宽度 */
-            margin-left: 0 !important; /* 恢复原间距，与左侧栏匹配 */
-            transform: translateX(0); /* 重置位移 */
-            transition: all 0.3s ease; /* 平滑过渡 */
+            width: calc(100vw - 40px);
+            margin-left: 0 !important;
+            transform: translateX(0);
+            transition: all 0.3s ease;
         `;
 
                     sidebarViewEl.style.cssText = `
             margin-top: 0;
             height: calc(100vh - 48px);
-            transition: all 0.3s ease; /* 平滑过渡 */
+            transition: all 0.3s ease;
         `;
                     svgIcon.style.transform = "rotate(0deg)";
                 }
             }
 
-
-            // 初始化：给SVG添加基础样式（建议放在页面加载完成后执行）
+            // Initialize SVG styles after page load
             document.addEventListener('DOMContentLoaded', function () {
                 const closeHeaderBtn = document.getElementById("closeHerderBtn");
                 const svgIcon = closeHeaderBtn?.querySelector("svg");
                 if (svgIcon) {
-                    // 设置旋转原点为按钮中心 + 过渡动画
                     svgIcon.style.cssText = `
-            transform-origin: center center; /* 以中心为旋转原点 */
-            transition: transform 0.3s ease; /* 旋转动画平滑过渡 */
-            display: inline-block; /* 确保transform生效 */
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+            display: inline-block;
         `;
-                    // 给按钮也添加定位参考（防止SVG偏移）
                     closeHeaderBtn.style.position = "relative";
                 }
             });
 
-            return { initTabs, openTab, clearAllTabsCache, saveCurrentTabManually, closeHeaderbtn };
+            return {
+                initTabs,
+                openTab,
+                clearAllTabsCache,
+                saveCurrentTabManually,
+                closeHeaderbtn
+            };
         })();
-        /*
-         // 1. 初始化标签列表（用于检测重复）
-         let tabList = JSON.parse(localStorage.getItem('tabList')) || [];
-     
-         // 2. 左侧导航点击事件 - 检测重复 Tab
-         document.addEventListener('DOMContentLoaded', function () {
-           // 给所有左侧导航项绑定点击事件
-           const sidebarItems = document.querySelectorAll('.sidebar-item');
-           sidebarItems.forEach(item => {
-             item.addEventListener('click', function () {
-               // 获取当前导航项的唯一标识（建议给每个sidebar-item加data-id/data-name属性）
-               const tabId = this.dataset.tabId || this.textContent.trim();
-               const tabName = this.textContent.trim();
-     
-               // 检测是否已存在相同Tab
-               const isTabExist = tabList.some(tab => tab.id === tabId);
-               if (isTabExist) {
-                 // 存在则不添加，可额外处理：切换到该Tab
-                 console.log(`Tab [${tabName}] 已存在，无需重复添加`);
-                 return;
-               }
-     
-               // 不存在则添加到Tab列表
-               const newTab = {
-                 id: tabId,
-                 name: tabName,
-                 url: this.dataset.url || '#' // 导航项对应的链接
-               };
-               tabList.push(newTab);
-               localStorage.setItem('tabList', JSON.stringify(tabList));
-     
-               // 渲染新Tab（根据你的现有Tab渲染逻辑补充，示例：创建tab-item元素）
-               renderNewTab(newTab);
-             });
-           });
-     
-           // 3. 一键清除所有缓存和数据按钮事件
-           const clearCacheBtn = document.getElementById('clearAllCacheBtn');
-           if (clearCacheBtn) {
-             clearCacheBtn.addEventListener('click', function () {
-               // 确认清除
-               if (confirm('确定要清除所有缓存和数据吗？')) {
-                 // 清除本地缓存
-                 localStorage.clear();
-                 sessionStorage.clear();
-                 // 清空Tab列表
-                 tabList = [];
-                 // 清空渲染的Tab（根据你的Tab渲染逻辑调整）
-                 document.querySelectorAll('.tab-item:not(#clearAllCacheBtn)').forEach(tab => tab.remove());
-                 // 重置页面状态（可根据业务补充）
-                 document.querySelector('.contentView iframe').src = '';
-                 // 提示
-                 alert('所有缓存和数据已清除！');
-               }
-             });
-           }
-         });
-     
-        */
-        // 辅助函数：渲染新Tab（根据你的现有UI调整）
+        // Helper function: Render new tab (Adjust based on your existing UI)
         function renderNewTab(tab) {
             const tabsBar = document.querySelector('.tabs-bar');
             const tabItem = document.createElement('div');
             tabItem.className = 'tab-item';
             tabItem.dataset.tabId = tab.id;
             tabItem.textContent = tab.name;
-            // 插入到清除按钮右侧
+            // Insert to the right of the clear button
             tabsBar.insertBefore(tabItem, tabsBar.firstChild.nextSibling);
         }
     </script>
     <script src="./module/CrystalRadio.js"></script>
     <script>
-        // 表格要记录横向与竖向滚动条位置需要提前打入class记录值  参考：class="table-box"  搜索查看代码
+        // To record horizontal and vertical scrollbar positions for tables, add the class in advance.
+        // Reference: class="table-box" — search code for usage
         /*
         const cache = currentTab.cache || {
-              data: {},  tabs记录from表单输入等数据
-              tabScroll: 0,  记录整个页面滚动位置
-              tableScrollX: 0,  记录表格横向滚动位置
-              tableScrollY: 0  记录表格竖向滚动位置
+              data: {},          // Stores form inputs and other data for the tab
+              tabScroll: 0,      // Records the scroll position of the entire page
+              tableScrollX: 0,   // Records horizontal scroll position of the table
+              tableScrollY: 0    // Records vertical scroll position of the table
             };
         */
         // ==============================================
-        // 你的数据源（动态、可扩展）
+        // Your Data Source (Dynamic & Extensible)
         // ==============================================
         const myTabList = [
             {
@@ -2683,12 +2616,11 @@
                 title: "Panel",
                 content: `
 <div class="panel-container" style="display: flex;flex-direction: row;">
-  <!-- 卡片1（已优化：搜索+列表+底部按钮） -->
   <div class="noCardtransition frosted-card panel-item" id="panel1">
     <div class="panel-header" style="border-bottom: none; padding: 8px 8px 0 0; justify-content: flex-end;">
         <span style="color: var(--frosted-text-secondary); font-size: 13px; margin-right: auto;padding:8px 16px;font-weight: var(--font-weight-medium);
     line-height: 1.5;">Parts</span>
-      <button class="panel-collapse-btn frosted-icon-herder" data-target="panel1" title="折叠/展开"><span class="icon icon-fullscreen-shrink"></span></button>
+      <button class="panel-collapse-btn frosted-icon-herder" data-target="panel1" title="Collapse / Expand"><span class="icon icon-fullscreen-shrink"></span></button>
     </div>
     <div class="panel-body" style="padding: 12px 0 12px 12px; width: 100%; height: calc(100% - 24px); display: flex; flex-direction: column; gap: 12px;">
       <div class="frosted-input" style="height: 32px; width: calc(100% - 12px);margin-right:12px;">
@@ -2702,8 +2634,6 @@
       </div>
     </div>
   </div>
-
-  <!-- 卡片2（纯列表版，无多余元素） -->
   <div class="noCardtransition frosted-card panel-item" id="panel2">
     <div class="panel-header" style="border-bottom: none; padding: 8px 8px 0 0; justify-content: flex-end;">
         <span style="color: var(--frosted-text-secondary); font-size: 13px; margin-right: auto;padding:8px 16px;font-weight: var(--font-weight-medium);
@@ -2714,10 +2644,7 @@
       <div id="card2List" style="height: 100%; overflow-y: auto; border-radius: 8px; background: rgba(0,0,0,0)"></div>
     </div>
   </div>
-
-  <!-- 卡片3【最终版】：你的风格输入框 + 动态下划线 -->
   <div class="noCardtransition frosted-card panel-item flex-fill" id="panel3">
-    <!-- 标题栏：编码 + 按钮 -->
     <div class="panel-header" style="border-bottom: 1px solid var(--frosted-border-subtle); padding: 8px 12px; gap: 8px;display:flex;justify-content:space-between;align-items:center;">
       <div>
         <span class="icon icon-file"></span>
@@ -2728,12 +2655,10 @@
         <button class="frosted-button frosted-button-cyan text-sm" style="height: 30px; font-size: 13px;">Submit</button>
       </div>
     </div>
-
-    <!-- 表单内容：完全使用你的自定义输入框样式 -->
     <div class="panel-body" style="padding: 16px; width: 100%; overflow-y: auto;">
       <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; row-gap: 16px;">
         
-        <!-- 1. Active/Inactive 单选框（你的样式） -->
+        <!-- 1. Active/Inactive -->
       <div class="form-group">
         <label class="form-label">Active/Inactive</label>
         <div style="display:flex;gap:20px;align-items:center; margin-top:6px;">
@@ -2748,7 +2673,7 @@
         </div>
       </div>
 
-        <!-- 2. Part Number（你的输入框+动态线） -->
+        <!-- 2. Part Number -->
         <div class="form-group">
           <label class="form-label">Part Number</label>
           <div class="text-input-wrapper">
@@ -2793,7 +2718,7 @@
           </div>
         </div>
 
-        <!-- 7. Type 下拉框（套你的输入框结构） -->
+        <!-- 7. Type -->
         <div class="form-group">
           <label class="form-label">Type</label>
           <div class="text-input-wrapper" id='myselectDropdown'>
@@ -2865,7 +2790,7 @@
           </div>
         </div>
 
-        <!-- 15. Serial/Batch Track 复选框（你的样式） -->
+        <!-- 15. Serial/Batch Track  -->
         <div class="form-group">
           <label class="form-label">Serial/Batch Track</label>
           <div id="formCbWrapper">
@@ -2876,7 +2801,7 @@
           </div>
         </div>
 
-        <!-- 16. Description 只读 -->
+        <!-- 16. Description  -->
         <div class="form-group">
           <label class="form-label">Description</label>
           <div class="text-input-wrapper">
@@ -2885,7 +2810,7 @@
           </div>
         </div>
 
-        <!-- 17. Global Share 复选框 -->
+        <!-- 17. Global Share -->
         <div class="form-group">
           <label class="form-label">Global Share</label>
           <div id="formCbWrapper">
@@ -2931,17 +2856,15 @@
         ];
 
         // ==============================================
-        // 【唯一渲染方法】你要的：根据ID匹配 + 渲染缓存DOM
+        // 【Single Render Method】As requested: Match by ID + Render cached DOM
         // ==============================================
         function renderTabContent(currentTab) {
             const container = document.getElementById('tabsContent');
             if (!currentTab) return;
 
-            container.innerHTML = currentTab.content || '<div>无内容</div>';
-            // 初始化面板折叠/状态条控件（如果存在面板）
-            try { initPanelControls(); } catch (e) { /* ignore */
-
-            }
+            container.innerHTML = currentTab.content || '<div>No content</div>';
+            // Initialize panel collapse/status bar controls (if panels exist)
+            try { initPanelControls(); } catch (e) { /* ignore */ }
 
             setTimeout(() => {
                 const cache = currentTab.cache || {
@@ -2960,18 +2883,17 @@
 
                 const tableBox = document.querySelector('.table-box');
                 if (tableBox) {
-                    tableBox.scrollLeft = cache.tableScrollX;  // 横向
-                    tableBox.scrollTop = cache.tableScrollY;  // 👈 竖向（新增）
+                    tableBox.scrollLeft = cache.tableScrollX;  // Horizontal
+                    tableBox.scrollTop = cache.tableScrollY;  // Vertical (new)
                 }
             }, 0);
         }
-
-        // 初始化面板头、折叠按钮与左侧状态条
+        // Initialize panel headers, collapse buttons and left status bars
         function initPanelControls() {
             const container = document.getElementById('tabsContent');
             if (!container) return;
 
-            // 创建上下两个状态条容器（插入到 panel-container 内）
+            // Create two status bar containers (top and bottom), insert inside panel-container
             const panelContainer = container.querySelector('.panel-container');
             let statusTop = document.getElementById('panelStatusBarTop');
             let statusBottom = document.getElementById('panelStatusBarBottom');
@@ -2992,15 +2914,15 @@
                 if (panelContainer && statusBottom.parentElement !== panelContainer) panelContainer.appendChild(statusBottom);
             }
 
-            // 默认隐藏左右状态条，由 updateStatusBar 动态渲染对应顺序的图标
+            // Hide both status bars by default; icons are dynamically rendered by updateStatusBar in the correct order
             statusTop.style.display = 'none';
             statusBottom.style.display = 'none';
             statusTop.innerHTML = '';
             statusBottom.innerHTML = '';
 
-            // 在两个状态容器间不再使用单一分隔，保持视觉间距由各自容器控制
+            // No single separator between the two status containers; visual spacing is controlled by each container
 
-            // 折叠按钮绑定（使用动画切换）
+            // Bind collapse toggle buttons (animated switch)
             container.querySelectorAll('.panel-collapse-btn').forEach(btn => {
                 btn.onclick = (e) => {
                     const target = btn.dataset.target;
@@ -3008,22 +2930,21 @@
                     e.stopPropagation();
                 };
             });
-
-            // 初始状态更新
+            // Initial state update
             updateStatusBar();
 
             // ======================
-            // 卡片1：搜索框 + 可选中列表（原生JS实现）
+            // Card 1: Search Box + Selectable List (Native JS)
             // ======================
             // ======================
-            // 卡片1：截图同款搜索+列表（数据/样式完全匹配）
+            // Card 1: Screenshot-matched Search + List (Exact data & style)
             // ======================
             function initCard1List() {
                 const listEl = document.getElementById('card1List');
                 const searchEl = document.getElementById('card1Search');
                 if (!listEl || !searchEl) return;
 
-                // 1. 直接使用你截图里的完整数据
+                // 1. Use the complete data from your screenshot directly
                 const materialList = [
                     { id: "FLR-001", name: "All-Purpose Flour (raw material)" },
                     { id: "BUT-001", name: "Bread Flour (ingredient)" },
@@ -3057,12 +2978,12 @@
                     { id: "PEP-001", name: "Cream of Tartar (ingredient)" }
                 ];
 
-                // 2. 渲染列表（样式和截图1:1匹配）
+                // 2. Render List (1:1 style match with screenshot)
                 function renderList(keyword = '') {
                     listEl.innerHTML = '';
                     keyword = keyword.toLowerCase().trim();
 
-                    // 过滤数据（支持模糊搜索：匹配ID或名称）
+                    // Filter data (fuzzy search: match ID or name)
                     const filteredList = materialList.filter(item =>
                         !keyword ||
                         item.id.toLowerCase().includes(keyword) ||
@@ -3071,7 +2992,7 @@
 
                     filteredList.forEach(item => {
                         const itemEl = document.createElement('div');
-                        // 样式完全复刻截图：选中项左侧蓝线+浅蓝背景+文字变蓝
+                        // Exact screenshot style: selected item with left blue line + light blue background + blue text
                         itemEl.className = 'material-list-item';
                         itemEl.dataset.id = item.id;
                         itemEl.innerHTML = `
@@ -3079,41 +3000,41 @@
         <div class="item-name">${item.name}</div>
       `;
 
-                        // 点击选中高亮（和截图选中效果一致）
+                        // Click to select and highlight (matches screenshot selection effect)
                         itemEl.onclick = () => {
-                            // 清除所有选中状态
+                            // Clear all selected states
                             document.querySelectorAll('#card1List .material-list-item').forEach(el => {
                                 el.classList.remove('active');
                             });
-                            // 给当前项添加选中样式
+                            // Add active style to current item
                             itemEl.classList.add('active');
-                            console.log('选中物料：', item);
+                            console.log('Selected material:', item);
                         };
 
                         listEl.appendChild(itemEl);
                     });
                 }
 
-                // 3. 绑定搜索事件（实时过滤）
+                // 3. Bind search event (real-time filtering)
                 searchEl.addEventListener('input', (e) => {
                     renderList(e.target.value);
                 });
 
-                // 4. 初始化渲染
+                // 4. Initial render
                 renderList();
             }
 
-            // 调用初始化（如果initPanelControls里没有这行，直接加进去）
+            // Call initialization (add this line if not present in initPanelControls)
             initCard1List();
 
             // ======================
-            // 卡片2 纯列表（无搜索框，仅点击选中）
+            // Card 2 - Simple List (No search box, click to select only)
             // ======================
             function initCard2List() {
                 const listEl = document.getElementById('card2List');
                 if (!listEl) return;
 
-                // 卡片2列表数据（和你截图一致）
+                // Card 2 List Data (Matches your screenshot)
                 const card2Data = [
                     { id: 1, text: "General", iconName: "icon-setting" },
                     { id: 2, text: "Accounting", iconName: "icon-file-add" },
@@ -3122,21 +3043,21 @@
                     { id: 5, text: "Variants", iconName: "icon-search" }
                 ];
 
-                // 渲染列表
+                // Render List
                 function renderList() {
                     listEl.innerHTML = '';
                     card2Data.forEach(item => {
                         const itemEl = document.createElement('div');
 
                         itemEl.className = 'card2-list-item';
-                        // ✅ 正确：给 DOM 元素设置 innerHTML
+                        // ✅ Correct: Set innerHTML for the DOM element
                         itemEl.innerHTML = `<span style="margin-right:10px;width:13px;height:13px;" class="icon ${item.iconName}"></span><span>${item.text}</span>`;
 
-                        // 点击选中高亮
+                        // Click to select and highlight
                         itemEl.onclick = () => {
                             document.querySelectorAll('#card2List .card2-list-item').forEach(el => el.classList.remove('active'));
                             itemEl.classList.add('active');
-                            console.log('选中卡片2项：', item);
+                            console.log('Selected Card 2 Item:', item);
                         };
 
                         listEl.appendChild(itemEl);
@@ -3145,43 +3066,43 @@
 
                 renderList();
             }
-            // 初始化卡片2列表
+            // Initialize Card 2 List
             initCard2List();
 
-            // 初始化更多图标下拉框（动态DOM专用）
+            // Initialize More Icons Dropdown (For dynamic DOM)
             function initMoreDropdown() {
                 const icon = document.getElementById('moreIcon');
                 const dropdown = document.getElementById('moreDropdown');
                 if (!icon || !dropdown) return;
 
-                // 点击图标切换下拉框
+                // Toggle dropdown on icon click
                 icon.onclick = (e) => {
                     e.stopPropagation();
                     dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
                 };
 
-                // 点击选项后关闭
+                // Close after selecting an option
                 document.querySelectorAll('.dropdown-item').forEach(item => {
                     item.onclick = () => {
-                        console.log('选中：', item.innerText);
+                        console.log('Selected:', item.innerText);
                         dropdown.style.display = 'none';
-                        document.getElementById("moreIconText").innerText = item.innerText; // 更新图标旁文本为选项内容
+                        document.getElementById("moreIconText").innerText = item.innerText; // Update text next to icon
                     };
                 });
 
-                // 点击外部关闭
+                // Close when clicking outside
                 document.addEventListener('click', () => {
                     dropdown.style.display = 'none';
                 });
                 dropdown.addEventListener('click', (e) => e.stopPropagation());
             }
 
-            // 执行初始化
+            // Execute initialization
             initMoreDropdown();
 
         }
 
-        // 记录隐藏顺序（先隐藏的在前）
+        // Record hide order (First hidden items go to the front)
         const hiddenPanelsOrder = [];
 
         function updateStatusBar() {
@@ -3191,21 +3112,26 @@
             const statusBottom = document.getElementById('panelStatusBarBottom');
             if (!statusTop || !statusBottom) return;
 
-            // 如果当前内容没有这两个面板（例如切换到其他 tab），隐藏状态容器
+            // Hide status containers if current content lacks both panels (e.g., when switching tabs)
             if (!p1 && !p2) {
                 statusTop.style.display = 'none';
                 statusBottom.style.display = 'none';
                 return;
             }
+
             const v1 = !!(p1 && p1.style.display !== 'none');
             const v2 = !!(p2 && p2.style.display !== 'none');
 
-            // 仅参考 DOM 隐藏顺序：哪些面板当前是隐藏的
+            // Check DOM hide order only: which panels are currently hidden
             const currentlyHidden = [];
-            if (p1 && (p1.style.display === 'none' || p1.classList.contains('hidden-panel'))) currentlyHidden.push('panel1');
-            if (p2 && (p2.style.display === 'none' || p2.classList.contains('hidden-panel'))) currentlyHidden.push('panel2');
+            if (p1 && (p1.style.display === 'none' || p1.classList.contains('hidden-panel'))) {
+                currentlyHidden.push('panel1');
+            }
+            if (p2 && (p2.style.display === 'none' || p2.classList.contains('hidden-panel'))) {
+                currentlyHidden.push('panel2');
+            }
 
-            // 如果没有隐藏的面板，隐藏两侧容器
+            // Hide both side containers if no panels are hidden
             if (currentlyHidden.length === 0) {
                 statusTop.style.display = 'none';
                 statusBottom.style.display = 'none';
@@ -3213,23 +3139,23 @@
             }
 
             // ==============================================
-            // 【核心修改】固定排序：panel1 永远优先在上
+            // [Core Update] Fixed ordering: panel1 always comes first
             // ==============================================
             const ordered = [];
-            // 先放卡片1（如果隐藏了）
+            // Put card 1 first (if hidden)
             if (currentlyHidden.includes('panel1')) {
                 ordered.push('panel1');
             }
-            // 再放卡片2（如果隐藏了）
+            // Put card 2 next (if hidden)
             if (currentlyHidden.includes('panel2')) {
                 ordered.push('panel2');
             }
 
-            // 渲染到 top / bottom（固定：1在上，2在下）
+            // Render to top / bottom (fixed: 1 on top, 2 below)
             statusTop.innerHTML = '';
             statusBottom.innerHTML = '';
 
-            // helper 创建按钮
+            // Helper to create button
             const makeBtn = (id) => {
                 const btn = document.createElement('div');
                 btn.className = 'panel-status-icon';
@@ -3243,34 +3169,33 @@
                 return btn;
             };
 
-            // top slot → 永远优先显示 卡片1
+            // top slot → always show card 1 first
             if (ordered[0]) {
                 statusTop.appendChild(makeBtn(ordered[0]));
                 statusTop.style.display = 'flex';
-                statusTop.style.flexDirection = 'row-reverse'; // 右对齐
+                statusTop.style.flexDirection = 'row-reverse'; // Align right
                 statusTop.classList.add('minimized');
             } else {
                 statusTop.style.display = 'none';
             }
 
-            // bottom slot → 永远是 卡片2
+            // bottom slot → always card 2
             if (ordered[1]) {
                 statusBottom.appendChild(makeBtn(ordered[1]));
                 statusBottom.style.display = 'flex';
-                statusBottom.style.flexDirection = 'row-reverse'; // 右对齐
-
+                statusBottom.style.flexDirection = 'row-reverse'; // Align right
                 statusBottom.classList.add('minimized');
             } else {
                 statusBottom.style.display = 'none';
             }
         }
-        // 切换面板（带丝滑宽度过渡动画）
+        // Toggle panel (with smooth width transition animation)
         function togglePanel(panelId) {
             const panel = document.getElementById(panelId);
             if (!panel) return;
             const isHidden = panel.classList.contains('hidden-panel') || panel.style.display === 'none';
 
-            // 保存原始尺寸（只保存一次）
+            // Save original dimensions (only once)
             if (!panel.dataset.originalWidth) {
                 panel.dataset.originalWidth = panel.offsetWidth + 'px';
             }
@@ -3278,7 +3203,7 @@
             const originalMargin = window.getComputedStyle(panel).margin;
 
             if (isHidden) {
-                // 显示：先移除隐藏状态，设置宽度为0，然后动画展开
+                // Show: Remove hidden state first, set width to 0, then animate expand
                 panel.classList.remove('hidden-panel');
                 panel.style.display = '';
                 panel.style.width = '0px';
@@ -3286,7 +3211,7 @@
                 panel.style.overflow = 'hidden';
                 panel.style.margin = '0px';
 
-                // 同步移动 panel3
+                // Sync panel3 movement
                 updatePanel3Offset(true);
 
                 requestAnimationFrame(() => {
@@ -3309,7 +3234,7 @@
                     updateStatusBar();
                 });
             } else {
-                // 隐藏：先收缩宽度，再设置 display:none
+                // Hide: Shrink width first, then set display:none
                 updatePanel3Offset(true, panelId);
 
                 panel.style.transition = 'width 320ms cubic-bezier(.2,.9,.2,1), opacity 280ms ease, margin 320ms cubic-bezier(.2,.9,.2,1)';
@@ -3335,8 +3260,8 @@
             setTimeout(updateStatusBar, 20);
         }
 
-        // 计算并设置 panel3 的偏移（当 panel1/2 隐藏时同步左移）
-        // animate: 是否带动画； skipPanelId: 当正要隐藏某个面板时，可传入该 id 使其宽度计算包含在偏移里
+        // Calculate and set panel3 offset (shift left when panel1/2 are hidden)
+        // animate: Whether to enable animation; skipPanelId: Exclude this panel from width calculation when hiding
         function updatePanel3Offset(animate = true, skipPanelId) {
             const container = document.getElementById('tabsContent');
             if (!container) return;
@@ -3349,7 +3274,7 @@
             const p2 = document.getElementById('panel2');
 
             let offset = 0;
-            // 如果某个面板当前是隐藏（display:none 或 hidden-panel），计入其宽度
+            // Include width if panel is hidden (display:none or hidden-panel)
             const considerHidden = (p) => {
                 if (!p) return false;
                 return p.style.display === 'none' || p.classList.contains('hidden-panel');
@@ -3358,7 +3283,7 @@
             if (p1 && (considerHidden(p1) || skipPanelId === 'panel1')) offset += p1.offsetWidth || 300;
             if (p2 && (considerHidden(p2) || skipPanelId === 'panel2')) offset += p2.offsetWidth || 300;
 
-            // 计算目标宽度（始终以像素为单位以支持平滑从小到大的动画）
+            // Calculate target width (always use pixels for smooth animation)
             const containerWidth = panelContainer.clientWidth;
             const visibleWidth = ((p1 && !(p1.style.display === 'none' || p1.classList.contains('hidden-panel'))) ? p1.offsetWidth : 0)
                 + ((p2 && !(p2.style.display === 'none' || p2.classList.contains('hidden-panel'))) ? p2.offsetWidth : 0);
@@ -3368,7 +3293,7 @@
 
             const bothVisible = (p1 && !(p1.style.display === 'none' || p1.classList.contains('hidden-panel'))) && (p2 && !(p2.style.display === 'none' || p2.classList.contains('hidden-panel')));
             if (bothVisible) {
-                // 恢复为弹性布局
+                // Restore flex layout
                 requestAnimationFrame(() => {
                     panel3.style.flexBasis = '';
                 });
@@ -3376,9 +3301,9 @@
         }
 
         // ==============================================
-        // 初始化（无报错）
+        // Initialization (error-free)
         // ==============================================
-        // 不在全局 body 创建状态条，状态条会在 panel-container 内动态创建
+        // Do not create status bars globally; they are created dynamically inside panel-container
 
         TabComponent.initTabs('#tabsBar', myTabList, (activeTab) => {
             renderTabContent(activeTab);
@@ -3387,29 +3312,29 @@
 
     </script>
 
-    <!--左侧导航点击事件渲染tabs-->
+    <!--Left navigation click event to render tabs-->
     <script>
         // ==============================================
-        // 【左侧菜单点击调用】
-        // 菜单传给你什么数据，你直接丢进来
+        // [Left Menu Click Handler]
+        // Pass menu data directly into this function
         // ==============================================
         function openTabFromMenu(menuItem) {
-            // menuItem 必须包含: id, title, content(可选)
+            // menuItem must contain: id, title, content(optional)
             TabComponent.openTab({
                 id: menuItem.id,
                 title: menuItem.title,
-                content: menuItem.content || `<div>页面内容</div>`
+                content: menuItem.content || `<div>No Content</div>`
             });
         }
-        // 示例：页面刷新/关闭前，自动保存当前Tab
+        // Auto save current tab before page refresh/close
         window.addEventListener('beforeunload', function () {
             TabComponent.saveCurrentTabManually();
         });
     </script>
-    <!--演示默认四号tabs-->
+    <!--Demo default 4 tabs-->
     <script>
         // ======================
-        // 卡片边框拖拽调节（无拖动条 · 极简版）
+        // Card border drag resize (Minimal version)
         // ======================
         document.addEventListener('DOMContentLoaded', () => {
             let isResizing = false;
@@ -3417,7 +3342,7 @@
             let startX = 0;
             let startWidth = 0;
 
-            // 监听卡片右侧边框拖拽
+            // Listen for card right border drag
             document.addEventListener('mousedown', (e) => {
                 const panel1 = document.getElementById('panel1');
                 const panel2 = document.getElementById('panel2');
@@ -3426,7 +3351,7 @@
                 const rect1 = panel1.getBoundingClientRect();
                 const rect2 = panel2.getBoundingClientRect();
 
-                // 判断是否点击在 卡片1/2 的右侧拖拽热区
+                // Check if clicking the drag hot zone on right edge
                 const onPanel1Edge = e.clientX >= rect1.right - 4 && e.clientX <= rect1.right + 4;
                 const onPanel2Edge = e.clientX >= rect2.right - 4 && e.clientX <= rect2.right + 4;
 
@@ -3441,16 +3366,16 @@
                 }
             });
 
-            // 拖拽调整宽度
+            // Drag to adjust width
             document.addEventListener('mousemove', (e) => {
                 if (!isResizing || !currentPanel) return;
                 const newWidth = startWidth + (e.clientX - startX);
-                if (newWidth >= 200) { // 最小宽度限制
+                if (newWidth >= 200) { // Min width limit
                     currentPanel.style.width = `${newWidth}px`;
                 }
             });
 
-            // 结束拖拽
+            // End drag
             document.addEventListener('mouseup', () => {
                 if (isResizing && currentPanel) {
                     currentPanel.classList.remove('resizing');
@@ -3461,13 +3386,13 @@
             });
         });
 
-        // 等待动态DOM渲染完成后，初始化单选框（终极稳定版）
+        // Initialize radio buttons after dynamic DOM render (Stable version)
         function initRadioComponent() {
             const checkDOM = setInterval(() => {
                 const radio1 = document.getElementById('radioActive');
                 const radio2 = document.getElementById('radioInactive');
 
-                // DOM存在则初始化组件
+                // Initialize when DOM exists
                 if (radio1 && radio2) {
                     clearInterval(checkDOM);
 
@@ -3476,44 +3401,41 @@
                         labels: ['Active', 'Inactive'],
                         defaultSelected: 'radioActive',
                         onChange: (selectedId) => {
-                            console.log('当前选中：', selectedId);
+                            console.log('Current selection:', selectedId);
                         }
                     });
                     radioGroup.init();
-                    // 初始化下拉框（在你的页面渲染完成后调用）
+
+                    // Initialize dropdown after page render
                     const dropdown = new AutocompleteDropdown({
-                        containerId: 'myselectDropdown',    // 🔥 外部传入DOM ID
-                        options: [                   // 🔥 外部传入下拉数据
+                        containerId: 'myselectDropdown',
+                        options: [
                             { label: 'Option A', value: 'A' },
                             { label: 'Option B', value: 'B' },
                             { label: 'Option C', value: 'C' },
                             { label: 'Option D', value: 'D' }
                         ],
-                        defaultValue: 'B',            // 🔥 外部传入初始选中值
-                        onChange: (item) => {             // 🔥 外部传入选项变化回调
+                        defaultValue: 'B',
+                        onChange: (item) => {
                             console.log('Selected:', item);
                         }
                     });
                     dropdown.init();
                 }
-            }, 50); // 每50ms检测一次DOM
+            }, 50);
 
-            // 超时保护（1秒后停止检测）
+            // Timeout protection
             setTimeout(() => clearInterval(checkDOM), 1000);
         }
 
-        // 执行初始化
+        // Execute initialization
         initRadioComponent();
-
-
-
-
 
     </script>
 
     <script>
         /*
-        切换主题逻辑（独立，直接调用）
+        Theme switching logic (Standalone, call directly)
         */
         (function () {
             const toggleBtn = document.getElementById('fmThemeToggle');
