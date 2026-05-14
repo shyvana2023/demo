@@ -513,7 +513,7 @@ class DateTimePicker {
 //  document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
 //}
 //
-//// 实例化
+//// Instantiate an object
 //const picker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
 //const picker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
 //const picker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });

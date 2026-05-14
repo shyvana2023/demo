@@ -2514,7 +2514,8 @@
             height: 48px;
             padding: 0 16px;
             text-align: left;
-            font-size: 12px;
+            /* Header type scale — slightly larger than body cells */
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -2538,12 +2539,60 @@
         .frosted-table td {
             height: 48px;
             padding: 0 16px;
+            /* Body cell type scale — one step smaller than the header for visual hierarchy */
+            font-size: 12px;
             border-bottom: 1px solid var(--frosted-border-subtle);
             color: var(--frosted-text-secondary);
+            /* Smooth transition so the row hover feels responsive */
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
-        .frosted-table tr:hover td {
-            background: var(--frosted-bg-subtle);
+        /* Body row hover: cyan-tinted background + subtle border emphasis + pointer cursor.
+           Scoped to tbody so it does not target the header row. */
+        .frosted-table tbody tr {
+            cursor: pointer;
+        }
+
+        .frosted-table tbody tr:hover td {
+            background: var(--frosted-cyan-bg);
+            color: var(--frosted-text-primary);
+            border-bottom-color: var(--frosted-cyan-border);
+        }
+
+        /* Round the leading/trailing cells of the hovered row so the highlight reads as one pill */
+        .frosted-table tbody tr:hover td:first-child {
+            border-top-left-radius: var(--frosted-radius-md);
+            border-bottom-left-radius: var(--frosted-radius-md);
+        }
+
+        .frosted-table tbody tr:hover td:last-child {
+            border-top-right-radius: var(--frosted-radius-md);
+            border-bottom-right-radius: var(--frosted-radius-md);
+        }
+
+        /* Status pill text colors used in the table demo.
+           Same font-size as the surrounding td; only color + weight differ. */
+        .status-active   { color: var(--frosted-green-text);   font-weight: 500; }
+        .status-inactive { color: var(--frosted-text-tertiary); font-weight: 500; }
+        .status-leave    { color: var(--frosted-orange-text);  font-weight: 500; }
+
+        /* Table-specific size class.
+           Apply to a <table.frosted-table> to lock in the canonical row scale:
+             - header (<th>) renders at 13px
+             - body cells (<td>) render at 12px
+           This makes every row consistent and overrides ad-hoc inline sizing.
+           The header keeps its uppercase tracking from .frosted-table th — only size is normalized. */
+        .table-text th {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .table-text td {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        /* Inline chips inside cells should not inherit the cell font-size — keep them small */
+        .table-text .cls-tag {
+            font-size: 11px;
         }
 
         .frosted-tabs {
@@ -8747,6 +8796,80 @@
             margin: 4px;
         }
 
+        /* Numeric font-size scale — Tailwind-style, mirrors the p-1/p-2/... pattern.
+           Use these as font-size utilities (line-height tuned per step). */
+        .text-1  { font-size: 10px !important; line-height: 1.4; }
+        .text-2  { font-size: 11px !important; line-height: 1.4; }
+        .text-3  { font-size: 12px !important; line-height: 1.5; }   /* base body */
+        .text-4  { font-size: 13px !important; line-height: 1.5; }
+        .text-5  { font-size: 14px !important; line-height: 1.5; }
+        .text-6  { font-size: 16px !important; line-height: 1.5; }
+        .text-7  { font-size: 18px !important; line-height: 1.4; }
+        .text-8  { font-size: 20px !important; line-height: 1.4; }
+        .text-9  { font-size: 24px !important; line-height: 1.3; }
+        .text-10 { font-size: 28px !important; line-height: 1.25; }
+        .text-11 { font-size: 32px !important; line-height: 1.2; }
+        .text-12 { font-size: 36px !important; line-height: 1.2; }
+
+        /* Half-step variants for fine-tuning (parallels .p-1\.5, .p-2\.5) */
+        .text-1\.5 { font-size: 10.5px !important; line-height: 1.4; }
+        .text-2\.5 { font-size: 11.5px !important; line-height: 1.45; }
+        .text-3\.5 { font-size: 12.5px !important; line-height: 1.5; }
+        .text-4\.5 { font-size: 13.5px !important; line-height: 1.5; }
+        .text-5\.5 { font-size: 15px   !important; line-height: 1.5; }
+        .text-6\.5 { font-size: 17px   !important; line-height: 1.45; }
+        .text-7\.5 { font-size: 19px   !important; line-height: 1.4; }
+        .text-8\.5 { font-size: 22px   !important; line-height: 1.35; }
+
+        /* Inline class-name annotation used in the font reference (#fontView).
+           Wraps a labeled sample so the class-tag sits on the right edge of the row. */
+        .font-row {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .font-row > *:first-child {
+            flex: 1;
+            min-width: 0;
+        }
+        .cls-tag {
+            font-family: ui-monospace, "SF Mono", Consolas, "Courier New", monospace;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--frosted-cyan-text);
+            background: var(--frosted-cyan-bg);
+            border: 1px solid var(--frosted-cyan-border);
+            border-radius: 4px;
+            padding: 2px 7px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            /* Reset table-header text styling so tags rendered inside <th> stay readable */
+            text-transform: none;
+            letter-spacing: 0;
+            vertical-align: middle;
+        }
+
+        /* Class legend — a single chip strip listed alongside a demo area.
+           Used when many elements share the same handful of classes; each unique
+           class appears exactly once instead of being repeated per element. */
+        .cls-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin: 8px 0 12px;
+            padding: 8px 10px;
+            background: var(--frosted-bg-subtle);
+            border: 1px solid var(--frosted-border-subtle);
+            border-radius: var(--frosted-radius-md);
+        }
+        .cls-legend-label {
+            color: var(--frosted-text-tertiary);
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
         .divider {
             height: 1px;
             background: #dee2e6;
@@ -8867,8 +8990,9 @@
             backdrop-filter: blur(var(--frosted-blur-md)) saturate(150%);
             border: 1px solid var(--frosted-border-default);
             box-shadow: var(--frosted-shadow-lg);
-            min-width: 200px;
-            max-width: 260px;
+            min-width: 240px;
+            /* Widened to fit the inline .cls-tag chips alongside the title/body without wrapping */
+            max-width: 360px;
         }
 
         .ft-tooltip-popover .ft-popover-title {
@@ -9299,6 +9423,9 @@
         .speed-card:active .speed-line {
             height: 2px !important;
         }
+        .table-aaa{
+
+        }
     </style>
     <link rel="stylesheet" href="module/icon.css">
 </head>
@@ -9312,83 +9439,130 @@
             style="height:36px;right:100px" data-i18n-key="switchTheme">Switch Theme</button>
         <!-- Page Main Title -->
         <h2 class="main-title" data-bilingual>Form Input Components</h2>
-        <div class="main-subtitle" data-bilingual>Unified frosted style · Universal interaction
+        <div class="main-subtitle" style="font-size: 20px;" data-bilingual>Unified frosted style · Universal interaction
         </div>
-
-        <div class="frosted-card" style="margin-top: 20px;">
+        
+        <div class="frosted-card" style="margin-top: 20px;" id="fontView">
 
             <!-- ======================
-                    Pure font DOM display area
-                    No controls, no forms, no interactive elements
+                    Font-size class reference.
+                    Every font-size utility defined in the style block above is shown here
+                    with its sample on the left and the class selector + computed size on the right.
                 ====================== -->
 
-            <!-- Main Title Level -->
-            <h1 class="text-h1" data-bilingual>Segoe UI Font Spec</h1>
-            <p class="text-desc" data-bilingual>Pure Font Display Template</p>
+            <div class="font-row"><h1 class="text-h1" data-bilingual>Font Size Class Reference 字号类参考</h1><code class="cls-tag">.text-h1</code></div>
+            <div class="font-row"><p class="text-desc" data-bilingual>Each row shows a live sample of the font-size class on the left and the selector + computed size on the right. / Each row shows a live sample on the left and the selector + size on the right.</p><code class="cls-tag">.text-desc</code></div>
 
             <div class="divider"></div>
 
-            <!-- Heading System Display -->
+            <!-- 1. Semantic scale — named by intent (heading levels, body, hint, tiny, button, tag) -->
             <section>
-                <h2 class="text-h2" data-bilingual>Heading Levels</h2>
-                <h1 class="text-h1" data-bilingual>Primary Heading H1</h1>
-                <h2 class="text-h2" data-bilingual>Module Heading H2</h2>
-                <h3 class="text-h3" data-bilingual>Section Heading H3</h3>
-                <h4 class="text-h4" data-bilingual>Small Heading H4</h4>
+                <div class="font-row"><h2 class="text-h2" data-bilingual>Semantic Scale 语义字号</h2><code class="cls-tag">.text-h2</code></div>
+                <div class="font-row"><h1 class="text-h1" data-bilingual>Primary Heading 主标题</h1><code class="cls-tag">.text-h1 · 34px</code></div>
+                <div class="font-row"><h2 class="text-h2" data-bilingual>Module Heading 模块标题</h2><code class="cls-tag">.text-h2 · 28px</code></div>
+                <div class="font-row"><h3 class="text-h3" data-bilingual>Section Heading 区块标题</h3><code class="cls-tag">.text-h3 · 22px</code></div>
+                <div class="font-row"><h4 class="text-h4" data-bilingual>Small Heading 小标题</h4><code class="cls-tag">.text-h4 · 18px</code></div>
+                <div class="font-row"><p class="text-body" data-bilingual>Body paragraph — standard reading text 标准正文</p><code class="cls-tag">.text-body · 12px</code></div>
+                <div class="font-row"><p class="text-desc" data-bilingual>Description — auxiliary explanation 辅助说明</p><code class="cls-tag">.text-desc · 12px</code></div>
+                <div class="font-row"><p class="text-small" data-bilingual>Small — form hints &amp; footnotes 表单提示</p><code class="cls-tag">.text-small · 12px</code></div>
+                <div class="font-row"><p class="text-tiny" data-bilingual>Tiny — badges &amp; corner marks 角标徽章</p><code class="cls-tag">.text-tiny · 11px</code></div>
+                <div class="font-row"><span class="text-btn" data-bilingual>Interactive button text 按钮文字</span><code class="cls-tag">.text-btn · 12px</code></div>
+                <div class="font-row"><span class="text-tag" data-bilingual>Tag Badge 标签</span><code class="cls-tag">.text-tag · 11px (badge)</code></div>
             </section>
 
             <div class="divider"></div>
 
-            <!-- Body Font Display -->
+            <!-- 2. Numeric scale — Tailwind-style integer steps, .text-1 .. .text-12 -->
             <section>
-                <h2 class="text-h2" data-bilingual>Body & Auxiliary Text</h2>
-                <p class="text-body" data-bilingual>Standard body: Segoe UI is the native Windows system font, clear and
-                    readable, ideal for long reading sessions. / Standard body: Segoe UI is the native Windows system
-                    font, clear and readable, ideal for long reading sessions.
-                </p>
-                <p class="text-desc" data-bilingual>Description text: used for auxiliary explanations, feature
-                    introductions, and scenario descriptions. / Description text: used for auxiliary explanations,
-                    feature introductions, and scenario descriptions.</p>
-                <p class="text-small" data-bilingual>Small text: used for form hints, operation instructions, and
-                    footnotes. / Small text: used for form hints, operation instructions, and footnotes.</p>
-                <p class="text-tiny" data-bilingual>Tiny annotation: used for badges, copyright info, and label notes.
-                    Extra small annotation: used for corner marks, copyright info, and label notes.</p>
+                <div class="font-row"><h2 class="text-h2" data-bilingual>Numeric Scale 数字字号</h2><code class="cls-tag">.text-h2</code></div>
+                <div class="font-row"><span class="text-1">Aa Bb 字号 0123</span><code class="cls-tag">.text-1 · 10px</code></div>
+                <div class="font-row"><span class="text-2">Aa Bb 字号 0123</span><code class="cls-tag">.text-2 · 11px</code></div>
+                <div class="font-row"><span class="text-3">Aa Bb 字号 0123</span><code class="cls-tag">.text-3 · 12px (base)</code></div>
+                <div class="font-row"><span class="text-4">Aa Bb 字号 0123</span><code class="cls-tag">.text-4 · 13px</code></div>
+                <div class="font-row"><span class="text-5">Aa Bb 字号 0123</span><code class="cls-tag">.text-5 · 14px</code></div>
+                <div class="font-row"><span class="text-6">Aa Bb 字号 0123</span><code class="cls-tag">.text-6 · 16px</code></div>
+                <div class="font-row"><span class="text-7">Aa Bb 字号 0123</span><code class="cls-tag">.text-7 · 18px</code></div>
+                <div class="font-row"><span class="text-8">Aa Bb 字号 0123</span><code class="cls-tag">.text-8 · 20px</code></div>
+                <div class="font-row"><span class="text-9">Aa Bb 字号 0123</span><code class="cls-tag">.text-9 · 24px</code></div>
+                <div class="font-row"><span class="text-10">Aa Bb 字号 0123</span><code class="cls-tag">.text-10 · 28px</code></div>
+                <div class="font-row"><span class="text-11">Aa Bb 字号 0123</span><code class="cls-tag">.text-11 · 32px</code></div>
+                <div class="font-row"><span class="text-12">Aa Bb 字号 0123</span><code class="cls-tag">.text-12 · 36px</code></div>
             </section>
 
             <div class="divider"></div>
 
-            <!-- Font Weight Display -->
+            <!-- 3. Half-step variants — fine-tune between integer steps, .text-1.5 .. .text-8.5 -->
             <section>
-                <h2 class="text-h2" data-bilingual>Font Weight & Emphasis</h2>
-                <p class="text-light" data-bilingual>Light Text (300)</p>
-                <p class="text-body" data-bilingual>Regular Text (400)</p>
-                <p class="text-bold" data-bilingual>Bold Emphasis SemiBold (600)</p>
-                <p class="text-btn" data-bilingual>Interactive Text Medium (500)</p>
+                <div class="font-row"><h2 class="text-h2" data-bilingual>Half-step Variants 半步细调</h2><code class="cls-tag">.text-h2</code></div>
+                <div class="font-row"><span class="text-1.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-1.5 · 10.5px</code></div>
+                <div class="font-row"><span class="text-2.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-2.5 · 11.5px</code></div>
+                <div class="font-row"><span class="text-3.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-3.5 · 12.5px</code></div>
+                <div class="font-row"><span class="text-4.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-4.5 · 13.5px</code></div>
+                <div class="font-row"><span class="text-5.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-5.5 · 15px</code></div>
+                <div class="font-row"><span class="text-6.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-6.5 · 17px</code></div>
+                <div class="font-row"><span class="text-7.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-7.5 · 19px</code></div>
+                <div class="font-row"><span class="text-8.5">Aa Bb 字号 0123</span><code class="cls-tag">.text-8.5 · 22px</code></div>
             </section>
-
-            <div class="divider"></div>
-
-            <!-- Label Text Display -->
-            <section>
-                <h2 class="text-h2" data-bilingual>Labels & Identifiers</h2>
-                <div><span style="color: var(--frosted-cyan-text);">Cyan</span>, <span
-                        style="color: var(--frosted-purple-text);">Purple</span>, <span
-                        style="color: var(--frosted-green-text);">Green</span>, <span
-                        style="color: var(--frosted-orange-text);">Orange</span></div>
-            </section>
-            <label for="">
-
-                Regular title font size: 13px, annotation: 11px, body text: 12px
-            </label>
         </div>
+    <!-- ============================================== -->
+        <!-- Frosted Table — annotated with class names      -->
+        <!-- Demonstrates: .frosted-table + th/td selectors  -->
+        <!-- ============================================== -->
+        <div class="frosted-card" id="tableDemo" style="margin-top: 20px;max-width: 800px;">
+            <!-- Only font-size-related classes are annotated. Each chip shows the px value it sets. -->
+            <div class="font-row"><h3 class="item-title" data-bilingual>Frosted Table</h3><code class="cls-tag">.item-title · 13px</code></div>
+            <div class="font-row"><div class="item-desc" data-bilingual>Frosted-glass data table. Header cells use uppercase tracking; first/last header cells get rounded corners; rows fade on hover.</div><code class="cls-tag">.item-desc · 12px</code></div>
 
+            <!-- .table-text is the only font-size class on the table itself: th=13px, td=12px -->
+            <div class="font-row" style="margin-top:14px;margin-bottom:6px;">
+                <span style="color:var(--frosted-text-tertiary);font-size:12px;" data-bilingual>Cell sizing (header 13px / body 12px)</span>
+                <code class="cls-tag">.table-text · th 13px / td 12px</code>
+            </div>
+
+            <table class="frosted-table table-text">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#001</td>
+                        <td>Alice Chen</td>
+                        <td>Engineer</td>
+                        <td><span class="status-active">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>#002</td>
+                        <td>Bruno Park</td>
+                        <td>Designer</td>
+                        <td><span class="status-active">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>#003</td>
+                        <td>Cara Liu</td>
+                        <td>Product Manager</td>
+                        <td><span class="status-inactive">Inactive</span></td>
+                    </tr>
+                    <tr>
+                        <td>#004</td>
+                        <td>Dmitri Volkov</td>
+                        <td>QA Lead</td>
+                        <td><span class="status-leave">On Leave</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="frosted-card" style="margin-top: 20px;max-width: 800px;">
             <!-- ============================================== -->
             <!-- Form Component - Text Input -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Text Input</h3>
-                <div class="item-desc" data-bilingual>Single line text entry, basic general input control</div>
+                <div class="font-row"><h3 class="item-title" data-bilingual>Text Input</h3><code class="cls-tag">.item-title · 13px</code></div>
+                <div class="font-row"><div class="item-desc" data-bilingual>Single line text entry, basic general input control</div><code class="cls-tag">.item-desc · 12px</code></div>
                 <div class="text-input-wrapper">
                     <input type="text" class="text-input-field" placeholder="Please enter content"
                         data-bilingual-placeholder>
@@ -9397,8 +9571,8 @@
                 <div class="error-msg" data-key="text"></div> <!-- Error Message Container -->
             </div>
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Search Input</h3>
-                <div class="item-desc" data-bilingual>Text input with left icon</div>
+                <div class="font-row"><h3 class="item-title" data-bilingual>Search Input</h3><code class="cls-tag">.item-title · 13px</code></div>
+                <div class="font-row"><div class="item-desc" data-bilingual>Text input with left icon</div><code class="cls-tag">.item-desc · 12px</code></div>
                 <div class="text-input-wrapper has-icon">
                     <span class="icon icon-search  input-icon "></span>
                     <input type="text" class="text-input-field" placeholder="Search" data-bilingual-placeholder>
@@ -9410,9 +9584,9 @@
             <!-- Form Component - Number Input -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Number Input</h3>
-                <div class="item-desc" data-bilingual>Auto completes two decimals on blur, only numbers and decimal
-                    point allowed</div>
+                <div class="font-row"><h3 class="item-title" data-bilingual>Number Input</h3><code class="cls-tag">.item-title · 13px</code></div>
+                <div class="font-row"><div class="item-desc" data-bilingual>Auto completes two decimals on blur, only numbers and decimal
+                    point allowed</div><code class="cls-tag">.item-desc · 12px</code></div>
                 <div class="number-input-wrapper">
                     <input type="number" inputmode="numeric" id="numberInput" class="number-input-field"
                         placeholder="Enter number" data-bilingual-placeholder>
@@ -9425,9 +9599,9 @@
             <!-- Form Component - Textarea -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Textarea</h3>
-                <div class="item-desc" data-bilingual>Supports line breaks and drag resize, suitable for long text
-                    editing</div>
+                <div class="font-row"><h3 class="item-title" data-bilingual>Textarea</h3><code class="cls-tag">.item-title · 13px</code></div>
+                <div class="font-row"><div class="item-desc" data-bilingual>Supports line breaks and drag resize, suitable for long text
+                    editing</div><code class="cls-tag">.item-desc · 12px</code></div>
                 <div class="textarea-wrapper">
                     <textarea class="textarea-field" placeholder="Please enter multi-line content"
                         data-bilingual-placeholder></textarea>
@@ -9440,8 +9614,8 @@
             <!-- Form Component - Auto Complete Input -->
             <!-- ============================================== -->
             <div class="input-group">
-                <h3 class="item-title" data-bilingual>Auto Complete Input</h3>
-                <div class="item-desc" data-bilingual>Key binding: Arrow Up, Arrow Down, Enter, Tab</div>
+                <div class="font-row"><h3 class="item-title" data-bilingual>Auto Complete Input</h3><code class="cls-tag">.item-title · 13px</code></div>
+                <div class="font-row"><div class="item-desc" data-bilingual>Key binding: Arrow Up, Arrow Down, Enter, Tab</div><code class="cls-tag">.item-desc · 12px</code></div>
                 <div class="autocomplete-wrapper">
                     <div class="autocomplete-input-wrapper">
                         <input id="autoInput" class="autocomplete-input-field"
@@ -9458,9 +9632,9 @@
             <!-- ============================================== -->
             <div class="input-group">
                 <div class="input-group" style="max-width:360px;">
-                    <h3 class="item-title" data-bilingual>Dropdown</h3>
-                    <div class="item-desc" data-bilingual>Pure JS dropdown component, reuses autocomplete styles
-                    </div>
+                    <div class="font-row"><h3 class="item-title" data-bilingual>Dropdown</h3><code class="cls-tag">.item-title · 13px</code></div>
+                    <div class="font-row"><div class="item-desc" data-bilingual>Pure JS dropdown component, reuses autocomplete styles
+                    </div><code class="cls-tag">.item-desc · 12px</code></div>
 
                     <div class="autocomplete-wrapper" style="position:relative;">
                         <div class="autocomplete-input-wrapper" id="ddToggle" tabindex="0" style="cursor:pointer;">
@@ -9515,6 +9689,18 @@
             <div class="input-group" style="max-width: 1000px;">
                 <h3 class="item-title" data-bilingual>Buttons</h3>
                 <div class="item-desc" data-bilingual>Plain · Speed line · Fancy gradient</div>
+                <!-- Class legend — every unique class used by buttons in this section, labeled once -->
+                <div class="cls-legend">
+                    <span class="cls-legend-label" data-bilingual>Classes used:</span>
+                    <code class="cls-tag">.frosted-button</code>
+                    <code class="cls-tag">.frosted-button-cyan</code>
+                    <code class="cls-tag">.frosted-button-orange</code>
+                    <code class="cls-tag">.frosted-button-red</code>
+                    <code class="cls-tag">.frosted-button-green</code>
+                    <code class="cls-tag">.frosted-button-purple</code>
+                    <code class="cls-tag">.frosted-highlight</code>
+                    <code class="cls-tag">.text-sm</code>
+                </div>
                 <div class="flex gap-3 items-center" style="display: block;flex-wrap: wrap;">
                     <button class="frosted-button frosted-button-cyan">cyan</button>
                     <button class="frosted-button frosted-button-orange">orange</button>
@@ -10041,6 +10227,17 @@
             <!-- Button variants with speed line -->
             <!-- ============================================== -->
             <h3 class="item-title" style="margin-top: 20px;" data-bilingual>button variants</h3>
+            <!-- Class legend — speed-line variant buttons share a base class plus one color modifier each -->
+            <div class="cls-legend">
+                <span class="cls-legend-label" data-bilingual>Classes used:</span>
+                <code class="cls-tag">.frosted-btn-variants</code>
+                <code class="cls-tag">.speed-line-variants</code>
+                <code class="cls-tag">.primary-variants</code>
+                <code class="cls-tag">.secondary-variants</code>
+                <code class="cls-tag">.success-variants</code>
+                <code class="cls-tag">.warning-variants</code>
+                <code class="cls-tag">.danger-variants</code>
+            </div>
 
             <div class="flex flex-wrap items-center gap-2" style="display: block;flex-wrap: wrap;">
                 <button class="frosted-btn-variants">
@@ -10102,6 +10299,17 @@
 
                     </div>
 
+                    <!-- Class legend — every unique badge class used in this section, labeled once -->
+                    <div class="cls-legend">
+                        <span class="cls-legend-label" data-bilingual>Classes used:</span>
+                        <code class="cls-tag">.frosted-badge</code>
+                        <code class="cls-tag">.frosted-badge-cyan</code>
+                        <code class="cls-tag">.frosted-badge-purple</code>
+                        <code class="cls-tag">.frosted-badge-green</code>
+                        <code class="cls-tag">.frosted-badge-orange</code>
+                        <code class="cls-tag">.frosted-badge-red</code>
+                    </div>
+
                     <div class="" style="padding:12px;">
                         <div class="flex flex-wrap gap-3">
                             <span class="frosted-badge frosted-badge-cyan">New</span>
@@ -10153,19 +10361,28 @@
         <!-- Interactive Component - Modal Trigger Area -->
         <!-- Click the button below to open native JS modal -->
         <!-- ============================================== -->
-        <!-- Modal Trigger (visible) -->
-        <div style="padding:18px;">
-            <div class="flex gap-4" id="modalTriggerContainer">
+        <div class="frosted-card" id="modalDemo" style="margin-top: 20px;max-width: 800px;padding:18px;">
+            <!-- Only font-size-related classes are annotated; the actual px value follows the class name -->
+            <div class="font-row"><h3 class="item-title" data-bilingual>Modal</h3><code class="cls-tag">.item-title · 13px</code></div>
+            <div class="font-row"><div class="item-desc" data-bilingual>Native JS modal with frosted backdrop. Close via top-right button, overlay click, Esc key, or Cancel.</div><code class="cls-tag">.item-desc · 12px</code></div>
+
+            <!-- Modal Trigger (visible) -->
+            <div class="flex gap-4" id="modalTriggerContainer" style="margin-top:14px;">
                 <button id="openModalBtn" class="frosted-button frosted-button-cyan" data-bilingual>Open Modal</button>
             </div>
         </div>
 
         <!-- Frosted Toggle Component -->
-        <div class="frosted-card space-y-4" style="padding:12px;max-width:360px;">
-            <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);" data-bilingual>
-                Toggle Switch
-            </h4>
-            <div id="myToggle" style="margin-top: 20px;"></div>
+        <div class="frosted-card space-y-4" id="toggleDemo" style="padding:12px;max-width:480px;">
+            <!-- Only the .text-sm font-size class is annotated; non-size utilities omitted -->
+            <div class="font-row">
+                <h4 class="text-sm font-semibold" style="color: var(--frosted-text-primary);" data-bilingual>
+                    Toggle Switch
+                </h4>
+                <code class="cls-tag">.text-sm · 11px</code>
+            </div>
+
+            <div id="myToggle" style="margin-top: 12px;"></div>
         </div>
 
 
@@ -10227,9 +10444,10 @@
         <!-- Business Component - Complete Form Demo -->
         <!-- Includes name, phone, remarks input, checkbox, radio and submit validation -->
         <!-- ============================================== -->
-        <div class="input-group frosted-card notransition" style="margin-top: 40px;">
-            <h3 class="item-title" data-bilingual>Complete Form</h3>
-            <div class="item-desc" data-bilingual>Unified validation </div>
+        <div class="input-group frosted-card notransition" id="completeFormDemo" style="margin-top: 40px;">
+            <!-- Only font-size-related classes are annotated; structural / layout classes omitted -->
+            <div class="font-row"><h3 class="item-title" data-bilingual>Complete Form</h3><code class="cls-tag">.item-title · 13px</code></div>
+            <div class="font-row"><div class="item-desc" data-bilingual>Unified validation</div><code class="cls-tag">.item-desc · 12px</code></div>
 
             <!-- Form - Name Input -->
             <div class="text-input-wrapper" style="margin-bottom:16px;">
@@ -10253,7 +10471,6 @@
             </div>
 
             <!-- Form - Checkbox (Example: Agree to terms, required) -->
-
             <div id="formCbWrapper" style="margin-bottom:8px;">
                 <div style="display:flex;align-items:center;gap:12px;">
                     <div id="formCbAgree"></div>
@@ -10264,7 +10481,6 @@
             <div class="error-msg" id="formCbAgreeError" style="margin-top:8px;height:18px"></div>
 
             <!-- Form - Radio (Example: Gender selection, required) -->
-
             <div style="margin-bottom:8px;color:var(--frosted-text-secondary)" data-i18n-key="selectGender">Please
                 select gender</div>
             <div id="formRadioWrapper" style="margin-bottom:8px;">
@@ -10524,9 +10740,796 @@
                     class="icon icon-close"></span></button>
         </div>
         <!--Skeleton-->
-         <div class=" frosted-card" style="margin-top: 20px;width: 600px;height:600px">
+        <style>
+            /* Skeleton shimmer — overlays any [data-skel] inside an active root, so the
+               placeholder shape automatically follows the real content's size & position. */
+            [data-skeleton-root].skel-active [data-skel] {
+                position: relative;
+                color: transparent !important;
+                -webkit-text-fill-color: transparent !important;
+                border-color: transparent !important;
+                background-color: var(--frosted-bg-subtle) !important;
+                background-image: linear-gradient(90deg,
+                        rgba(255, 255, 255, 0) 0%,
+                        rgba(255, 255, 255, 0.45) 50%,
+                        rgba(255, 255, 255, 0) 100%) !important;
+                background-size: 200% 100% !important;
+                background-repeat: no-repeat !important;
+                animation: skel-shimmer 1.4s ease-in-out infinite;
+                border-radius: 6px;
+                user-select: none;
+                pointer-events: none;
+                box-shadow: none !important;
+            }
 
-         </div>
+            [data-skeleton-root].skel-active [data-skel] > * {
+                visibility: hidden !important;
+            }
+
+            [data-skeleton-root].skel-active img[data-skel],
+            [data-skeleton-root].skel-active svg[data-skel] {
+                opacity: 0;
+            }
+
+            @keyframes skel-shimmer {
+                0%   { background-position: 200% 0; }
+                100% { background-position: -200% 0; }
+            }
+        </style>
+
+        <div class=" frosted-card" id="skeletonDemoCard"
+            style="margin-top: 20px;width: 600px;height:800px;overflow:auto;">
+            <h3 class="item-title" data-bilingual>Order Detail · Skeleton Loading</h3>
+            <div class="item-desc" data-bilingual>Real card content using existing frosted styles. Shimmer auto-tracks
+                every <code>data-skel</code> element.</div>
+
+            <div style="margin: 12px 0;">
+                <button id="skeletonReloadBtn" class="icon-btn hover:bg-primary/10" title="Reload (5s)">
+                    <span class="icon icon-refresh"></span>
+                    <span data-bilingual>Reload (5s)</span>
+                </button>
+            </div>
+
+            <div id="skeletonContent" data-skeleton-root style="padding: 4px;">
+                <!-- Header: order id + status badges -->
+                <div style="display:flex;gap:14px;align-items:center;">
+                    <!-- Icon tile — uses .text-9 (24px) for the inner glyph size -->
+                    <div data-skel class="text-9"
+                        style="width:56px;height:56px;border-radius:14px;background:var(--frosted-bg-subtle);display:flex;align-items:center;justify-content:center;color:var(--frosted-cyan-text);">
+                        <span class="icon icon-shopping"></span>
+                    </div>
+                    <div style="flex:1;min-width:0;">
+                        <div data-skel class="text-6"
+                            style="font-weight:600;color:var(--frosted-text-primary);display:inline-block;">
+                            Order #FR-20260514-0428</div>
+                        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
+                            <span data-skel class="frosted-badge frosted-badge-green">Paid</span>
+                            <span data-skel class="frosted-badge frosted-badge-cyan">Express</span>
+                            <span data-skel class="frosted-badge frosted-badge-purple">VIP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amount summary -->
+                <div class="p-3 rounded-lg"
+                    style="background:var(--frosted-bg-subtle);margin-top:16px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div data-skel class="text-3"
+                            style="color:var(--frosted-text-tertiary);display:inline-block;">Total
+                            Amount</div>
+                        <!-- Amount uses .text-8.5 (22px) — bold weight kept inline since the class only sets size -->
+                        <div data-skel class="text-8.5"
+                            style="font-weight:700;color:var(--frosted-text-primary);margin-top:4px;display:inline-block;">
+                            ¥ 4,820.00</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div data-skel class="text-3"
+                            style="color:var(--frosted-text-tertiary);display:inline-block;">Will ship
+                        </div>
+                        <div data-skel class="text-5"
+                            style="font-weight:600;color:var(--frosted-green-text);margin-top:4px;display:inline-block;">
+                            Today · before 18:00</div>
+                    </div>
+                </div>
+
+                <!-- Info grid -->
+                <div style="margin-top:18px;">
+                    <!-- Section header — .text-4 (13px) for label rows -->
+                    <div class="text-4" style="font-weight:600;color:var(--frosted-text-secondary);margin-bottom:10px;">
+                        <span data-skel style="display:inline-block;">Order Info</span>
+                    </div>
+                    <div class="text-4" style="display:grid;grid-template-columns:90px 1fr;row-gap:10px;column-gap:12px;">
+                        <div style="color:var(--frosted-text-tertiary);">
+                            <span data-skel style="display:inline-block;">Customer</span>
+                        </div>
+                        <div>
+                            <span data-skel
+                                style="display:inline-block;color:var(--frosted-text-primary);font-weight:500;">Alex
+                                Kowalski</span>
+                        </div>
+                        <div style="color:var(--frosted-text-tertiary);">
+                            <span data-skel style="display:inline-block;">Phone</span>
+                        </div>
+                        <div>
+                            <span data-skel
+                                style="display:inline-block;color:var(--frosted-text-primary);">+86 138 **** 4221</span>
+                        </div>
+                        <div style="color:var(--frosted-text-tertiary);">
+                            <span data-skel style="display:inline-block;">Address</span>
+                        </div>
+                        <div>
+                            <span data-skel
+                                style="display:inline-block;color:var(--frosted-text-primary);">Pudong New Area,
+                                Shanghai, CN</span>
+                        </div>
+                        <div style="color:var(--frosted-text-tertiary);">
+                            <span data-skel style="display:inline-block;">Created</span>
+                        </div>
+                        <div>
+                            <span data-skel
+                                style="display:inline-block;color:var(--frosted-text-primary);">2026-05-14 09:42</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items list -->
+                <div style="margin-top:18px;">
+                    <div class="text-4" style="font-weight:600;color:var(--frosted-text-secondary);margin-bottom:10px;">
+                        <span data-skel style="display:inline-block;">Items (3)</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div class="p-3 rounded-lg"
+                            style="background:var(--frosted-bg-subtle);display:flex;align-items:center;gap:12px;">
+                            <div data-skel
+                                style="width:40px;height:40px;border-radius:8px;background:var(--frosted-cyan-bg, var(--frosted-bg-subtle));">
+                            </div>
+                            <div style="flex:1;min-width:0;">
+                                <!-- Item name uses .text-5 (14px); SKU uses .text-3 (12px) -->
+                                <div data-skel class="text-5"
+                                    style="color:var(--frosted-text-primary);font-weight:500;display:inline-block;">
+                                    Frosted UI Pro License × 1</div>
+                                <div data-skel class="text-3"
+                                    style="color:var(--frosted-text-tertiary);margin-top:4px;display:inline-block;">
+                                    SKU: FR-UI-PRO-001</div>
+                            </div>
+                            <div data-skel class="text-5"
+                                style="font-weight:600;color:var(--frosted-text-primary);">¥ 2,400.00
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg"
+                            style="background:var(--frosted-bg-subtle);display:flex;align-items:center;gap:12px;">
+                            <div data-skel
+                                style="width:40px;height:40px;border-radius:8px;background:var(--frosted-purple-bg, var(--frosted-bg-subtle));">
+                            </div>
+                            <div style="flex:1;min-width:0;">
+                                <div data-skel class="text-5"
+                                    style="color:var(--frosted-text-primary);font-weight:500;display:inline-block;">
+                                    Theme Pack — Aurora × 2</div>
+                                <div data-skel class="text-3"
+                                    style="color:var(--frosted-text-tertiary);margin-top:4px;display:inline-block;">
+                                    SKU: FR-THM-AUR-007</div>
+                            </div>
+                            <div data-skel class="text-5"
+                                style="font-weight:600;color:var(--frosted-text-primary);">¥ 1,920.00
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg"
+                            style="background:var(--frosted-bg-subtle);display:flex;align-items:center;gap:12px;">
+                            <div data-skel
+                                style="width:40px;height:40px;border-radius:8px;background:var(--frosted-orange-bg, var(--frosted-bg-subtle));">
+                            </div>
+                            <div style="flex:1;min-width:0;">
+                                <div data-skel class="text-5"
+                                    style="color:var(--frosted-text-primary);font-weight:500;display:inline-block;">
+                                    Priority Support × 1</div>
+                                <div data-skel class="text-3"
+                                    style="color:var(--frosted-text-tertiary);margin-top:4px;display:inline-block;">
+                                    SKU: FR-SUP-PRI-100</div>
+                            </div>
+                            <div data-skel class="text-5"
+                                style="font-weight:600;color:var(--frosted-text-primary);">¥ 500.00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action bar -->
+                <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:10px;">
+                    <button data-skel class="frosted-button">Cancel</button>
+                    <button data-skel class="frosted-button frosted-button-orange">Refund</button>
+                    <button data-skel class="frosted-button frosted-button-cyan">Confirm Ship</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            /**
+             * Skeleton loader — only init / show / hide are exposed.
+             * Shimmer overlays every [data-skel] descendant of the configured root,
+             * so the placeholder shape automatically tracks whatever real content lives there.
+             */
+            (function (global) {
+                let _root = null;
+
+                function init(config) {
+                    config = config || {};
+                    _root = document.querySelector(config.root || '[data-skeleton-root]');
+                }
+
+                function show() {
+                    if (_root) _root.classList.add('skel-active');
+                }
+
+                function hide() {
+                    if (_root) _root.classList.remove('skel-active');
+                }
+
+                global.Skeleton = { init: init, show: show, hide: hide };
+            })(window);
+
+            // Demo wiring — init once, then simulate a 5s fetch on load and on reload click.
+            (function () {
+                window.Skeleton.init({ root: '#skeletonContent' });
+
+                function simulateLoad() {
+                    window.Skeleton.show();
+                    setTimeout(window.Skeleton.hide, 5000);
+                }
+
+                simulateLoad();
+                document.getElementById('skeletonReloadBtn').addEventListener('click', simulateLoad);
+            })();
+        </script>
+
+        <!--ContextMenu (Libs.UI.ContextMenu)-->
+        <style>
+            .ctx-menu,
+            .ctx-submenu {
+                position: fixed;
+                min-width: 180px;
+                padding: 6px;
+                background: linear-gradient(180deg,
+                        rgba(255, 255, 255, 0.08) 0%,
+                        var(--frosted-bg-subtle) 15%,
+                        var(--frosted-bg-subtle) 85%,
+                        rgba(0, 0, 0, 0.02) 100%);
+                border: 1px solid var(--frosted-border-default);
+                border-radius: var(--frosted-radius-md, 10px);
+                backdrop-filter: blur(12px) saturate(150%);
+                -webkit-backdrop-filter: blur(12px) saturate(150%);
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+                z-index: 99999;
+                font-size: 13px;
+                color: var(--frosted-text-primary);
+                user-select: none;
+                animation: ctx-pop 0.12s ease-out;
+            }
+
+            @keyframes ctx-pop {
+                from { opacity: 0; transform: scale(0.96); }
+                to   { opacity: 1; transform: scale(1); }
+            }
+
+            .ctx-menu-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 7px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.12s, color 0.12s;
+                white-space: nowrap;
+            }
+
+            .ctx-menu-item:hover,
+            .ctx-menu-item.ctx-open {
+                background: var(--frosted-cyan-bg, rgba(100, 150, 200, 0.18));
+                color: var(--frosted-cyan-text, var(--frosted-text-primary));
+            }
+
+            .ctx-menu-item.disabled {
+                opacity: 0.45;
+                cursor: not-allowed;
+            }
+
+            .ctx-menu-item.disabled:hover {
+                background: transparent;
+                color: var(--frosted-text-primary);
+            }
+
+            .ctx-menu-item.danger {
+                color: var(--frosted-red-text, #e0566f);
+            }
+
+            .ctx-menu-sep {
+                height: 1px;
+                margin: 4px 6px;
+                background: var(--frosted-border-default);
+                opacity: 0.6;
+            }
+
+            .ctx-menu-arrow {
+                margin-left: 12px;
+                opacity: 0.7;
+                font-size: 11px;
+            }
+
+            .ctx-menu-label {
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .ctx-menu-shortcut {
+                margin-left: 16px;
+                font-size: 11px;
+                opacity: 0.55;
+            }
+        </style>
+
+        <div class="frosted-card" id="contextMenuDemo" style="margin-top: 20px;width: 600px;">
+            <h3 class="item-title" data-bilingual>Context Menu (Libs.UI.ContextMenu)</h3>
+            <div class="item-desc" data-bilingual>Right-click (or long-press on touch) the regions below. The inner row
+                has its own menu — right-clicking it will not trigger the outer card's menu. The second card uses the
+                <code>container</code> option to keep the menu DOM scoped inside its own area.</div>
+
+            <!-- Region A — default: menu DOM is appended to document.body -->
+            <div id="ctxOuterArea" class="p-3 rounded-lg"
+                style="background:var(--frosted-bg-subtle);margin-top:12px;padding:18px;min-height:160px;border:1px dashed var(--frosted-cyan-text);cursor:context-menu;">
+                <div
+                    style="color:var(--frosted-cyan-text);font-size:13px;font-weight:600;margin-bottom:10px;">
+                    Region A · default (menu rendered into &lt;body&gt;)
+                </div>
+
+                <div id="ctxInnerRow" class="p-3 rounded-lg"
+                    style="background:var(--frosted-bg-subtle);border:1px dashed var(--frosted-purple-text);display:flex;align-items:center;gap:10px;cursor:context-menu;">
+                    <span class="icon icon-file" style="color:var(--frosted-cyan-text);"></span>
+                    <div style="flex:1;">
+                        <div style="color:var(--frosted-text-primary);font-weight:500;">report-q2.pdf</div>
+                        <div style="color:var(--frosted-text-tertiary);font-size:12px;">Inner row · has its own menu
+                            (outer is suppressed here)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region B — scoped: menu DOM is appended INSIDE #ctxScopedArea -->
+            <div id="ctxScopedArea" class="p-3 rounded-lg"
+                style="background:var(--frosted-bg-subtle);margin-top:12px;padding:18px;min-height:160px;border:1px dashed var(--frosted-green-text);cursor:context-menu;overflow:hidden;position:relative;">
+                <div
+                    style="color:var(--frosted-green-text);font-size:13px;font-weight:600;margin-bottom:10px;">
+                    Region B · scoped (menu DOM rendered inside this box by id)
+                </div>
+                <div style="color:var(--frosted-text-tertiary);font-size:12px;">
+                    The menu cannot escape this region and is clamped to its bounds.
+                </div>
+            </div>
+
+            <div id="ctxLastResult"
+                style="margin-top:12px;font-size:12px;color:var(--frosted-text-tertiary);min-height:18px;">
+                Last action: <span style="color:var(--frosted-text-primary);">—</span>
+            </div>
+
+            <!-- Page-wide default menu — bind(items) without a target attaches to the whole document -->
+            <div style="margin-top:12px;font-size:12px;color:var(--frosted-text-tertiary);">
+                A page-wide default menu is bound on init. Right-click anywhere on the page (outside the regions above) to open it.
+            </div>
+        </div>
+
+        <script>
+            /**
+             * Libs.UI.ContextMenu — themed context menu with submenus, keyboard/touch support.
+             *
+             * Public API (only these are exposed):
+             *   Libs.UI.ContextMenu.bind(target, items, options?)  → { unbind() }
+             *   Libs.UI.ContextMenu.close()
+             *
+             * items: array of entries; each entry may be:
+             *   { label, callback?, children?, disabled?, danger?, shortcut?, icon? }
+             *   { type: 'separator' }   // or { divider: true }
+             * items may also be a function (ctx) => array — evaluated each open.
+             *
+             * options:
+             *   longPressMs   (default 500) — touch hold duration
+             *   showCancel    (default 'auto') — true | false | 'auto' (auto = touch only)
+             */
+            class ContextMenuManager {
+                static ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+
+                constructor() {
+                    this._activeRoot = null;     // top-level open menu element
+                    this._closeTimer = null;
+                    // Bind handlers used with add/removeEventListener so the references match
+                    this.close = this.close.bind(this);
+                    this._onDocDown = this._onDocDown.bind(this);
+                    this._onKey = this._onKey.bind(this);
+                }
+
+                _esc(s) {
+                    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ContextMenuManager.ESCAPE_MAP[c]);
+                }
+
+                _isTouch() {
+                    return matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window);
+                }
+
+                close() {
+                    if (this._closeTimer) { clearTimeout(this._closeTimer); this._closeTimer = null; }
+                    if (this._activeRoot) {
+                        // remove all submenus too
+                        document.querySelectorAll('.ctx-menu, .ctx-submenu').forEach(n => n.remove());
+                        this._activeRoot = null;
+                    }
+                    document.removeEventListener('mousedown', this._onDocDown, true);
+                    document.removeEventListener('keydown', this._onKey, true);
+                    window.removeEventListener('resize', this.close);
+                    window.removeEventListener('scroll', this.close, true);
+                }
+
+                _scheduleClose() {
+                    if (this._closeTimer) clearTimeout(this._closeTimer);
+                    this._closeTimer = setTimeout(this.close, 350);
+                }
+
+                _cancelScheduledClose() {
+                    if (this._closeTimer) { clearTimeout(this._closeTimer); this._closeTimer = null; }
+                }
+
+                _onDocDown(e) {
+                    if (!this._activeRoot) return;
+                    let n = e.target;
+                    while (n) {
+                        if (n.classList && (n.classList.contains('ctx-menu') || n.classList.contains('ctx-submenu'))) return;
+                        n = n.parentElement;
+                    }
+                    this.close();
+                }
+
+                _onKey(e) { if (e.key === 'Escape') this.close(); }
+
+                _buildMenu(items, ctx, depth, opts) {
+                    const menu = document.createElement('div');
+                    menu.className = depth === 0 ? 'ctx-menu' : 'ctx-submenu';
+                    menu.addEventListener('mouseenter', () => this._cancelScheduledClose());
+                    menu.addEventListener('mouseleave', () => this._scheduleClose());
+
+                    let finalItems = items.slice();
+                    if (depth === 0) {
+                        const showCancel = opts.showCancel === true
+                            || (opts.showCancel !== false && this._isTouch());
+                        if (showCancel) {
+                            finalItems.push({ type: 'separator' });
+                            finalItems.push({ label: 'Cancel', callback: this.close });
+                        }
+                    }
+
+                    finalItems.forEach(item => {
+                        if (!item || item.type === 'separator' || item.divider) {
+                            const hr = document.createElement('div');
+                            hr.className = 'ctx-menu-sep';
+                            menu.appendChild(hr);
+                            return;
+                        }
+                        const row = document.createElement('div');
+                        row.className = 'ctx-menu-item';
+                        if (item.disabled) row.classList.add('disabled');
+                        if (item.danger) row.classList.add('danger');
+                        const hasKids = item.children && item.children.length;
+                        const iconHtml = item.icon ? `<span class="icon ${this._esc(item.icon)}" style="margin-right:8px;"></span>` : '';
+                        const shortcutHtml = item.shortcut ? `<span class="ctx-menu-shortcut">${this._esc(item.shortcut)}</span>` : '';
+                        const arrowHtml = hasKids ? '<span class="ctx-menu-arrow">▸</span>' : shortcutHtml;
+                        row.innerHTML = `${iconHtml}<span class="ctx-menu-label">${this._esc(item.label)}</span>${arrowHtml}`;
+
+                        row.addEventListener('mouseenter', () => {
+                            // close any sibling submenu
+                            menu.querySelectorAll(':scope > .ctx-menu-item.ctx-open').forEach(o => {
+                                if (o !== row && o._sub) { o._sub.remove(); o._sub = null; o.classList.remove('ctx-open'); }
+                            });
+                            if (hasKids && !item.disabled) this._openSubmenu(row, item.children, ctx, depth, opts);
+                        });
+
+                        row.addEventListener('click', e => {
+                            e.stopPropagation();
+                            if (item.disabled) return;
+                            if (hasKids) { this._openSubmenu(row, item.children, ctx, depth, opts); return; }
+                            this.close();
+                            if (typeof item.callback === 'function') item.callback(ctx);
+                        });
+
+                        menu.appendChild(row);
+                    });
+                    return menu;
+                }
+
+                _resolveContainer(opts) {
+                    if (!opts || !opts.container) return null;
+                    const c = opts.container;
+                    if (typeof c === 'string') return document.querySelector(c);
+                    if (c instanceof Element) return c;
+                    return null;
+                }
+
+                _openSubmenu(parentRow, items, ctx, depth, opts) {
+                    if (parentRow._sub) return; // already open
+                    const sub = this._buildMenu(items, ctx, depth + 1, opts);
+                    const container = this._activeRoot && this._activeRoot._scopeContainer;
+                    if (container) {
+                        sub.style.position = 'absolute';
+                        sub._scopeContainer = container;
+                        container.appendChild(sub);
+                    } else {
+                        document.body.appendChild(sub);
+                    }
+                    const r = parentRow.getBoundingClientRect();
+                    this._positionSubmenu(sub, r, container);
+                    parentRow._sub = sub;
+                    parentRow.classList.add('ctx-open');
+                }
+
+                _positionMenu(menu, x, y, container) {
+                    menu.style.left = '0px';
+                    menu.style.top = '0px';
+                    const r = menu.getBoundingClientRect();
+                    const pad = 8;
+                    if (container) {
+                        const cr = container.getBoundingClientRect();
+                        const cw = container.clientWidth, ch = container.clientHeight;
+                        let nx = x - cr.left;
+                        let ny = y - cr.top;
+                        if (nx + r.width > cw - pad) nx = Math.max(pad, cw - r.width - pad);
+                        if (ny + r.height > ch - pad) ny = Math.max(pad, ch - r.height - pad);
+                        if (nx < pad) nx = pad;
+                        if (ny < pad) ny = pad;
+                        menu.style.left = nx + 'px';
+                        menu.style.top = ny + 'px';
+                    } else {
+                        const vw = window.innerWidth, vh = window.innerHeight;
+                        let nx = x, ny = y;
+                        if (nx + r.width > vw - pad) nx = Math.max(pad, vw - r.width - pad);
+                        if (ny + r.height > vh - pad) ny = Math.max(pad, vh - r.height - pad);
+                        menu.style.left = nx + 'px';
+                        menu.style.top = ny + 'px';
+                    }
+                }
+
+                _positionSubmenu(sub, parentRect, container) {
+                    sub.style.left = '0px';
+                    sub.style.top = '0px';
+                    const r = sub.getBoundingClientRect();
+                    const pad = 8;
+                    if (container) {
+                        const cr = container.getBoundingClientRect();
+                        const cw = container.clientWidth, ch = container.clientHeight;
+                        let nx = (parentRect.right - cr.left) - 4;
+                        let ny = (parentRect.top - cr.top) - 4;
+                        if (nx + r.width > cw - pad) {
+                            nx = Math.max(pad, (parentRect.left - cr.left) - r.width + 4);
+                        }
+                        if (ny + r.height > ch - pad) ny = Math.max(pad, ch - r.height - pad);
+                        if (nx < pad) nx = pad;
+                        if (ny < pad) ny = pad;
+                        sub.style.left = nx + 'px';
+                        sub.style.top = ny + 'px';
+                    } else {
+                        const vw = window.innerWidth, vh = window.innerHeight;
+                        let nx = parentRect.right - 4;             // open to the right by default
+                        let ny = parentRect.top - 4;
+                        if (nx + r.width > vw - pad) {             // not enough room → flip left
+                            nx = Math.max(pad, parentRect.left - r.width + 4);
+                        }
+                        if (ny + r.height > vh - pad) ny = Math.max(pad, vh - r.height - pad);
+                        sub.style.left = nx + 'px';
+                        sub.style.top = ny + 'px';
+                    }
+                }
+
+                _open(items, x, y, ctx, opts) {
+                    this.close();
+                    const container = this._resolveContainer(opts);
+                    const menu = this._buildMenu(items, ctx, 0, opts);
+                    if (container) {
+                        // Ensure container is a positioning context
+                        const cs = getComputedStyle(container);
+                        if (cs.position === 'static') container.style.position = 'relative';
+                        menu.style.position = 'absolute';
+                        menu._scopeContainer = container;
+                        container.appendChild(menu);
+                    } else {
+                        document.body.appendChild(menu);
+                    }
+                    this._positionMenu(menu, x, y, container);
+                    this._activeRoot = menu;
+                    // bind global closers after current event so the opening click doesn't close it
+                    setTimeout(() => {
+                        document.addEventListener('mousedown', this._onDocDown, true);
+                        document.addEventListener('keydown', this._onKey, true);
+                        window.addEventListener('resize', this.close);
+                        window.addEventListener('scroll', this.close, true);
+                    }, 0);
+                }
+
+                bind(target, items, options) {
+                    // Page-wide form: bind(items, options?) — no target means the whole page.
+                    // First arg is treated as items if it's an array or a function (and not an Element).
+                    if (Array.isArray(target) || (typeof target === 'function' && !(target instanceof Element))) {
+                        options = items;
+                        items = target;
+                        target = null;
+                    }
+                    options = options || {};
+                    const longPressMs = options.longPressMs || 500;
+                    let els = [];
+                    if (target == null) {
+                        // Page-wide: listen on document. Inner regions that stopPropagation
+                        // will still win — document only sees events that bubble all the way up.
+                        els = [document];
+                    } else if (typeof target === 'string') {
+                        els = Array.from(document.querySelectorAll(target));
+                    } else if (target instanceof Element) {
+                        els = [target];
+                    } else if (target === document || target === window) {
+                        els = [document];
+                    } else if (target && typeof target.length === 'number') {
+                        els = Array.from(target);
+                    } else if (target) {
+                        els = [target];
+                    }
+                    if (!els.length) {
+                        console.warn('[ContextMenu] bind: no elements found for target', target);
+                        return { unbind: function () { } };
+                    }
+
+                    const records = els.map(el => {
+                        const onCtx = e => {
+                            e.preventDefault();
+                            // Critical: stop bubbling so a parent-bound menu does NOT also fire.
+                            e.stopPropagation();
+                            const ctx = { event: e, target: el, originalTarget: e.target, x: e.clientX, y: e.clientY };
+                            const list = typeof items === 'function' ? items(ctx) : items;
+                            if (!list || !list.length) return;
+                            this._open(list, e.clientX, e.clientY, ctx, options);
+                        };
+                        el.addEventListener('contextmenu', onCtx);
+
+                        // Touch long-press
+                        let timer = null, sx = 0, sy = 0, suppressed = false;
+                        const onTouchStart = e => {
+                            if (e.touches.length !== 1) return;
+                            // If a descendant has its own binding, let it win — its touchstart fires first
+                            // and will set suppressed via stopPropagation on its handler. Mirror that here.
+                            suppressed = false;
+                            sx = e.touches[0].clientX;
+                            sy = e.touches[0].clientY;
+                            const tEvt = e;
+                            timer = setTimeout(() => {
+                                timer = null;
+                                if (suppressed) return;
+                                const ctx = { event: tEvt, target: el, originalTarget: tEvt.target, x: sx, y: sy };
+                                const list = typeof items === 'function' ? items(ctx) : items;
+                                if (!list || !list.length) return;
+                                this._open(list, sx, sy, ctx, options);
+                                // Prevent the trailing click from immediately closing the menu
+                                tEvt.preventDefault && tEvt.preventDefault();
+                            }, longPressMs);
+                            // Mark this stack so ancestor handlers know a deeper one already claimed it
+                            e.stopPropagation();
+                        };
+                        const onTouchMove = e => {
+                            if (!timer) return;
+                            const t = e.touches[0];
+                            if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) {
+                                clearTimeout(timer); timer = null;
+                            }
+                        };
+                        const onTouchEnd = () => { if (timer) { clearTimeout(timer); timer = null; } };
+
+                        el.addEventListener('touchstart', onTouchStart, { passive: false });
+                        el.addEventListener('touchmove', onTouchMove, { passive: true });
+                        el.addEventListener('touchend', onTouchEnd);
+                        el.addEventListener('touchcancel', onTouchEnd);
+
+                        return { el, onCtx, onTouchStart, onTouchMove, onTouchEnd };
+                    });
+
+                    return {
+                        unbind() {
+                            records.forEach(r => {
+                                r.el.removeEventListener('contextmenu', r.onCtx);
+                                r.el.removeEventListener('touchstart', r.onTouchStart);
+                                r.el.removeEventListener('touchmove', r.onTouchMove);
+                                r.el.removeEventListener('touchend', r.onTouchEnd);
+                                r.el.removeEventListener('touchcancel', r.onTouchEnd);
+                            });
+                        }
+                    };
+                }
+            }
+
+            window.Libs = window.Libs || {};
+            window.Libs.UI = window.Libs.UI || {};
+            window.Libs.UI.ContextMenu = new ContextMenuManager();
+
+            // ── Demo wiring (binds to the static HTML above) ───────────────
+            (function () {
+                const outer = document.getElementById('ctxOuterArea');
+                const inner = document.getElementById('ctxInnerRow');
+                const scoped = document.getElementById('ctxScopedArea');
+                const resultVal = document.querySelector('#ctxLastResult span');
+                if (!outer || !inner || !scoped || !resultVal) return;
+
+                const flash = msg => { resultVal.textContent = msg; };
+
+                // Region A · outer — default mode (menu rendered into <body>)
+                Libs.UI.ContextMenu.bind(outer, [
+                    { label: 'New File', icon: 'icon-file-add', shortcut: 'Ctrl+N', callback: () => flash('Outer · New File') },
+                    { label: 'New Folder', icon: 'icon-folder-add', callback: () => flash('Outer · New Folder') },
+                    { type: 'separator' },
+                    {
+                        label: 'View', children: [
+                            { label: 'Grid', callback: () => flash('View → Grid') },
+                            { label: 'List', callback: () => flash('View → List') },
+                            {
+                                label: 'Sort by', children: [
+                                    { label: 'Name', callback: () => flash('Sort → Name') },
+                                    { label: 'Date', callback: () => flash('Sort → Date') },
+                                    { label: 'Size', callback: () => flash('Sort → Size') }
+                                ]
+                            }
+                        ]
+                    },
+                    { label: 'Refresh', icon: 'icon-refresh', shortcut: 'F5', callback: () => flash('Outer · Refresh') },
+                    { type: 'separator' },
+                    { label: 'Settings', icon: 'icon-setting', disabled: true }
+                ]);
+
+                // Region A · inner row — stopPropagation prevents the outer menu from firing
+                Libs.UI.ContextMenu.bind(inner, [
+                    { label: 'Open', icon: 'icon-arrow-right-circle', callback: () => flash('Inner · Open') },
+                    { label: 'Download', icon: 'icon-download', callback: () => flash('Inner · Download') },
+                    {
+                        label: 'Share', children: [
+                            { label: 'Copy link', callback: () => flash('Share → Copy link') },
+                            { label: 'Email', callback: () => flash('Share → Email') }
+                        ]
+                    },
+                    { type: 'separator' },
+                    { label: 'Delete', icon: 'icon-delete', danger: true, callback: () => flash('Inner · Delete') }
+                ]);
+
+                // Region B · scoped — menu DOM is rendered INSIDE #ctxScopedArea
+                Libs.UI.ContextMenu.bind(scoped, [
+                    { label: 'Action A', icon: 'icon-check', callback: () => flash('Scoped · Action A') },
+                    { label: 'Action B', icon: 'icon-edit', callback: () => flash('Scoped · Action B') },
+                    {
+                        label: 'More', children: [
+                            { label: 'Sub-1', callback: () => flash('Scoped · Sub-1') },
+                            { label: 'Sub-2', callback: () => flash('Scoped · Sub-2') }
+                        ]
+                    },
+                    { type: 'separator' },
+                    { label: 'Remove', icon: 'icon-delete', danger: true, callback: () => flash('Scoped · Remove') }
+                ], { container: '#ctxScopedArea' });
+
+                // Page-wide default — bind without a target. Regions above stopPropagation, so they still win
+                // in their own areas; everywhere else on the page falls through to this global menu.
+                Libs.UI.ContextMenu.bind([
+                    { label: 'Page · Back', icon: 'icon-arrow-left', callback: () => flash('Page · Back') },
+                    { label: 'Page · Forward', icon: 'icon-arrow-right', callback: () => flash('Page · Forward') },
+                    { label: 'Page · Reload', icon: 'icon-refresh', shortcut: 'F5', callback: () => flash('Page · Reload') },
+                    { type: 'separator' },
+                    {
+                        label: 'Zoom', children: [
+                            { label: 'Zoom in', callback: () => flash('Page · Zoom in') },
+                            { label: 'Zoom out', callback: () => flash('Page · Zoom out') },
+                            { label: 'Reset', callback: () => flash('Page · Zoom reset') }
+                        ]
+                    },
+                    { label: 'View source', icon: 'icon-code', callback: () => flash('Page · View source') }
+                ]);
+            })();
+        </script>
+
+    
+
     </div>
     <!--Auto Complete  <script src="./module/autoComplete.js"></script>-->
     <script>
@@ -12688,9 +13691,17 @@
                 if (type === "popover") {
                     inner = document.createElement("div");
                     inner.className = "ft-tooltip-popover";
+                    // Title and body each wrapped in .font-row so their .cls-tag chip
+                    // (showing the class name + applied font-size) sits on the right edge.
                     inner.innerHTML = `
-              <div class="ft-popover-title">${title || "Tip"}</div>
-              <div class="ft-popover-body">${content}</div>
+              <div class="font-row" style="margin-bottom:6px;">
+                <div class="ft-popover-title" style="margin-bottom:0;">${title || "Tip"}</div>
+                <code class="cls-tag">.ft-popover-title · 12px</code>
+              </div>
+              <div class="font-row" style="margin-bottom:12px;">
+                <div class="ft-popover-body" style="margin-bottom:0;">${content}</div>
+                <code class="cls-tag">.ft-popover-body · 13px</code>
+              </div>
               <div class="ft-popover-footer">
                 <button class="frosted-button text-sm" style="height:32px;padding:0 12px;" data-tooltip-close>close</button>
                 <button class="frosted-button frosted-button-cyan text-sm" style="height:32px;padding:0 12px;" data-tooltip-close>confirm</button>
@@ -12700,9 +13711,21 @@
                         btn.addEventListener("click", () => this.hide());
                     });
                 } else {
+                    // Plain text tooltip — append the .cls-tag chip after the text on the same line.
                     inner = document.createElement("div");
                     inner.className = "ft-tooltip-text";
-                    inner.textContent = content;
+                    // Remove nowrap so the chip can wrap if the text + chip exceed available space
+                    inner.style.whiteSpace = "normal";
+                    inner.style.display = "inline-flex";
+                    inner.style.alignItems = "center";
+                    inner.style.gap = "8px";
+                    const textNode = document.createElement("span");
+                    textNode.textContent = content;
+                    const tag = document.createElement("code");
+                    tag.className = "cls-tag";
+                    tag.textContent = ".ft-tooltip-text · 13px";
+                    inner.appendChild(textNode);
+                    inner.appendChild(tag);
                 }
 
                 const arrow = document.createElement("div");
@@ -13444,9 +14467,9 @@
         const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
         const datetimepicker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
         const datetimepicker4 = new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
-        const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+        const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD hh:mm:ss', range: true });
         const datetimetimeRangePicker = new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
-        const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
+        const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD ' });
 
         // setInterval(() => {
         //     showDemo(new Date());
@@ -13561,17 +14584,46 @@
                     closeBtn.addEventListener('click', () => nativeModalApi.close());
                     modal.appendChild(closeBtn);
 
+                    // Title row — uses .item-title (13px) and the same .font-row + .cls-tag
+                    // labeling pattern as the rest of the page. Padding is 0 per design spec.
+                    const titleRow = document.createElement('div');
+                    titleRow.className = 'font-row';
+                    titleRow.style.padding = '0';
+
                     const h = document.createElement('h4');
-                    h.style.cssText = 'color: var(--frosted-text-primary); font-weight:600; margin-bottom:8px;';
+                    h.className = 'item-title';
+                    // Reset default h4/heading margins so the .font-row layout controls spacing
+                    h.style.cssText = 'margin:0; color: var(--frosted-text-primary); font-weight:600;';
                     const titleText = opts.title || '';
                     h.textContent = (typeof I18n !== 'undefined') ? I18n.parseBilingual(titleText, I18n.currentLang) : titleText;
-                    modalInner.appendChild(h);
+
+                    const titleTag = document.createElement('code');
+                    titleTag.className = 'cls-tag';
+                    titleTag.textContent = '.item-title · 13px';
+
+                    titleRow.appendChild(h);
+                    titleRow.appendChild(titleTag);
+                    modalInner.appendChild(titleRow);
+
+                    // Body row — uses .item-desc (12px). Padding is 15px 0 per design spec
+                    // (vertical breathing room between the title and the action buttons).
+                    const bodyRow = document.createElement('div');
+                    bodyRow.className = 'font-row';
+                    bodyRow.style.padding = '15px 0';
 
                     const p = document.createElement('p');
-                    p.style.cssText = 'color: var(--frosted-text-secondary); font-size:12px; margin-bottom:20px;';
+                    p.className = 'item-desc';
+                    p.style.cssText = 'margin:0; color: var(--frosted-text-secondary);';
                     const msgText = opts.message || '';
                     p.textContent = (typeof I18n !== 'undefined') ? I18n.parseBilingual(msgText, I18n.currentLang) : msgText;
-                    modalInner.appendChild(p);
+
+                    const bodyTag = document.createElement('code');
+                    bodyTag.className = 'cls-tag';
+                    bodyTag.textContent = '.item-desc · 12px';
+
+                    bodyRow.appendChild(p);
+                    bodyRow.appendChild(bodyTag);
+                    modalInner.appendChild(bodyRow);
 
                     const btnWrap = document.createElement('div');
                     btnWrap.className = 'flex gap-3';

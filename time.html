@@ -333,7 +333,7 @@
         <p id="demo9">Relative Time: </p>
     </div>
 
-    <!-- 只保留这一行引入 JS -->
+    <!-- Only this one line to include the JS -->
     <script src="./time-picker.js"></script>
     <script>
         function showDemo(date) {
@@ -349,12 +349,12 @@
             document.getElementById("demo9").textContent = `Relative Time: ${dt.rel.toNow()}`;
         }
 
-        // ========== 实例化并挂载到 window，方便全局取值 ==========
+        // ========== Instantiate and attach to window for global access ==========
         const datetimepicker1 = new DateTimePicker({ container: picker1, format: 'YYYY-MM-DD hh:mm:ss', needConfirm: true });
         const datetimepicker2 = new DateTimePicker({ container: picker2, format: 'YYYY/MM/DD hh:mm' });
         const datetimepicker3 = new DateTimePicker({ container: picker3, format: 'YYYY-MM-DD' });
         const datetimepicker4 = new DateTimePicker({ container: picker4, format: 'MM/DD/YYYY' });
-        const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD', range: true });
+        const datetimedateRangePicker = new DateTimePicker({ container: dateRangePicker, format: 'YYYY-MM-DD hh:mm:ss', range: true });
         const datetimetimeRangePicker = new DateTimePicker({ container: timeRangePicker, format: 'hh:mm:ss', range: true });
         const datetimeunifiedRangePicker = new UnifiedDateRangePicker({ container: unifiedRangePicker, format: 'YYYY-MM-DD' });
 
@@ -362,12 +362,12 @@
             showDemo(new Date());
         }, 1000)
 
-            //< button onclick = "testGetValue()" > 测试取值</button >
+            //< button onclick = "testGetValue()" > Test get value</button >
             //    function testGetValue() {
             //        console.log('picker1:', picker1.getValue())
-            //        console.log('日期范围:', dateRangePicker.getRangeValue())
-            //        console.log('统一范围:', unifiedRangePicker.getValue())
-            //        alert('打开控制台查看结果')
+            //        console.log('Date range:', dateRangePicker.getRangeValue())
+            //        console.log('Unified range:', unifiedRangePicker.getValue())
+            //        alert('Open the console to view the result')
             //    }
     </script>
 </body>
