@@ -1,0 +1,224 @@
+/* =====================================================================
+ * dark-theme.css — Dark Theme Overrides (Cleaned & Duplicate-Free)
+ * ===================================================================== */
+
+[data-theme="dark"] {
+  /* Text Colors */
+  --frosted-text-primary: #e6eef9;
+  --frosted-text-secondary: #c9d6ee;
+  --frosted-text-tertiary: #9fb3d1;
+
+  /* Backgrounds */
+  --frosted-bg-default: #0b1220;
+  --frosted-bg-subtle: rgba(15, 23, 42, 0.6);
+  --frosted-bg-transparent: rgba(0, 0, 0, 0);
+  --frosted-bg-emphasis: rgba(255, 255, 255, 0.03);
+  --frosted-bg-solid: rgba(10, 14, 20, 0.8);
+
+  /* Borders */
+  --frosted-border-default: rgba(255, 255, 255, 0.06);
+  --frosted-border-subtle: rgba(255, 255, 255, 0.03);
+  --frosted-border-emphasis: rgba(6, 182, 212, 0.18);
+
+  /* Highlights */
+  --frosted-highlight-default: rgba(255, 255, 255, 0.06);
+  --frosted-highlight-subtle: rgba(255, 255, 255, 0.04);
+
+  /* Shadow */
+  --frosted-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+  --frosted-shadow-md: 0 4px 10px rgba(0, 0, 0, 0.6);
+  --frosted-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
+  --frosted-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+  /* Blur */
+  --frosted-blur-sm: 6px;
+  --frosted-blur-md: 10px;
+  --frosted-blur-lg: 20px;
+  --frosted-blur-xl: 28px;
+  --frosted-blur-2xl: 48px;
+
+  /* Radius */
+  --frosted-radius-sm: 6px;
+  --frosted-radius-md: 10px;
+  --frosted-radius-lg: 14px;
+  --frosted-radius-xl: 20px;
+  --frosted-radius-2xl: 28px;
+  --frosted-radius-full: 9999px;
+
+  /* Surface */
+  --frosted-surface-bg: linear-gradient(180deg, rgba(20, 30, 45, 0.6), rgba(10, 14, 20, 0.6));
+  --frosted-surface-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+
+  /* Icon */
+  --frosted-icon-color: rgb(228, 234, 241);
+
+  /* Color Palettes */
+  --frosted-cyan-bg: rgba(6, 182, 212, 0.12);
+  --frosted-cyan-border: rgba(6, 182, 212, 0.28);
+  --frosted-cyan-text: #22d3ee;
+  --frosted-cyan-glow: 0 0 20px rgba(34, 211, 238, 0.18);
+
+  --frosted-purple-bg: rgba(168, 85, 247, 0.12);
+  --frosted-purple-border: rgba(168, 85, 247, 0.28);
+  --frosted-purple-text: #c084fc;
+  --frosted-purple-glow: 0 0 20px rgba(192, 132, 252, 0.12);
+
+  --frosted-green-bg: rgba(34, 197, 94, 0.12);
+  --frosted-green-border: rgba(34, 197, 94, 0.28);
+  --frosted-green-text: #4ade80;
+  --frosted-green-glow: 0 0 18px rgba(74, 222, 128, 0.12);
+
+  --frosted-orange-bg: rgba(249, 115, 22, 0.12);
+  --frosted-orange-border: rgba(249, 115, 22, 0.28);
+  --frosted-orange-text: #fb923c;
+  --frosted-orange-glow: 0 0 16px rgba(251, 146, 60, 0.12);
+
+  --frosted-red-bg: rgba(239, 68, 68, 0.12);
+  --frosted-red-border: rgba(239, 68, 68, 0.28);
+  --frosted-red-text: #f87171;
+  --frosted-red-glow: 0 0 18px rgba(248, 113, 113, 0.12);
+
+  /* shadcn / Design Tokens (Unified & No Duplicates) */
+  --background: #0a0e1a;
+  --foreground: #f2f5fa;
+  --card: #121626d9;
+  --card-foreground: #f2f5fa;
+  --popover: #121626f2;
+  --popover-foreground: #f2f5fa;
+  --primary: #17b4ed;
+  --primary-foreground: #fff;
+  --secondary: #1a1f35;
+  --secondary-foreground: #f2f5fa;
+  --muted: #1e2438;
+  --muted-foreground: #c1c9e0;
+  --accent: #252b45;
+  --accent-foreground: #f2f5fa;
+  --destructive: #ea1727;
+  --destructive-foreground: #fff;
+  --border: #17b4ed73;
+  --input: rgba(255, 255, 255, 0.06);
+  --input-background: #121626cc;
+  --switch-background: #2a3148;
+  --ring: #17b4ed;
+  --radius: 0.5rem;
+
+  /* Sidebar */
+  --sidebar: #121626d9;
+  --sidebar-foreground: #f2f5fa;
+  --sidebar-primary: #17b4ed;
+  --sidebar-primary-foreground: #fff;
+  --sidebar-accent: #252b45b3;
+  --sidebar-accent-foreground: #f2f5fa;
+  --sidebar-border: #17b4ed33;
+  --sidebar-ring: #17b4ed;
+
+  /* Charts */
+  --chart-1: #17b4ed;
+  --chart-2: #40ec20;
+  --chart-3: #f4860c;
+  --chart-4: #ef08b3;
+  --chart-5: #a206f0;
+
+  /* Font */
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+}
+
+/* ---------------------------------------------------------------------
+ * Component Overrides (Dark-Only)
+ * --------------------------------------------------------------------- */
+
+[data-theme="dark"] .frosted-card::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+}
+
+[data-theme="dark"] .frosted-icon-herder > svg {
+  fill: #f8fafc;
+  stroke: #f8fafc;
+}
+
+[data-theme="dark"] body {
+  background: linear-gradient(135deg,
+    #0a0e1a 0%,
+    #12172b 20%,
+    #1a1f35 40%,
+    #1e2438 50%,
+    #1a1f35 60%,
+    #12172b 80%,
+    #0a0e1a 100%);
+}
+
+[data-theme="dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(#17b4ed08 1px, transparent 1px),
+    linear-gradient(90deg, #17b4ed08 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #121626cc;
+  border: 1px solid #17b4ed26;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(#17b4ed 0%, #0d8ab8 100%);
+  border: 2px solid #12162680;
+  box-shadow: inset 0 1px 2px #fff3, 0 0 8px #17b4ed66;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#1fc8ff 0%, #17b4ed 100%);
+  box-shadow: inset 0 1px 2px #ffffff4d, 0 0 12px #17b4ed99;
+}
+
+/* Glass & Card Styles */
+[data-theme="dark"] .card-shadow {
+  box-shadow: 0 4px 16px #17b4ed40, 0 2px 8px #17b4ed26, inset 0 1px #17b4ed33;
+}
+[data-theme="dark"] .glass-header {
+  backdrop-filter: blur(12px);
+  background: #1a1f35f7;
+}
+[data-theme="dark"] .glass-row {
+  backdrop-filter: blur(8px);
+  background: #20263ef2;
+}
+[data-theme="dark"] .glass-row-hover {
+  background: #2a314ffa;
+}
+[data-theme="dark"] .glass-card {
+  backdrop-filter: blur(10px);
+  background: #20263eed;
+}
+[data-theme="dark"] .favorite-btn {
+  backdrop-filter: blur(8px);
+  background: linear-gradient(#2a314ff7, #20263ef0);
+}
+[data-theme="dark"] .favorite-btn:hover {
+  filter: brightness(1.2);
+  background: linear-gradient(#2f3759, #252b45fa);
+}
+[data-theme="dark"] .favorite-btn-shadow {
+  box-shadow: 0 4px #0006, 0 8px 16px -4px #17b4ed26, inset 0 2px #17b4ed26, inset 0 -2px #0003;
+}
+[data-theme="dark"] .category-badge-bg {
+  background: #00000040;
+}
+[data-theme="dark"] .sidebar-toggle-shadow {
+  box-shadow: 0 2px 8px #0000004d, 0 0 12px #17b4ed33, inset 0 1px #17b4ed26, inset 0 -1px #0000004d;
+}
+
+/* Glow Effects */
+[data-theme="dark"] .glow-cyan   { box-shadow: 0 0 12px #17b4ed80, 0 0 24px #17b4ed4d; }
+[data-theme="dark"] .glow-green  { box-shadow: 0 0 12px #40ec2080, 0 0 24px #40ec204d; }
+[data-theme="dark"] .glow-purple { box-shadow: 0 0 12px #a206f080, 0 0 24px #a206f04d; }
+[data-theme="dark"] .glow-orange { box-shadow: 0 0 12px #f4860c80, 0 0 24px #f4860c4d; }
+[data-theme="dark"] .glow-pink   { box-shadow: 0 0 12px #ef08b380, 0 0 24px #ef08b34d; }
+[data-theme="dark"] .glow-red    { box-shadow: 0 0 12px #ea172780, 0 0 24px #ea17274d; }
+[data-theme="dark"] .glow-yellow { box-shadow: 0 0 12px #d3e92280, 0 0 24px #d3e9224d; }
+[data-theme="dark"] .glow-blue   { box-shadow: 0 0 12px #271ce680, 0 0 24px #271ce64d; }
+[data-theme="dark"] .glow-mint   { box-shadow: 0 0 12px #19f09580, 0 0 24px #19f0954d; }

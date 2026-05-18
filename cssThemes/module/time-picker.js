@@ -410,7 +410,7 @@ class DateTimePicker {
       else if (type === 'minute') date.setMinutes(+sel.value);
       else date.setSeconds(+sel.value);
       input.value = this.fmt(date);
-      showDemo(date);
+   
     };
     container.append(sel);
   }
@@ -467,7 +467,7 @@ class DateTimePicker {
       el.onclick = () => {
         date.setDate(d);
         input.value = this.fmt(date);
-        showDemo(date);
+     
         this.renderCal(container, date, input);
       };
       days.append(el);
@@ -524,3 +524,5 @@ class DateTimePicker {
 //setInterval(()=>{
 //  showDemo(new Date());
 //},1000)
+
+export {DateTimeObj,UnifiedDateRangePicker,DateTimePicker}

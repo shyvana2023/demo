@@ -1,0 +1,209 @@
+/* =====================================================================
+ * light-theme.css — Clean Light Theme (No Duplicates, No Errors)
+ * ===================================================================== */
+
+:root {
+  /* ===== Frosted Glass Design Tokens ===== */
+  --frosted-text-primary: #1e293b;
+  --frosted-text-secondary: #475569;
+  --frosted-text-tertiary: #94a3b8;
+
+  --frosted-bg-default: rgb(228, 234, 241);
+  --frosted-bg-subtle: rgb(235, 240, 246);
+  --frosted-bg-transparent: rgba(255, 255, 255, 0.5);
+  --frosted-bg-emphasis: rgba(255, 255, 255, 0.85);
+  --frosted-bg-solid: #ffffff;
+
+  --frosted-border-default: rgba(226, 232, 240, 0.8);
+  --frosted-border-subtle: rgba(226, 232, 240, 0.5);
+  --frosted-border-emphasis: rgba(203, 213, 225, 1);
+
+  --frosted-highlight-default: rgba(255, 255, 255, 0.6);
+  --frosted-highlight-subtle: rgba(255, 255, 255, 0.4);
+
+  --frosted-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
+  --frosted-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --frosted-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --frosted-shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  --frosted-blur-sm: 4px;
+  --frosted-blur-md: 8px;
+  --frosted-blur-lg: 12px;
+  --frosted-blur-xl: 16px;
+  --frosted-blur-2xl: 40px;
+
+  --frosted-radius-sm: 6px;
+  --frosted-radius-md: 10px;
+  --frosted-radius-lg: 16px;
+  --frosted-radius-xl: 20px;
+  --frosted-radius-2xl: 28px;
+  --frosted-radius-full: 9999px;
+
+  --frosted-surface-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4));
+  --frosted-surface-bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --frosted-icon-color: rgba(15, 23, 42, 0.9);
+
+  /* ===== Color Palettes ===== */
+  --frosted-cyan-bg: rgba(6, 182, 212, 0.1);
+  --frosted-cyan-border: rgba(6, 182, 212, 0.4);
+  --frosted-cyan-text: #06b6d4;
+  --frosted-cyan-glow: 0 0 16px rgba(6, 182, 212, 0.3);
+
+  --frosted-purple-bg: rgba(168, 85, 247, 0.1);
+  --frosted-purple-border: rgba(168, 85, 247, 0.4);
+  --frosted-purple-text: #9333ea;
+  --frosted-purple-glow: 0 0 16px rgba(168, 85, 247, 0.3);
+
+  --frosted-green-bg: rgba(34, 197, 94, 0.1);
+  --frosted-green-border: rgba(34, 197, 94, 0.4);
+  --frosted-green-text: #10b981;
+  --frosted-green-glow: 0 0 16px rgba(34, 197, 94, 0.3);
+
+  --frosted-orange-bg: rgba(249, 115, 22, 0.1);
+  --frosted-orange-border: rgba(249, 115, 22, 0.4);
+  --frosted-orange-text: #f97316;
+  --frosted-orange-glow: 0 0 16px rgba(249, 115, 22, 0.3);
+
+  --frosted-red-bg: rgba(239, 68, 68, 0.1);
+  --frosted-red-border: rgba(239, 68, 68, 0.4);
+  --frosted-red-text: #ef4444;
+  --frosted-red-glow: 0 0 16px rgba(239, 68, 68, 0.3);
+
+  --warning-color: #f43f5e;
+
+  /* ===== ShadCN / Main Design Tokens (Unified) ===== */
+  --font-size: 14px;
+  --background: #e8ecf4;
+  --foreground: #3a3f52;
+  --card: #ffffffbf;
+  --card-foreground: #2d3142;
+  --popover: #ffffffe6;
+  --popover-foreground: #2d3142;
+  --primary: #6eb5d0;
+  --primary-foreground: #fff;
+  --secondary: #e8ecf4;
+  --secondary-foreground: #2d3142;
+  --muted: #dfe3eb;
+  --muted-foreground: #495061;
+  --accent: #f0f4f8;
+  --accent-foreground: #2d3142;
+  --destructive: #ff8b94;
+  --destructive-foreground: #fff;
+  --border: #6b70805c;
+  --input: rgba(0, 0, 0, 0.06);
+  --input-background: #fff9;
+  --switch-background: #b8bfc9;
+  --ring: #6eb5d0;
+  --radius: 0.5rem;
+
+  /* ===== Sidebar ===== */
+  --sidebar: #e8ecf4a6;
+  --sidebar-foreground: #2d3142;
+  --sidebar-primary: #6eb5d0;
+  --sidebar-primary-foreground: #fff;
+  --sidebar-accent: #f0f4f880;
+  --sidebar-accent-foreground: #2d3142;
+  --sidebar-border: #6b708033;
+  --sidebar-ring: #6eb5d0;
+
+  /* ===== Charts ===== */
+  --chart-1: #6eb5d0;
+  --chart-2: #88deb0;
+  --chart-3: #ffbe7a;
+  --chart-4: #c9a8e8;
+  --chart-5: #8db8d8;
+
+  /* ===== Font Weights ===== */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+}
+
+/* ---------------------------------------------------------------------
+ * Base Component Styles (Light Theme)
+ * --------------------------------------------------------------------- */
+
+.frosted-card::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+}
+
+.frosted-icon-herder > svg,
+svg.frosted-icon-herder {
+  fill: #1e293b;
+  stroke: #1e293b;
+}
+
+body {
+  background: linear-gradient(135deg,
+    #e4e8f0 0%, #e8ecf4 20%, #f0f4f8 40%, #f8fafc 50%,
+    #f0f4f8 60%, #e8ecf4 80%, #e4e8f0 100%) fixed;
+  position: relative;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #d4d8e080;
+  border: 1px solid #5a5f6d26;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#8a92a0 0%, #6a7280 100%);
+  border: 2px solid #d4d8e080;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 2px #ffffff4d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#7a8290 0%, #5a6270 100%);
+}
+
+/* ===== Glass & Card Styles ===== */
+.card-shadow {
+  box-shadow: 0 2px 8px #2a2e3a26, 0 1px 3px #2a2e3a1a, inset 0 1px #ffffff80;
+}
+.glass-header {
+  backdrop-filter: blur(12px);
+  background: #fff9;
+}
+.glass-row {
+  backdrop-filter: blur(8px);
+  background: #ffffffbf;
+}
+.glass-row-hover {
+  background: #ffffffd9;
+}
+.glass-card {
+  backdrop-filter: blur(10px);
+  background: #ffffffb3;
+}
+.favorite-btn {
+  backdrop-filter: blur(8px);
+  background: linear-gradient(#ffffffeb, #ffffffc7);
+}
+.favorite-btn:hover {
+  filter: brightness(1.05);
+  background: linear-gradient(#fffffff5, #ffffffd6);
+}
+.favorite-btn-shadow {
+  box-shadow: 0 4px #00000014, 0 8px 16px -4px #00000026, inset 0 2px #fffc, inset 0 -2px #0000000a;
+}
+.category-badge-bg {
+  background: none;
+}
+.sidebar-toggle-shadow {
+  box-shadow: 0 2px 8px #0000001a, inset 0 1px #fffc, inset 0 -1px #0000000d;
+}
+
+/* ===== Glow Effects ===== */
+.glow-cyan   { box-shadow: 0 0 8px #6eb5d04d, 0 0 16px #6eb5d026; }
+.glow-green  { box-shadow: 0 0 8px #88deb04d, 0 0 16px #88deb026; }
+.glow-purple { box-shadow: 0 0 8px #c9a8e84d, 0 0 16px #c9a8e826; }
+.glow-orange { box-shadow: 0 0 8px #ffbe7a4d, 0 0 16px #ffbe7a26; }
+.glow-pink   { box-shadow: 0 0 8px #f472b64d, 0 0 16px #f472b626; }
+.glow-red    { box-shadow: 0 0 8px #ff8b944d, 0 0 16px #ff8b9426; }
+.glow-yellow { box-shadow: 0 0 8px #fbbf244d, 0 0 16px #fbbf2426; }
+.glow-blue   { box-shadow: 0 0 8px #60a5fa4d, 0 0 16px #60a5fa26; }
+.glow-mint   { box-shadow: 0 0 8px #34d3994d, 0 0 16px #34d39926; }
