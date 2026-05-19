@@ -1787,6 +1787,135 @@
         justify-content: space-between;
         z-index: 10;
       }
+
+      /* ============================================================
+         Record Modal — rich form modal variant (AI generated)
+         Copied verbatim from from2.html so both modals look identical
+         here. Reuses .frosted-modal-overlay / .frosted-modal from
+         frosted-glass.css; this block only defines layout for the
+         header / body / footer + form rows + select chevron overlay.
+         ============================================================ */
+
+      /* Overlay visibility is class-driven so no inline display flips are needed */
+      .record-modal-overlay {
+        display: none;
+      }
+      .record-modal-overlay.is-open {
+        display: flex;
+      }
+
+      /* Override .frosted-modal padding so header / body / footer can control their own spacing */
+      .record-modal {
+        padding: 0;
+        max-width: 520px;
+        width: 92%;
+      }
+
+      .record-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--frosted-border-subtle);
+        /* Sit above the .frosted-modal::before gloss so the title stays readable */
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Title scale matches the form-showcase modal */
+      .record-modal-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--frosted-text-primary);
+      }
+
+      .record-modal-close {
+        width: 26px;
+        height: 26px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--frosted-text-tertiary);
+        font-size: 18px;
+        line-height: 1;
+        padding: 0;
+        border-radius: var(--frosted-radius-sm);
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      .record-modal-close:hover {
+        background: var(--frosted-bg-subtle);
+        color: var(--frosted-text-primary);
+      }
+
+      .record-modal-body {
+        padding: 16px 18px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      /* Two-column row used for First Name / Last Name */
+      .record-form-row-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      /* Small uppercase form label */
+      .record-form-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--frosted-text-tertiary);
+      }
+
+      /* Textarea: extend .frosted-input from fixed-height to auto-height multi-line */
+      .record-form-textarea {
+        height: auto;
+        min-height: 96px;
+        padding: 10px 14px;
+        line-height: 1.5;
+        resize: vertical;
+        font-family: inherit;
+      }
+
+      /* Wrapper that holds the native <select> and our overlaid chevron */
+      .record-select-wrapper {
+        position: relative;
+      }
+      .record-select-wrapper > select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 36px;
+      }
+      .record-select-chevron {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--frosted-text-tertiary);
+        pointer-events: none;
+        font-size: 12px;
+      }
+
+      .record-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 12px 18px 16px;
+        border-top: 1px solid var(--frosted-border-subtle);
+      }
+      /* Normalize footer button height so we don't need inline style="height:..." */
+      .record-modal-footer .frosted-button {
+        height: 36px;
+      }
     </style>
   </head>
 
@@ -2675,7 +2804,19 @@
         {
           id: "page3",
           title: "Success",
-          content: `<div style="padding:20px">Dynamic Page Content</div>`,
+          // Card 3 hosts two modal triggers copied from from2.html (AI generated):
+          //   1. #openAlertModalBtn  -> simple confirm dialog via window.nativeModalApi
+          //   2. #openRecordModalBtn -> rich form dialog via window.recordFormModal
+          // Both modals are class-driven; their JS lives in <script> blocks below
+          // and their CSS lives in the <style> block in <head>.
+          content: `<div style="padding:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;">
+      <h3 style="margin:0;color:var(--frosted-text-primary);font-size:14px;font-weight:600;">Modal Triggers</h3>
+      <p style="margin:0;color:var(--frosted-text-secondary);font-size:12px;">Two modal variants copied from the form showcase page.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button id="openAlertModalBtn" type="button" class="frosted-button frosted-button-cyan text-sm" style="height:36px;">Open Alert Modal</button>
+        <button id="openRecordModalBtn" type="button" class="frosted-button frosted-button-cyan text-sm" style="height:36px;">Open Record Form</button>
+      </div>
+    </div>`,
         },
         {
           id: "page4",
@@ -3663,6 +3804,332 @@
           });
         }
       })();
+    </script>
+
+    <!-- ============================================================ -->
+    <!-- Modal triggers for Card 3 of myTabList (AI generated)          -->
+    <!--                                                                -->
+    <!-- Two class-based controllers ported from from2.html:            -->
+    <!--   - NativeModal      -> simple confirm-style dialog            -->
+    <!--   - RecordFormModal  -> rich multi-field form dialog           -->
+    <!--                                                                -->
+    <!-- The trigger buttons (#openAlertModalBtn, #openRecordModalBtn)  -->
+    <!-- live inside a tab whose DOM is created lazily by the tab       -->
+    <!-- component, so click handling is delegated on document.body —   -->
+    <!-- the modals themselves are built once at startup and reused.    -->
+    <!-- ============================================================ -->
+    <script>
+      // -----------------------------------------------------------------
+      // NativeModal - simple "alert"-style confirm dialog (AI generated)
+      //
+      // Visual layout (3 stacked sections):
+      //   ┌─────────────────────────────────┐
+      //   │ HEADER   title              ×   │  <- pinned to top
+      //   ├─────────────────────────────────┤
+      //   │ BODY     message text           │  <- middle content
+      //   ├─────────────────────────────────┤
+      //   │ FOOTER             [Cancel][OK] │  <- bottom action bar
+      //   └─────────────────────────────────┘
+      // -----------------------------------------------------------------
+      class NativeModal {
+          constructor() {
+              // Default options used when caller omits any key
+              this.defaults = {
+                  title: "Confirmation",
+                  message: "Are you sure you want to proceed?",
+                  width: "400px",
+                  closeOnOverlay: true,
+                  onConfirm: null,
+                  onCancel: null,
+              };
+              this.currentOptions = { ...this.defaults };
+
+              this.buildDom();
+              this.wireEvents();
+          }
+
+          // Build overlay + modal DOM once and append to <body>
+          buildDom() {
+              // Overlay: full-viewport dimmer, centers the modal via flex
+              this.overlay = document.createElement("div");
+              this.overlay.className = "frosted-modal-overlay";
+              // Hidden by default; .open() flips display to "flex"
+              this.overlay.style.display = "none";
+              this.overlay.style.zIndex = "1200";
+
+              // Modal frame reuses the existing .frosted-modal styling
+              this.modal = document.createElement("div");
+              this.modal.className = "frosted-modal frosted-highlight";
+              this.modal.setAttribute("role", "dialog");
+              this.modal.setAttribute("aria-modal", "true");
+              this.modal.setAttribute("aria-hidden", "true");
+              // Reset .frosted-modal's horizontal padding so each section
+              // (header / body / footer) controls its own spacing
+              this.modal.style.padding = "0";
+              this.modal.style.maxWidth = "400px";
+              this.modal.style.margin = "16px";
+
+              this.modal.innerHTML = this.template();
+              this.overlay.appendChild(this.modal);
+              document.body.appendChild(this.overlay);
+
+              // Cache nodes we update on each open()
+              this.titleEl = this.modal.querySelector("[data-native-title]");
+              this.messageEl = this.modal.querySelector("[data-native-message]");
+              this.cancelBtn = this.modal.querySelector("[data-native-cancel]");
+              this.confirmBtn = this.modal.querySelector("[data-native-confirm]");
+              this.closeBtn = this.modal.querySelector("[data-native-close]");
+          }
+
+          // Inner HTML for the alert modal frame. All styling is by class
+          // except for a few layout-only inline rules that mirror the
+          // form-showcase version exactly.
+          template() {
+              return `
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 18px;border-bottom:1px solid var(--frosted-border-subtle);">
+                      <h4 data-native-title style="margin:0;color:var(--frosted-text-primary);font-weight:600;font-size:13px;">Confirmation</h4>
+                      <button data-native-close aria-label="Close modal" style="background:none;border:none;cursor:pointer;color:var(--frosted-text-tertiary);font-size:20px;line-height:1;padding:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;">&times;</button>
+                  </div>
+                  <div style="padding:18px 18px;">
+                      <p data-native-message style="margin:0;color:var(--frosted-text-secondary);font-size:12px;">Are you sure you want to proceed?</p>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 18px 14px;border-top:1px solid var(--frosted-border-subtle);">
+                      <button data-native-cancel class="frosted-button text-sm" style="height:36px;">Cancel</button>
+                      <button data-native-confirm class="frosted-button frosted-button-cyan text-sm" style="height:36px;">Confirm</button>
+                  </div>
+              `;
+          }
+
+          // Wire close / cancel / confirm / overlay-click / Esc handlers
+          wireEvents() {
+              this.closeBtn.addEventListener("click", () => this.close());
+              this.cancelBtn.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  if (typeof this.currentOptions.onCancel === "function") {
+                      this.currentOptions.onCancel();
+                  }
+                  this.close();
+              });
+              this.confirmBtn.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  if (typeof this.currentOptions.onConfirm === "function") {
+                      this.currentOptions.onConfirm();
+                  }
+                  this.close();
+              });
+
+              // Click on backdrop (but not on the modal itself) closes the dialog
+              this.overlay.addEventListener("click", (e) => {
+                  if (e.target === this.overlay && this.currentOptions.closeOnOverlay) {
+                      this.close();
+                  }
+              });
+
+              // Esc closes only when this modal is the one currently open
+              document.addEventListener("keydown", (e) => {
+                  if (e.key === "Escape" && this.overlay.style.display === "flex") {
+                      this.close();
+                  }
+              });
+          }
+
+          // Merge options, refresh content nodes, then reveal the overlay
+          open(opts = {}) {
+              this.currentOptions = { ...this.defaults, ...opts };
+
+              this.titleEl.textContent = this.currentOptions.title;
+              this.messageEl.textContent = this.currentOptions.message;
+              if (this.currentOptions.width) {
+                  this.modal.style.maxWidth = this.currentOptions.width;
+              }
+
+              this.overlay.style.display = "flex";
+              document.body.style.overflow = "hidden";
+              this.modal.setAttribute("aria-hidden", "false");
+
+              // Focus the first focusable element so keyboard users can act
+              const first = this.modal.querySelector(
+                  "button, [href], input, textarea, select"
+              );
+              if (first && first.focus) first.focus();
+          }
+
+          close() {
+              this.overlay.style.display = "none";
+              document.body.style.overflow = "";
+              this.modal.setAttribute("aria-hidden", "true");
+          }
+      }
+
+      // -----------------------------------------------------------------
+      // RecordFormModal - rich form modal (AI generated)
+      //
+      // Same shape as in from2.html but without the I18n / bilingual
+      // bits since this page doesn't ship an I18n helper.
+      // -----------------------------------------------------------------
+      class RecordFormModal {
+          constructor() {
+              this.overlay = null;
+              this.modal = null;
+              // Stable bound Esc handler so add/remove listener calls match
+              this.boundEsc = (e) => this.handleEsc(e);
+
+              this.buildDom();
+              this.wireEvents();
+          }
+
+          // Build overlay + modal DOM once on construction
+          buildDom() {
+              this.overlay = document.createElement("div");
+              this.overlay.className =
+                  "frosted-modal-overlay record-modal-overlay";
+
+              this.modal = document.createElement("div");
+              this.modal.className =
+                  "frosted-modal record-modal frosted-highlight";
+              this.modal.setAttribute("role", "dialog");
+              this.modal.setAttribute("aria-modal", "true");
+              this.modal.setAttribute("aria-labelledby", "recordModalTitle");
+              this.modal.innerHTML = this.template();
+
+              this.overlay.appendChild(this.modal);
+              document.body.appendChild(this.overlay);
+          }
+
+          // Inner HTML for the form modal. All styling is via class names —
+          // no inline style attributes on any element here.
+          template() {
+              return `
+                  <div class="record-modal-header">
+                      <h4 class="record-modal-title" id="recordModalTitle">New Record</h4>
+                      <button class="record-modal-close" data-record-close aria-label="Close">&times;</button>
+                  </div>
+                  <div class="record-modal-body">
+                      <div class="record-form-row-grid">
+                          <div class="record-form-row">
+                              <label class="record-form-label">First Name</label>
+                              <input class="frosted-input" type="text" placeholder="Enter first name" data-record-field="firstName" />
+                          </div>
+                          <div class="record-form-row">
+                              <label class="record-form-label">Last Name</label>
+                              <input class="frosted-input" type="text" placeholder="Enter last name" data-record-field="lastName" />
+                          </div>
+                      </div>
+                      <div class="record-form-row">
+                          <label class="record-form-label">Email</label>
+                          <input class="frosted-input" type="email" placeholder="user@example.com" data-record-field="email" />
+                      </div>
+                      <div class="record-form-row">
+                          <label class="record-form-label">Priority</label>
+                          <div class="record-select-wrapper">
+                              <select class="frosted-input" data-record-field="priority">
+                                  <option value="high">High</option>
+                                  <option value="medium">Medium</option>
+                                  <option value="low">Low</option>
+                              </select>
+                              <span class="record-select-chevron" aria-hidden="true">&#9662;</span>
+                          </div>
+                      </div>
+                      <div class="record-form-row">
+                          <label class="record-form-label">Description</label>
+                          <textarea class="frosted-input record-form-textarea" placeholder="Enter details..." data-record-field="description"></textarea>
+                      </div>
+                  </div>
+                  <div class="record-modal-footer">
+                      <button class="frosted-button text-sm" data-record-cancel>Cancel</button>
+                      <button class="frosted-button frosted-button-cyan text-sm" data-record-save>Save</button>
+                  </div>
+              `;
+          }
+
+          // Hook up close / cancel / save / overlay-click handlers
+          wireEvents() {
+              this.modal
+                  .querySelector("[data-record-close]")
+                  .addEventListener("click", () => this.close());
+              this.modal
+                  .querySelector("[data-record-cancel]")
+                  .addEventListener("click", () => this.close());
+              this.modal
+                  .querySelector("[data-record-save]")
+                  .addEventListener("click", () => this.save());
+
+              // Click on backdrop (but not on the modal itself) closes the dialog
+              this.overlay.addEventListener("click", (e) => {
+                  if (e.target === this.overlay) this.close();
+              });
+          }
+
+          open() {
+              this.overlay.classList.add("is-open");
+              document.body.style.overflow = "hidden";
+              document.addEventListener("keydown", this.boundEsc);
+              // Focus the first input so keyboard users can start typing
+              const firstField = this.modal.querySelector(
+                  "input, select, textarea"
+              );
+              if (firstField && firstField.focus) firstField.focus();
+          }
+
+          close() {
+              this.overlay.classList.remove("is-open");
+              document.body.style.overflow = "";
+              document.removeEventListener("keydown", this.boundEsc);
+          }
+
+          handleEsc(e) {
+              if (e.key === "Escape") this.close();
+          }
+
+          // Collect form values keyed by data-record-field and log them.
+          // Replace with real submission logic as needed.
+          save() {
+              const data = {};
+              this.modal
+                  .querySelectorAll("[data-record-field]")
+                  .forEach((el) => {
+                      data[el.dataset.recordField] = el.value;
+                  });
+              console.log("Record saved:", data);
+              this.close();
+          }
+      }
+
+      // -----------------------------------------------------------------
+      // Bootstrap (AI generated)
+      //
+      // Build both modals up front, then use event delegation so the
+      // trigger buttons keep working even though the tab content (and
+      // therefore the buttons) is re-rendered when the user switches
+      // tabs in TabComponent.
+      // -----------------------------------------------------------------
+      document.addEventListener("DOMContentLoaded", () => {
+          const nativeModal = new NativeModal();
+          const recordFormModal = new RecordFormModal();
+
+          // Expose on window for ad-hoc console use / reuse
+          window.nativeModal = nativeModal;
+          window.recordFormModal = recordFormModal;
+
+          // Delegated click handling — survives tab re-renders
+          document.body.addEventListener("click", (e) => {
+              const alertBtn = e.target.closest("#openAlertModalBtn");
+              if (alertBtn) {
+                  nativeModal.open({
+                      title: "Confirm Operation",
+                      message: "Are you sure you want to proceed?",
+                      width: "420px",
+                      onConfirm: () => console.log("User confirmed"),
+                      onCancel: () => console.log("User cancelled"),
+                  });
+                  return;
+              }
+              const recordBtn = e.target.closest("#openRecordModalBtn");
+              if (recordBtn) {
+                  recordFormModal.open();
+              }
+          });
+      });
     </script>
   </body>
 </html>

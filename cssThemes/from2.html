@@ -2577,7 +2577,7 @@
 
       .frosted-modal {
         position: relative;
-        padding: 24px;
+        padding: 0 24px;
         border-radius: var(--frosted-radius-xl);
         background: var(--frosted-surface-bg-gradient);
         /*
@@ -18439,9 +18439,12 @@
         modal.setAttribute("aria-hidden", "true");
         modal.style.cssText = "max-width:400px;position:relative;margin:16px;";
 
-        // Content container, render based on mode
+        // Content container, render based on mode.
+        // Padding is now applied per-section (header / body / footer) so the
+        // alert modal can have a top-pinned header, a middle body and a
+        // bottom button bar instead of one squished column. (AI generated)
         const modalInner = document.createElement("div");
-        modalInner.style.padding = "20px 24px 18px";
+        modalInner.style.padding = "0";
 
         modal.appendChild(modalInner);
         overlay.appendChild(modal);
@@ -18472,26 +18475,38 @@
           if (oldClose) oldClose.remove();
 
           if (opts.mode === "alert") {
-            const closeBtn = document.createElement("button");
-            closeBtn.setAttribute("aria-label", "Close modal");
-            closeBtn.setAttribute("data-native-close", "1");
-            closeBtn.style.cssText =
-              "position:absolute;right:12px;top:12px;background:none;border:none;cursor:pointer;color:var(--frosted-text-tertiary);font-size:18px;line-height:1";
-            closeBtn.innerHTML = "×";
-            closeBtn.addEventListener("click", () => nativeModalApi.close());
-            modal.appendChild(closeBtn);
+            // -------------------------------------------------------------
+            // Alert modal layout (AI generated)
+            //   ┌─────────────────────────────────┐
+            //   │ HEADER  title · chip          × │  ← pinned to top
+            //   ├─────────────────────────────────┤
+            //   │ BODY    message · chip          │  ← middle content
+            //   ├─────────────────────────────────┤
+            //   │ FOOTER             [Cancel][OK] │  ← bottom action bar
+            //   └─────────────────────────────────┘
+            // Each section gets its own padding so the three zones are
+            // visually distinct instead of being squeezed into the middle.
+            // -------------------------------------------------------------
 
-            // Title row — uses .item-title (13px) and the same .font-row + .cls-tag
-            // labeling pattern as the rest of the page. Padding is 0 per design spec.
+            // ----- HEADER -----------------------------------------------
+            // Sits flush at the top of the modal (matches the design spec).
+            // Uses flex so the title sits on the left and the close button
+            // sits on the right, vertically centered.
+            const header = document.createElement("div");
+            header.style.cssText =
+              "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 18px;border-bottom:1px solid var(--frosted-border-subtle);";
+
+            // Title block — keeps the existing .font-row + .cls-tag pattern
+            // for label/chip parity with the rest of the showcase.
             const titleRow = document.createElement("div");
             titleRow.className = "font-row";
-            titleRow.style.padding = "0";
+            titleRow.style.cssText = "padding:0;align-items:center;flex:1;min-width:0;";
 
             const h = document.createElement("h4");
             h.className = "item-title";
-            // Reset default h4/heading margins so the .font-row layout controls spacing
+            // Reset default heading margins so .font-row controls spacing.
             h.style.cssText =
-              "margin:0; color: var(--frosted-text-primary); font-weight:600;";
+              "margin:0;color:var(--frosted-text-primary);font-weight:600;";
             const titleText = opts.title || "";
             h.textContent =
               typeof I18n !== "undefined"
@@ -18504,17 +18519,34 @@
 
             titleRow.appendChild(h);
             titleRow.appendChild(titleTag);
-            modalInner.appendChild(titleRow);
+            header.appendChild(titleRow);
 
-            // Body row — uses .item-desc (12px). Padding is 15px 0 per design spec
-            // (vertical breathing room between the title and the action buttons).
+            // Close button — sits on the right edge of the header, parallel
+            // to the title row. No absolute positioning; flex handles it.
+            const closeBtn = document.createElement("button");
+            closeBtn.setAttribute("aria-label", "Close modal");
+            closeBtn.setAttribute("data-native-close", "1");
+            closeBtn.style.cssText =
+              "background:none;border:none;cursor:pointer;color:var(--frosted-text-tertiary);font-size:20px;line-height:1;padding:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;";
+            closeBtn.innerHTML = "×";
+            closeBtn.addEventListener("click", () => nativeModalApi.close());
+            header.appendChild(closeBtn);
+
+            modalInner.appendChild(header);
+
+            // ----- BODY -------------------------------------------------
+            // Middle content area. Generous vertical padding so the message
+            // has breathing room above and below.
+            const body = document.createElement("div");
+            body.style.cssText = "padding:18px 18px;";
+
             const bodyRow = document.createElement("div");
             bodyRow.className = "font-row";
-            bodyRow.style.padding = "15px 0";
+            bodyRow.style.padding = "0";
 
             const p = document.createElement("p");
             p.className = "item-desc";
-            p.style.cssText = "margin:0; color: var(--frosted-text-secondary);";
+            p.style.cssText = "margin:0;color:var(--frosted-text-secondary);";
             const msgText = opts.message || "";
             p.textContent =
               typeof I18n !== "undefined"
@@ -18527,19 +18559,20 @@
 
             bodyRow.appendChild(p);
             bodyRow.appendChild(bodyTag);
-            modalInner.appendChild(bodyRow);
+            body.appendChild(bodyRow);
+            modalInner.appendChild(body);
 
-            const btnWrap = document.createElement("div");
-            btnWrap.className = "flex gap-3";
-            btnWrap.style.justifyContent = "flex-end";
+            // ----- FOOTER -----------------------------------------------
+            // Bottom action bar — right-aligned buttons with a thin divider
+            // above to separate from the body content.
+            const footer = document.createElement("div");
+            footer.style.cssText =
+              "display:flex;justify-content:flex-end;gap:8px;padding:12px 18px 14px;border-top:1px solid var(--frosted-border-subtle);";
 
             const cancel = document.createElement("button");
             cancel.className = "frosted-button text-sm";
             cancel.style.height = "36px";
-            cancel.textContent =
-              typeof I18n !== "undefined" && I18n.currentLang === "zh"
-                ? "Cancel"
-                : "Cancel";
+            cancel.textContent = "Cancel";
             cancel.addEventListener("click", (e) => {
               e.preventDefault();
               if (typeof opts.onCancel === "function") opts.onCancel();
@@ -18549,19 +18582,16 @@
             const confirm = document.createElement("button");
             confirm.className = "frosted-button frosted-button-cyan text-sm";
             confirm.style.height = "36px";
-            confirm.textContent =
-              typeof I18n !== "undefined" && I18n.currentLang === "zh"
-                ? "Confirm"
-                : "Confirm";
+            confirm.textContent = "Confirm";
             confirm.addEventListener("click", (e) => {
               e.preventDefault();
               if (typeof opts.onConfirm === "function") opts.onConfirm();
               nativeModalApi.close();
             });
 
-            btnWrap.appendChild(cancel);
-            btnWrap.appendChild(confirm);
-            modalInner.appendChild(btnWrap);
+            footer.appendChild(cancel);
+            footer.appendChild(confirm);
+            modalInner.appendChild(footer);
           } else if (opts.mode === "custom") {
             // customHtml can be string or DOM element
             if (typeof opts.customHtml === "string") {
